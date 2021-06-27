@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html  xmlns:th = "wwww.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>All Info</title>
+</head>
+<body>
+	<h2> Test display all Info</h2>
+	<br/>
+	<table>
+		<tr>
+			<th> Teacher ID</th>
+			<th> Teacher Last Name</th>
+			<th> Teacher First Name</th>
+			<th> Teacher Title</th>
+			<th> Teacher Name</th>
+			<th> Teacher Email</th>
+			<th> Teacher Low Grade</th>
+			<th> Teacher High Grade</th>
+			<th> Teacher School</th>
+		</tr>
+		<tr th:each="teachers :${teachers}">
+			<td th:text = "${teachers.id_teacher}"></td>
+			<td th:text = "${teachers.last_name}"></td>
+			<td th:text = "${teachers.first_name}"></td>
+			<td th:text = "${teachers.title}"></td>
+			<td th:text = "${teachers.teacher_name}"></td>
+			<td th:text = "${teachers.email}"></td>
+			<td th:text = "${teachers.low_grade}"></td>
+			<td th:text = "${teachers.high_grade}"></td>
+		    <td th:text = "${teachers.School.school_name}"></td>
+		</tr>
+	
+	</table>
+</body>
+</html>

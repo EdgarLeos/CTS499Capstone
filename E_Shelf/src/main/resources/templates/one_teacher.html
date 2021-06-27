@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html  xmlns:th = "wwww.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>One Teacher Info</title>
+</head>
+<body>
+	<h2 th:inline = "text"> [[${teacher.teacher_name}]]</h2>
+	<h3 th:inline = "text"> [[${teacher.School.school_name}]]</h3>
+	<br/>
+	<table>
+		<tr>
+			<th> Resource</th>
+			<th> UserName</th>
+			<th> Password</th>
+		</tr>
+		<tr th:each="resources :${resources}">
+			<td> <a th:href = "${resources.resources.resource_URL}" target ="_blank" th:text = "${resources.resources.resource_name}"/></a></td>
+			<td th:text = "${resources.teacher_username}"></td>
+			<td th:text = "${resources.teacher_password}"></td>
+	
+	</table>
+<form th:action="@{/logout}" method="post"> 
+                <input type="submit" value="Logout"/> 
+            </form>
+</body>
+</html>
