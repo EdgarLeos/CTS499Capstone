@@ -42,10 +42,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
             .and()
             .formLogin()
-            .loginProcessingUrl("/E-Shelf/login")
-            .loginPage("/E-Shelf/teacherInfo")
-            .usernameParameter("email")
+            .loginPage("/login")
             .permitAll()
+            .usernameParameter("email")
             .and()
             .logout().logoutUrl("/logout").logoutSuccessUrl("/login").permitAll();
 

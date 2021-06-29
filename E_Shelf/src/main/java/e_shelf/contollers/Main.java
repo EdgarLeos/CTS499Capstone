@@ -1,10 +1,15 @@
 package e_shelf.contollers;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import e_shelf.domains.database.*;
 import e_shelf.domains.database.Class;
@@ -37,6 +44,7 @@ public class Main {
 	
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
+
 	
 	@GetMapping("/E-Shelf/allInfo")
 	public String getAllInfo(Model model) {
@@ -50,16 +58,50 @@ public class Main {
 			System.out.println(teacherClass.getClass_name());
 		}
 		
-		String encodedPassword = bCryptPasswordEncoder.encode("E-Shelf2021!");
-		
-		System.out.println(encodedPassword);
+	
 		
 		for(TeacherHasResource teacherResource : teachers.get(0).getTeacherHasResource()) {
 			System.out.println(teacherResource.getResources().getResource_name());
 			System.out.println(teacherResource.getTeacher_username());
 			System.out.println(teacherResource.getTeacher_password());
 		}
-		
+//        Path pathToFile = Paths.get("src/main/resources/static/csv/users.csv");
+//        System.out.println(pathToFile.toAbsolutePath());
+//        
+//
+//        // create an instance of BufferedReader
+//        // using try with resource, Java 7 feature to close resources
+//        try (BufferedReader br = Files.newBufferedReader(pathToFile,
+//                StandardCharsets.US_ASCII)) {
+//
+//            // read the first line from the text file
+//            String line = br.readLine();
+//
+//            // loop until all lines are read
+//            while (line != null) {
+//
+//                // use string.split to load a string array with the values from
+//                // each line of
+//                // the file, using a comma as the delimiter
+//                String[] attributes = line.split(",");
+//                
+//                Users user = new Users();
+//                user.setId_users(Integer.parseInt(attributes[0]));
+//                user.setUsername(attributes[1]);
+//                user.setPassword(bCryptPasswordEncoder.encode(attributes[2]));
+//                user.setRole(attributes[3]);
+//                user.setEnabled(attributes[4]); 
+//                
+//                userRepository.save(user);
+//
+//                // read next line before looping
+//                // if end of file reached, line would be null
+//                line = br.readLine();
+//            }
+//        } catch (IOException ioe) {
+//            ioe.printStackTrace();
+//        }
+     
 		model.addAttribute("teachers", teachers);
 		model.addAttribute("users", users);
 		model.addAttribute("schools", schools);
@@ -70,50 +112,59 @@ public class Main {
 		
 	}
 	
-	@GetMapping("E-Shelf/oneTeacherInfo")
-	public String oneTeacher(Model model) {
-		int id_teacher = 1773;
-		List<Teacher>teachers = teacherRepository.findById(id_teacher);
-		Teacher teacher = teachers.get(0);
-		System.out.println(teacher.getTeacher_name());
-		TeacherHasResource teacherResource = new TeacherHasResource();
-		
-		for(TeacherHasResource teacherResources: teacher.getTeacherHasResource()) {
-			
-			
-		}
-		
-		model.addAttribute("teacher", teacher);
-		model.addAttribute("resources",teacher.getTeacherHasResource());
-		
-		return "one_teacher";
-		}
+//	@GetMapping("E-Shelf/oneTeacherInfo")
+//	public String oneTeacher(Model model) {
+//		int id_teacher = 1773;
+//		List<Teacher>teachers = teacherRepository.findById(id_teacher);
+//		Teacher teacher = teachers.get(0);
+//		System.out.println(teacher.getTeacher_name());
+//		TeacherHasResource teacherResource = new TeacherHasResource();
+//		
+//		for(TeacherHasResource teacherResources: teacher.getTeacherHasResource()) {
+//			
+//			
+//		}
+//		
+//		model.addAttribute("teacher", teacher);
+//		model.addAttribute("resources",teacher.getTeacherHasResource());
+//		
+//		return "one_teacher";
+//		}
 	
-    @GetMapping("E-Shelf/login")
+    @GetMapping("/login")
     public String viewLoginPage() {
         // custom logic before showing login page...
          
-        return "index";
+        return "login";
     }
     
 
 	
-	@PostMapping("E-Shelf/teacherInfo")
-	public String teacherInfo(@RequestParam("email") String email, Model model) {
-		List<Teacher>teachers = teacherRepository.findByEmail(email);
-		Teacher teacher = teachers.get(0);
-		System.out.println(teacher.getTeacher_name());
-		TeacherHasResource teacherResource = new TeacherHasResource();
+	@PostMapping("/E-Shelf/login")
+	public String teacherInfo(@RequestParam("email") String email, String password, Model model) {
+		Users user = userRepository.getUserByUsername(email);
+		String encodedPassword = bCryptPasswordEncoder.encode(password);
 		
-		for(TeacherHasResource teacherResources: teacher.getTeacherHasResource()) {
-			
-			
-		}
-		
-		model.addAttribute("teacher", teacher);
-		model.addAttribute("resources",teacher.getTeacherHasResource());
-		
-		return "one_teacher";
-		}
+		System.out.println(user.getPassword());
 
+		System.out.println(user.getRole());
+		if(BCrypt.checkpw(password, user.getPassword())){
+			System.out.println("password match");
+			if(user.getRole().equals("Teacher")) {
+				List<Teacher>teachers = teacherRepository.findByEmail(email);
+				Teacher teacher = teachers.get(0);
+				System.out.println(teacher.getTeacher_name());
+				TeacherHasResource teacherResource = new TeacherHasResource();
+				model.addAttribute("teacher", teacher);
+				model.addAttribute("resources",teacher.getTeacherHasResource());
+				
+				return "teacher_page";
+			}
+			if(user.getRole().equals("Admin")){
+				return "admin_page";
+			}
+		}
+			return "not_found";
+	}
+		
 }
