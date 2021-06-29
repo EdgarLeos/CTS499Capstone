@@ -12,10 +12,10 @@
 <div class="container-fluid text-center">
 
     <form th:action="@{/E-Shelf/main/user}" method="post" style="max-width: 350px; margin: 0 auto;">
-         
-        <div th:if="${param.logout}">
-            <p class="text-warning">You have been logged out.</p>
-        </div>
+<div class="alert alert-danger">    
+    Invalid username and password.
+</div>
+
          
         <div class="border border-secondary p-3 rounded">
             <p>E-Shelf Control Panel</p>
@@ -25,6 +25,9 @@
             <p>
                 <input type="password" name="password" class="form-control" placeholder="Password" required />
             </p>
+                    <div th:if="${param.logout}">
+            <p class="text-warning">You have been logged out.</p>
+        </div>
             <p>
                 <input type="checkbox" name="remember-me" />&nbsp;Remember Me
             </p>

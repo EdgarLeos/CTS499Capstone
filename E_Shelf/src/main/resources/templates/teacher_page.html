@@ -13,15 +13,35 @@
 			<th> Resource</th>
 			<th> UserName</th>
 			<th> Password</th>
+			<th></th>
+			<th></th>
 		</tr>
 		<tr th:each="resources :${resources}">
 			<td> <a th:href = "${resources.resources.resource_URL}" target ="_blank" th:text = "${resources.resources.resource_name}"/></a></td>
 			<td th:text = "${resources.teacher_username}"></td>
-			<td th:text = "${resources.teacher_password}"></td>
+			<td th:id="'pass' + ${resources.resources.id_resources}"></td>
+			<td th:id = "'showPass' + ${resources.resources.id_resources}" ><button id = "pass_show_button" th:onclick="showPassword([[${resources.teacher_password}]], [[${resources.resources.id_resources}]])">Show Password</button></td>
+			<td th:id = "'hidePass' + ${resources.resources.id_resources}" style = "display:none"><button id = "pass_hide_button" th:onclick="hidePassword([[${resources.teacher_password}]], [[${resources.resources.id_resources}]])">Hide Password</button></td>
+
+		</tr>
 	
 	</table>
 <form th:action="@{/logout}" method="post">
     <input type="submit" value="Logout" />
 </form>
+
+<script  th:inline="javascript">
+function showPassword(pass, id){
+	document.getElementById('pass' + id).innerHTML= pass;
+	document.getElementById('showPass' + id).style.display = "none";
+	document.getElementById('hidePass' + id).style.display = "block";
+}
+function hidePassword(pass, id){
+	document.getElementById('pass' + id).innerHTML= '';
+	document.getElementById('showPass' + id).style.display = "block";
+	document.getElementById('hidePass'+ id).style.display = "none";
+}
+</script>
 </body>
+
 </html>

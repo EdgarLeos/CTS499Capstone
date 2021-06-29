@@ -14,7 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -140,7 +143,7 @@ public class Main {
     
 
 	
-	@PostMapping("/E-Shelf/login")
+    @RequestMapping(value = "/E-Shelf/main/user", method = RequestMethod.POST)
 	public String teacherInfo(@RequestParam("email") String email, String password, Model model) {
 		Users user = userRepository.getUserByUsername(email);
 		String encodedPassword = bCryptPasswordEncoder.encode(password);
@@ -164,7 +167,7 @@ public class Main {
 				return "admin_page";
 			}
 		}
-			return "not_found";
+		return "loginerror";
 	}
 		
 }
