@@ -8,23 +8,30 @@
 	<h2 th:inline = "text"> [[${teacher.teacher_name}]]</h2>
 	<h3 th:inline = "text"> [[${teacher.School.school_name}]]</h3>
 	<br/>
-	<table>
-		<tr>
+	<table th:each="resources :${resources}"  style="display: inline-block;"> 
+		<tr >
+			<td colspan="2" style="vertical-align:middle; text-align:center;" > <img th:src="@{'/' +${resources.resources.resource_image_URL}}" style="width:200px;height:200px;"></td>
+		</tr>
+		<tr >
 			<th> Resource</th>
-			<th> UserName</th>
-			<th> Password</th>
-			<th></th>
-			<th></th>
-		</tr>
-		<tr th:each="resources :${resources}">
 			<td> <a th:href = "${resources.resources.resource_URL}" target ="_blank" th:text = "${resources.resources.resource_name}"/></a></td>
-			<td th:text = "${resources.teacher_username}"></td>
-			<td th:id="'pass' + ${resources.resources.id_resources}"></td>
-			<td th:id = "'showPass' + ${resources.resources.id_resources}" ><button id = "pass_show_button" th:onclick="showPassword([[${resources.teacher_password}]], [[${resources.resources.id_resources}]])">Show Password</button></td>
-			<td th:id = "'hidePass' + ${resources.resources.id_resources}" style = "display:none"><button id = "pass_hide_button" th:onclick="hidePassword([[${resources.teacher_password}]], [[${resources.resources.id_resources}]])">Hide Password</button></td>
-
 		</tr>
-	
+		<tr > 
+			<th> UserName</th>
+			<td th:text = "${resources.teacher_username}"></td>
+		</tr>
+		<tr>
+			<th> Password</th>
+			<td th:id="'pass' + ${resources.resources.id_resources}"></td>
+		</tr>
+		<tr>
+			<th></th>
+			<td th:id = "'showPass' + ${resources.resources.id_resources}" ><button id = "pass_show_button" th:onclick="showPassword([[${resources.teacher_password}]], [[${resources.resources.id_resources}]])">Show Password</button></td>
+		</tr>
+		<tr>
+			<th></th>
+			<td th:id = "'hidePass' + ${resources.resources.id_resources}" style = "display:none"><button id = "pass_hide_button" th:onclick="hidePassword([[${resources.teacher_password}]], [[${resources.resources.id_resources}]])">Hide Password</button></td>
+		</tr>	
 	</table>
 <form th:action="@{/logout}" method="post">
     <input type="submit" value="Logout" />
