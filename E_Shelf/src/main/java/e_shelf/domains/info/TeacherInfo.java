@@ -10,25 +10,25 @@ public class TeacherInfo {
 	
 	private int id_teacher;
 	private String last_name;
-	private String firts_name;
+	private String first_name;
 	private String tittle;
 	private String teacher_name;
 	private String email;
 	private String low_grade;
 	private String high_grade;
-	private List<Resources> resources;
+	private List<String> resources;
 	private String school_name;
-	private Set<Class> classes;
+	private List<String> classes;
 	
-	public TeacherInfo() {};
-	
-	public TeacherInfo(int id_teacher, String last_name, String firts_name, String tittle, String teacher_name,
-			String email, String low_grade, String high_grade, List<Resources> resources, String school_name,
-			Set<Class> classes) {
+	public TeacherInfo() {}
+
+	public TeacherInfo(int id_teacher, String last_name, String first_name, String tittle, String teacher_name,
+			String email, String low_grade, String high_grade, List<String> resources, String school_name,
+			List<String> classes) {
 		super();
 		this.id_teacher = id_teacher;
 		this.last_name = last_name;
-		this.firts_name = firts_name;
+		this.first_name = first_name;
 		this.tittle = tittle;
 		this.teacher_name = teacher_name;
 		this.email = email;
@@ -55,12 +55,12 @@ public class TeacherInfo {
 		this.last_name = last_name;
 	}
 
-	public String getFirts_name() {
-		return firts_name;
+	public String getFirst_name() {
+		return first_name;
 	}
 
-	public void setFirts_name(String firts_name) {
-		this.firts_name = firts_name;
+	public void setFirst_name(String first_name) {
+		this.first_name = first_name;
 	}
 
 	public String getTittle() {
@@ -103,11 +103,11 @@ public class TeacherInfo {
 		this.high_grade = high_grade;
 	}
 
-	public List<Resources> getResources() {
+	public List<String> getResources() {
 		return resources;
 	}
 
-	public void setResources(List<Resources> resources) {
+	public void setResources(List<String> resources) {
 		this.resources = resources;
 	}
 
@@ -119,11 +119,11 @@ public class TeacherInfo {
 		this.school_name = school_name;
 	}
 
-	public Set<Class> getClasses() {
+	public List<String> getClasses() {
 		return classes;
 	}
 
-	public void setClasses(Set<Class> classes) {
+	public void setClasses(List<String> classes) {
 		this.classes = classes;
 	}
 
@@ -133,7 +133,7 @@ public class TeacherInfo {
 		int result = 1;
 		result = prime * result + ((classes == null) ? 0 : classes.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((firts_name == null) ? 0 : firts_name.hashCode());
+		result = prime * result + ((first_name == null) ? 0 : first_name.hashCode());
 		result = prime * result + ((high_grade == null) ? 0 : high_grade.hashCode());
 		result = prime * result + id_teacher;
 		result = prime * result + ((last_name == null) ? 0 : last_name.hashCode());
@@ -164,10 +164,10 @@ public class TeacherInfo {
 				return false;
 		} else if (!email.equals(other.email))
 			return false;
-		if (firts_name == null) {
-			if (other.firts_name != null)
+		if (first_name == null) {
+			if (other.first_name != null)
 				return false;
-		} else if (!firts_name.equals(other.firts_name))
+		} else if (!first_name.equals(other.first_name))
 			return false;
 		if (high_grade == null) {
 			if (other.high_grade != null)
@@ -211,7 +211,7 @@ public class TeacherInfo {
 
 	@Override
 	public String toString() {
-		return "TeacherInfo [id_teacher=" + id_teacher + ", last_name=" + last_name + ", firts_name=" + firts_name
+		return "TeacherInfo [id_teacher=" + id_teacher + ", last_name=" + last_name + ", first_name=" + first_name
 				+ ", tittle=" + tittle + ", teacher_name=" + teacher_name + ", email=" + email + ", low_grade="
 				+ low_grade + ", high_grade=" + high_grade + ", resources=" + resources + ", school_name=" + school_name
 				+ ", classes=" + classes + "]";
@@ -219,4 +219,4 @@ public class TeacherInfo {
 	
 	
 
-}
+	}

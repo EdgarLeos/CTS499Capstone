@@ -25,7 +25,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import e_shelf.domains.database.*;
 import e_shelf.domains.database.Class;
+import e_shelf.domains.info.TeacherInfo;
 import e_shelf.repositories.*;
+import e_shelf.services.TeacherService;
 
 @Controller
 public class Main {
@@ -47,7 +49,9 @@ public class Main {
 	
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
-
+	
+	@Autowired
+	TeacherService teacherService;
 	
 	@GetMapping("/E-Shelf/allInfo")
 	public String getAllInfo(Model model) {
@@ -146,28 +150,58 @@ public class Main {
     @RequestMapping(value = "/E-Shelf/main/user", method = RequestMethod.POST)
 	public String teacherInfo(@RequestParam("email") String email, String password, Model model) {
 		Users user = userRepository.getUserByUsername(email);
-		String encodedPassword = bCryptPasswordEncoder.encode(password);
-		
-		System.out.println(user.getPassword());
 
-		System.out.println(user.getRole());
 		if(BCrypt.checkpw(password, user.getPassword())){
 			System.out.println("password match");
 			if(user.getRole().equals("Teacher")) {
 				List<Teacher>teachers = teacherRepository.findByEmail(email);
 				Teacher teacher = teachers.get(0);
 				System.out.println(teacher.getTeacher_name());
-				TeacherHasResource teacherResource = new TeacherHasResource();
 				model.addAttribute("teacher", teacher);
 				model.addAttribute("resources",teacher.getTeacherHasResource());
 				
 				return "teacher_page";
 			}
 			if(user.getRole().equals("Admin")){
+				List<Teacher> teachers = teacherRepository.findAll();
+				List<TeacherInfo> teacherInfos = new ArrayList<TeacherInfo>();
+				for(Teacher teacher: teachers) {
+					teacherInfos.add(teacherService.getTecherInfo(teacher.getId_teacher()));
+				}
+				List<Class> classes = classRepository.findAll();
+				List<School> schools = schoolRepository.findAll();
+				List<Resources> resources = resourceRepository.findAll();
+				Iterable<Users> users = userRepository.findAll();
+				model.addAttribute("teachers", teacherInfos);
+				model.addAttribute("users", users);
+				model.addAttribute("schools", schools);
+				model.addAttribute("classes", classes);
+				model.addAttribute("resources", resources);
+				model.addAttribute("current_user", user);
+				
 				return "admin_page";
 			}
 		}
 		return "loginerror";
 	}
-		
+    
+//    @GetMapping("/E-Shelf/main/user")
+//    public String getTeachers(Model model, String keyword) {
+//		List<Teacher> teachers = teacherRepository.findAll();
+//		
+//	
+//			model.addAttribute("teachers", teachers);
+//		return "admin_page";
+//    }
+//    
+//    @RequestMapping(value = "/E-Shelf/main/admin/search", method = RequestMethod.POST)
+//	public String search(@RequestParam("email") String email, String password, Model model) {
+//    	Users user = new Users();
+//    	user.setUsername(email);
+//    	user.setPassword(password);
+//    	
+//    	model.addAttribute("user", user);
+//    	return "search";
+//    	
+//    }
 }

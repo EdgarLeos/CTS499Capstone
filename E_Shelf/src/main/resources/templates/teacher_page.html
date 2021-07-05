@@ -1,12 +1,36 @@
 <!DOCTYPE html>
 <html  xmlns:th = "wwww.thymeleaf.org">
 <head>
+ <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
 <meta charset="UTF-8">
 <title>E-Shelf Teacher</title>
 </head>
 <body>
-	<h2 th:inline = "text"> [[${teacher.teacher_name}]]</h2>
-	<h3 th:inline = "text"> [[${teacher.School.school_name}]]</h3>
+<!-- As a heading -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#"> 
+    <span class="border-top-0"><img src="/img/icon.png" width="40" height="40" class="rounded-circle" alt=""></span>E-Shelf
+    </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#"><span th:inline = "text"> [[${teacher.first_name}]] [[${teacher.last_name}]]		 [[${teacher.School.school_name}]]</span><span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Features</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Pricing</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+      </li>
+    </ul>
+  </div>
+</nav>
 	<br/>
 	<table th:each="resources :${resources}"  style="display: inline-block;"> 
 		<tr >
@@ -33,10 +57,10 @@
 			<td th:id = "'hidePass' + ${resources.resources.id_resources}" style = "display:none"><button id = "pass_hide_button" th:onclick="hidePassword([[${resources.teacher_password}]], [[${resources.resources.id_resources}]])">Hide Password</button></td>
 		</tr>	
 	</table>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Logout" />
-</form>
 
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
 <script  th:inline="javascript">
 function showPassword(pass, id){
 	document.getElementById('pass' + id).innerHTML= pass;

@@ -1,12 +1,233 @@
 <!DOCTYPE html>
-<html>
+<html  xmlns:th = "wwww.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>E-Shelf Admin</title>
+	<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+	<meta charset="UTF-8">
+	<title>E-Shelf Admin</title>
 </head>
-<body>
-<form th:action="@{/logout}" method="post"> 
-                <input type="submit" value="Logout"/> 
-            </form>
-</body>
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+		  <a class="navbar-brand" href="#">E-Shelf Admin</a>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		  </button>
+		  <div class="collapse navbar-collapse" id="navbarNav">
+		    <ul class="navbar-nav mr-auto">
+		      <li class="nav-item active">
+		        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="">Find</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="#">Add/Remove</a>
+		      </li>
+		    </ul>
+		    <ul class="navbar-nav ml-auto">
+		          <li>
+		        <form class="form-inline" th:action="@{/logout}" method="post"> 
+		                <input type="submit" value="Logout"/> 
+		         </form>
+		      </li>
+		    </ul>
+		  </div>
+		</nav>
+		<br>
+		<button id="show_all_teachers" th:onclick ="showDiv('all_teachers', 'show_all_teachers', 'hide_all_teachers')">Display All Teachers In the System</button>
+		<button id="hide_all_teachers" th:onclick ="hideDiv('all_teachers', 'show_all_teachers', 'hide_all_teachers')" style = "display:none">Hide All Teachers In the System</button>
+		<br>
+
+		<div id="all_teachers"  style="visibility: hidden; display: none;">
+			<input id="txtSearch" type ="text" name = "keyword">
+			<table id = "teacher_headings">
+					<tr>
+						<th> Teacher ID</th>
+						<th> Teacher Last Name</th>
+						<th> Teacher First Name</th>
+						<th> Teacher Email</th>
+						<th> Teacher School</th>
+					</tr>
+			</table>
+			<table id = "teacher_info">
+					<tr  th:each="teachers :${teachers}">
+						<td th:text = "${teachers.id_teacher}"></td>
+						<td th:text = "${teachers.last_name}"></td>
+						<td th:text = "${teachers.first_name}"></td>
+						<td th:text = "${teachers.email}"></td>
+					    <td th:text = "${teachers.school_name}"></td>
+					</tr>
+				
+			</table>
+		</div>
+		<br>
+		<button id="show_all_resources" th:onclick ="showDiv('all_resources', 'show_all_resources', 'hide_all_resources')">Display All Resources In the System</button>
+		<button id="hide_all_resources" th:onclick ="hideDiv('all_resources', 'show_all_resources', 'hide_all_resources')" style = "display:none">Hide All Resources In the System</button>
+		<br>
+		<div id="all_resources" style="visibility: hidden; display: none">
+			<input id="txtSearchResources" type ="text" name = "keyword">
+			<table id="resource_headings">
+				<tr>
+					<th>Resource Name</th>
+					<th>Resource URL</th>
+					<th>Resource Image</th>
+				</tr>
+			</table>
+			<table id="resource_info">
+				<tr th:each="resources :${resources}">
+					<td th:text = "${resources.resource_name}"></td>
+					<td><a th:href = "${resources.resource_URL}"  target ="_blank" th:text = "${resources.resource_URL}" ></a></td>
+					<td> <img th:src="@{'/' +${resources.resource_image_URL}}" style="width:200px;height:200px;"></td>
+				</tr>
+			</table>
+		</div>
+		<br>
+		<button id="show_all_schools" th:onclick ="showDiv('all_schools', 'show_all_schools', 'hide_all_schools')">Display All Schools In the System</button>
+		<button id="hide_all_schools" th:onclick ="hideDiv('all_schools', 'show_all_schools', 'hide_all_schools')" style = "display:none">Hide All Schools In the System</button>
+		<br>
+		<div id="all_schools" style="visibility: hidden; display: none">
+			<table id="schools_table">
+				<tr>
+					<th>School Name</th>
+				</tr>
+				<tr th:each="schools :${schools}">
+					<td th:text = "${schools.school_name}"></td>
+				</tr>	
+			</table>
+		</div>
+		<br>
+		<button id="show_all_classes" th:onclick ="showDiv('all_classes', 'show_all_classes', 'hide_all_classes')">Display All Classes In the System</button>
+		<button id="hide_all_classes" th:onclick ="hideDiv('all_classes', 'show_all_classes', 'hide_all_classes')" style = "display:none">Hide All Classes In the System</button>
+		<br>
+		<div id="all_classes" style="visibility: hidden; display: none">
+			<table id="classes_table">
+				<tr>
+					<th>Class Name</th>
+					<th>School</th>
+				</tr>
+				<tr th:each="classes: ${classes}">
+					<td th:text = "${classes.class_name}"></td>
+					<td th:text = "${classes.School.school_name}"></td>
+				</tr>	
+			</table>
+		</div>
+		<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+		<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+		<script>		function showDiv(div_name, button_to_hide, button_to_show){
+			document.getElementById(div_name).style.display = "block";
+			document.getElementById(div_name).style.visibility = "visible";
+			document.getElementById(button_to_hide).style.display="none";
+			document.getElementById(button_to_show).style.display="block";
+		}
+		function hideDiv(div_name, button_to_show, button_to_hide){
+			document.getElementById(div_name).style.display = "none";
+			document.getElementById(div_name).style.visibility = "hidden";
+			document.getElementById(button_to_show).style.display="block";
+			document.getElementById( button_to_hide).style.display="none";
+		}</script>
+			
+<script th:inline="javascript">
+/*<![CDATA[*/
+
+    var teacher = /*[[${teachers}]]*/ 'teachers';
+    
+
+/*]]>*/
+$('#txtSearch').on('keyup', function(){
+	var value =$(this).val();
+	var data = FilterFunction(value, teacher);
+	
+	rebuildTable(data);
+	
+	
+})
+function FilterFunction(value, data){
+	var filteredData = [];
+	console.log(data.length);
+	for (var i = 0; i < data.length; i++){
+		console.log(i);
+		value = value.toLowerCase();
+		var fname = data[i].first_name.toLowerCase();
+		var lname = data[i].last_name.toLowerCase();
+		
+		if(fname.includes(value)||lname.includes(value)){
+			filteredData.push(data[i])
+		}
+	}
+	return filteredData;
+}
+/* function rebuildTable(data){
+	var table = document.getElementById('schools_table')
+	table.innerHTML = ''
+	for(var i= 0; i < data.length; i++){
+		var row = `<tr>
+		<td> "${data[i].school_name}"></td>
+
+	</tr>`
+	table.innerHTML += row
+	} */
+function rebuildTable(data){
+	var table = document.getElementById('teacher_info')
+	table.innerHTML = ''
+	for(var i= 0; i < data.length; i++){
+		var row = `<tr>
+		<td> ${data[i].id_teacher}</td>
+		<td> ${data[i].last_name}</td>
+		<td> ${data[i].first_name}</td>
+		<td> ${data[i].email}</td>
+		<td> ${data[i].school_name}</td>
+	</tr>`
+	table.innerHTML += row
+	} 
+}
+
+</script>
+<script th:inline="javascript">
+/*<![CDATA[*/
+
+    var resource = /*[[${resources}]]*/ 'resources';
+    
+
+/*]]>*/
+$('#txtSearchResources').on('keyup', function(){
+	var value =$(this).val();
+	var data = FilterFunction(value, teacher);
+	
+	rebuildTable(data);
+	
+	
+})
+function FilterFunction(value, data){
+	var filteredData = [];
+	console.log(data.length);
+	for (var i = 0; i < data.length; i++){
+		console.log(i);
+		value = value.toLowerCase();
+		var fname = data[i].first_name.toLowerCase();
+		var lname = data[i].last_name.toLowerCase();
+		
+		if(fname.includes(value)||lname.includes(value)){
+			filteredData.push(data[i])
+		}
+	}
+	return filteredData;
+}
+
+function rebuildTable(data){
+	var table = document.getElementById('teacher_info')
+	table.innerHTML = ''
+	for(var i= 0; i < data.length; i++){
+		var row = `<tr>
+		<td> ${data[i].id_teacher}</td>
+		<td> ${data[i].last_name}</td>
+		<td> ${data[i].first_name}</td>
+		<td> ${data[i].email}</td>
+		<td> ${data[i].school_name}</td>
+	</tr>`
+	table.innerHTML += row
+	} 
+}
+
+</script>
+	</body>
 </html>
