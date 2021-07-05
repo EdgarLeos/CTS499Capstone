@@ -19,15 +19,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import e_shelf.domains.database.*;
 import e_shelf.domains.database.Class;
-import e_shelf.domains.info.TeacherInfo;
+import e_shelf.domains.info.*;
 import e_shelf.repositories.*;
-import e_shelf.services.TeacherService;
+import e_shelf.services.*;
+import e_shelf.services.ResourceService;
 
 @Controller
 public class Main {
@@ -52,6 +55,12 @@ public class Main {
 	
 	@Autowired
 	TeacherService teacherService;
+	
+	@Autowired
+	ResourceService resourceService;
+	
+	@Autowired
+	ClassesService classService;
 	
 	@GetMapping("/E-Shelf/allInfo")
 	public String getAllInfo(Model model) {
@@ -163,20 +172,33 @@ public class Main {
 				return "teacher_page";
 			}
 			if(user.getRole().equals("Admin")){
+				
 				List<Teacher> teachers = teacherRepository.findAll();
 				List<TeacherInfo> teacherInfos = new ArrayList<TeacherInfo>();
 				for(Teacher teacher: teachers) {
 					teacherInfos.add(teacherService.getTecherInfo(teacher.getId_teacher()));
 				}
+				
 				List<Class> classes = classRepository.findAll();
+				List<ClassesInfo> classInfo = new ArrayList<ClassesInfo>();
+				for( Class schoolClass: classes) {
+					classInfo.add(classService.getClassesInfo(schoolClass.getId_class()));
+				}
+				
 				List<School> schools = schoolRepository.findAll();
+				
 				List<Resources> resources = resourceRepository.findAll();
+				List<ResourcesInfo> resourceInfo = new ArrayList<ResourcesInfo>();
+				for(Resources resource:resources) {
+					resourceInfo.add(resourceService.getResourcsInfo(resource.getId_resources()));
+				}
+				
 				Iterable<Users> users = userRepository.findAll();
 				model.addAttribute("teachers", teacherInfos);
 				model.addAttribute("users", users);
 				model.addAttribute("schools", schools);
-				model.addAttribute("classes", classes);
-				model.addAttribute("resources", resources);
+				model.addAttribute("classes", classInfo);
+				model.addAttribute("resources", resourceInfo);
 				model.addAttribute("current_user", user);
 				
 				return "admin_page";

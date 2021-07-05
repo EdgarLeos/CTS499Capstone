@@ -76,7 +76,7 @@
 				<tr th:each="resources :${resources}">
 					<td th:text = "${resources.resource_name}"></td>
 					<td><a th:href = "${resources.resource_URL}"  target ="_blank" th:text = "${resources.resource_URL}" ></a></td>
-					<td> <img th:src="@{'/' +${resources.resource_image_URL}}" style="width:200px;height:200px;"></td>
+					<td> <img th:src="${resources.resource_image_URL}" style="width:200px;height:200px;"></td>
 				</tr>
 			</table>
 		</div>
@@ -85,10 +85,13 @@
 		<button id="hide_all_schools" th:onclick ="hideDiv('all_schools', 'show_all_schools', 'hide_all_schools')" style = "display:none">Hide All Schools In the System</button>
 		<br>
 		<div id="all_schools" style="visibility: hidden; display: none">
-			<table id="schools_table">
+		<input id="txtSearchSchools" type ="text" name = "keyword">
+			<table id="schools_headings">
 				<tr>
 					<th>School Name</th>
 				</tr>
+			</table>
+			<table id="schools_info">
 				<tr th:each="schools :${schools}">
 					<td th:text = "${schools.school_name}"></td>
 				</tr>	
@@ -99,14 +102,17 @@
 		<button id="hide_all_classes" th:onclick ="hideDiv('all_classes', 'show_all_classes', 'hide_all_classes')" style = "display:none">Hide All Classes In the System</button>
 		<br>
 		<div id="all_classes" style="visibility: hidden; display: none">
-			<table id="classes_table">
+		<input id="txtSearchClasses" type ="text" name = "keyword">
+			<table id="classes_headings">
 				<tr>
 					<th>Class Name</th>
 					<th>School</th>
 				</tr>
+				</table>
+				<table id = "classes_info">
 				<tr th:each="classes: ${classes}">
 					<td th:text = "${classes.class_name}"></td>
-					<td th:text = "${classes.School.school_name}"></td>
+					<td th:text = "${classes.school}"></td>
 				</tr>	
 			</table>
 		</div>
@@ -156,16 +162,6 @@ function FilterFunction(value, data){
 	}
 	return filteredData;
 }
-/* function rebuildTable(data){
-	var table = document.getElementById('schools_table')
-	table.innerHTML = ''
-	for(var i= 0; i < data.length; i++){
-		var row = `<tr>
-		<td> "${data[i].school_name}"></td>
-
-	</tr>`
-	table.innerHTML += row
-	} */
 function rebuildTable(data){
 	var table = document.getElementById('teacher_info')
 	table.innerHTML = ''
@@ -185,43 +181,82 @@ function rebuildTable(data){
 <script th:inline="javascript">
 /*<![CDATA[*/
 
-    var resource = /*[[${resources}]]*/ 'resources';
+    var resources = /*[[${resources}]]*/ 'resources';
     
 
 /*]]>*/
 $('#txtSearchResources').on('keyup', function(){
 	var value =$(this).val();
-	var data = FilterFunction(value, teacher);
+	var data = FilterFunctionR(value, resources);
 	
-	rebuildTable(data);
+	rebuildTableR(data);
 	
 	
 })
-function FilterFunction(value, data){
+function FilterFunctionR(value, data){
 	var filteredData = [];
 	console.log(data.length);
 	for (var i = 0; i < data.length; i++){
 		console.log(i);
 		value = value.toLowerCase();
-		var fname = data[i].first_name.toLowerCase();
-		var lname = data[i].last_name.toLowerCase();
+		var rname = data[i].resource_name.toLowerCase();
 		
-		if(fname.includes(value)||lname.includes(value)){
+		if(rname.includes(value)){
 			filteredData.push(data[i])
 		}
 	}
 	return filteredData;
 }
 
-function rebuildTable(data){
-	var table = document.getElementById('teacher_info')
+function rebuildTableR(data){
+	var table = document.getElementById('resource_info')
 	table.innerHTML = ''
 	for(var i= 0; i < data.length; i++){
 		var row = `<tr>
-		<td> ${data[i].id_teacher}</td>
-		<td> ${data[i].last_name}</td>
-		<td> ${data[i].first_name}</td>
-		<td> ${data[i].email}</td>
+		<td> ${data[i].resource_name}</td>
+		<td><a href = ${data[i].resource_URL} target ="_blank">${data[i].resource_URL}</a></td>
+		<td><img src=${data[i].resource_image_URL} style="width:200px;height:200px;"></td>
+	</tr>`
+	table.innerHTML += row
+	} 
+}
+
+</script>
+<script th:inline="javascript">
+/*<![CDATA[*/
+
+    var schools = /*[[${schools}]]*/ 'schools';
+    
+
+/*]]>*/
+$('#txtSearchSchools').on('keyup', function(){
+	var value =$(this).val();
+	var data = FilterFunctionS(value, schools);
+	
+	rebuildTableS(data);
+	
+	
+})
+function FilterFunctionS(value, data){
+	var filteredData = [];
+	console.log(data.length);
+	for (var i = 0; i < data.length; i++){
+		console.log(i);
+		value = value.toLowerCase();
+		var rname = data[i].school_name.toLowerCase();
+		
+		if(rname.includes(value)){
+			filteredData.push(data[i])
+		}
+	}
+	return filteredData;
+}
+
+function rebuildTableS(data){
+	var table = document.getElementById('schools_info')
+	table.innerHTML = ''
+	for(var i= 0; i < data.length; i++){
+		var row = `<tr>
 		<td> ${data[i].school_name}</td>
 	</tr>`
 	table.innerHTML += row
@@ -229,5 +264,55 @@ function rebuildTable(data){
 }
 
 </script>
+<script th:inline="javascript">
+/*<![CDATA[*/
+
+    var classes = /*[[${classes}]]*/ 'classes';
+    var schools = /*[[${schools}]]*/ 'schools';
+    
+
+/*]]>*/
+$('#txtSearchClasses').on('keyup', function(){
+	var value =$(this).val();
+	var data = FilterFunctionC(value, classes, schools);
+	
+	rebuildTableC(data);
+	
+	
+})
+function FilterFunctionC(value, data, otherData){
+	var filteredData = [];
+ 	for (var i = 0; i < data.length; i++){
+		value = value.toLowerCase();
+		var cname = data[i].class_name.toLowerCase();
+		
+		if(cname.includes(value)){
+			filteredData.push(data[i])
+		}
+	} 
+/* 	for (var i = 0; i < otherData.length; i++){
+		value = value.toLowerCase();
+		var rname = otherData[i].school_name.toLowerCase();
+		
+		if(rname.includes(value)){
+			filteredData.push(data[i])
+		}
+	} */
+	return filteredData;
+}
+
+function rebuildTableC(data){
+	var table = document.getElementById('classes_info')
+	table.innerHTML = ''
+	for(var i= 0; i < data.length; i++){
+		var row = `<tr>
+		<td> ${data[i].class_name}</td>
+		<td> ${data[i].school}</td>
+	</tr>`
+	table.innerHTML += row
+	} 
+}
+
+</script>	
 	</body>
 </html>
