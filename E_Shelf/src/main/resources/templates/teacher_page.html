@@ -34,7 +34,7 @@
 	<br/>
 	<table th:each="resources :${resources}"  style="display: inline-block;"> 
 		<tr >
-			<td colspan="2" style="vertical-align:middle; text-align:center;" > <img th:src="@{'/' +${resources.resources.resource_image_URL}}" style="width:200px;height:200px;"></td>
+			<td colspan="2" style="vertical-align:middle; text-align:center;" > <img th:src="${resources.resources.resource_image_URL}" style="width:200px;height:200px;"></td>
 		</tr>
 		<tr >
 			<th> Resource</th>

@@ -2,6 +2,7 @@
 <html  xmlns:th = "wwww.thymeleaf.org">
 <head>
 	<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+
 	<meta charset="UTF-8">
 	<title>E-Shelf Admin</title>
 </head>
@@ -38,6 +39,7 @@
 		<br>
 
 		<div id="all_teachers"  style="visibility: hidden; display: none;">
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTeacherModal" data-whatever="@mdo">New Teacher</button>
 			<input id="txtSearch" type ="text" name = "keyword">
 			<table id = "teacher_headings">
 					<tr>
@@ -116,10 +118,94 @@
 				</tr>	
 			</table>
 		</div>
+		
+		<div class="modal fade" id="addTeacherModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <form>
+		          <div class="form-group">
+		            <label for="recipient-name" class="col-form-label">Teacher ID:</label>
+		            <input type="number" min="1" max="9999" class="form-control" id="recipient-name" name = "id_teacher" maxlength= "4">
+		          </div>
+		          <div class="form-group">
+		            <label for="recipient-name" class="col-form-label">Last Name:</label>
+		            <input type="text" class="form-control" id="recipient-name" name = "last_name">
+		          </div>
+		          <div class="form-group">
+		            <label for="recipient-name" class="col-form-label">First Name:</label>
+		            <input type="text" class="form-control" id="recipient-name" name = "first_name">
+		          </div>
+		          <div class="form-group">
+		            <label for="recipient-name" class="col-form-label">Title:</label>
+		            <input type="text" class="form-control" id="recipient-name" name = "tittle">
+		          </div>
+		          <div class="form-group">
+		            <label for="recipient-name" class="col-form-label">Teacher Name:</label>
+		            <input type="text" class="form-control" id="recipient-name" name = "name">
+		          </div>
+		          <div class="form-group">
+		            <label for="recipient-name" class="col-form-label">Email:</label>
+		            <input type="text" class="form-control" id="recipient-name" name = "email">
+		          </div>
+		          <div class = "form-grup">
+		          	<label for="recipient-name" class="col-form-label">School:</label>
+		          	<select th:field = "*{schools}" id ="schools_slection">
+		          		<option value ="">--</option>
+		          		<option th:each="schools :${schools}" th:value = "${schools.school_name}"  th:utext = "${schools.school_name}"/>
+		          	</select>
+		          </div>
+		          <div class = "form-grup">
+		          	<label for="recipient-name" class="col-form-label">Class:</label>
+		          	<select th:field = "*{classes}" id ="classes_selection">
+		          		<option value ="">--</option>
+		          		<option th:each="classes: ${classes}" th:value = "${classes.class_name}"  th:utext = "${classes.class_name}"/>
+		          	</select>
+		          
+		          </div>
+		          
+		          <div class="form-group">
+		            <label for="recipient-name" class="col-form-label">Low Grade:</label>
+		            <input type="text" class="form-control" id="recipient-name" name = "low_grade">
+		          </div>
+		          <div class="form-group">
+		            <label for="recipient-name" class="col-form-label">High Grade:</label>
+		            <input type="text" class="form-control" id="recipient-name" name = "high_grade">
+		          </div>
+		          <div class="form-group">
+		            <label for="recipient-name" class="col-form-label">Resources:</label>
+			         <div th:each="resources :${resources}">
+			         <input type = "checkbox" th:value= "${resources.resource_name}" >
+			         <label th:text ="${resources.resource_name}"></label>
+					</div>
+		          </div>
+		          <div class ="form-group">
+		          	<button type="submit" class="btn btn-primary">Submit</button>
+		          </div>
+		        </form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<script  type="text/javascript"  th:src="@{/js/custom.js}"></script>
 		<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
 		<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
 		<script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
-		<script>		function showDiv(div_name, button_to_hide, button_to_show){
+			
+		<script th:inline="javascript">
+		
+		
+		function showDiv(div_name, button_to_hide, button_to_show){
 			document.getElementById(div_name).style.display = "block";
 			document.getElementById(div_name).style.visibility = "visible";
 			document.getElementById(button_to_hide).style.display="none";
@@ -130,189 +216,192 @@
 			document.getElementById(div_name).style.visibility = "hidden";
 			document.getElementById(button_to_show).style.display="block";
 			document.getElementById( button_to_hide).style.display="none";
-		}</script>
+		}
+
+		/*<![CDATA[*/
+
+		    var teacher = /*[[${teachers}]]*/ 'teachers';
+		    var resources = /*[[${resources}]]*/ 'resources';
+		    var schools = /*[[${schools}]]*/ 'schools';
+		    var classes = /*[[${classes}]]*/ 'classes';
+		    
+
+		/*]]>*/
+		$('#txtSearch').on('keyup', function(){
+			var value =$(this).val();
+			var data = FilterFunction(value, teacher);
 			
-<script th:inline="javascript">
-/*<![CDATA[*/
-
-    var teacher = /*[[${teachers}]]*/ 'teachers';
-    
-
-/*]]>*/
-$('#txtSearch').on('keyup', function(){
-	var value =$(this).val();
-	var data = FilterFunction(value, teacher);
-	
-	rebuildTable(data);
-	
-	
-})
-function FilterFunction(value, data){
-	var filteredData = [];
-	console.log(data.length);
-	for (var i = 0; i < data.length; i++){
-		console.log(i);
-		value = value.toLowerCase();
-		var fname = data[i].first_name.toLowerCase();
-		var lname = data[i].last_name.toLowerCase();
-		
-		if(fname.includes(value)||lname.includes(value)){
-			filteredData.push(data[i])
+			rebuildTable(data);
+			
+			
+		})
+		function FilterFunction(value, data){
+			var filteredData = [];
+			console.log(data.length);
+			for (var i = 0; i < data.length; i++){
+				console.log(i);
+				value = value.toLowerCase();
+				var fname = data[i].first_name.toLowerCase();
+				var lname = data[i].last_name.toLowerCase();
+				
+				if(fname.includes(value)||lname.includes(value)){
+					filteredData.push(data[i])
+				}
+			}
+			return filteredData;
 		}
-	}
-	return filteredData;
-}
-function rebuildTable(data){
-	var table = document.getElementById('teacher_info')
-	table.innerHTML = ''
-	for(var i= 0; i < data.length; i++){
-		var row = `<tr>
-		<td> ${data[i].id_teacher}</td>
-		<td> ${data[i].last_name}</td>
-		<td> ${data[i].first_name}</td>
-		<td> ${data[i].email}</td>
-		<td> ${data[i].school_name}</td>
-	</tr>`
-	table.innerHTML += row
-	} 
-}
-
-</script>
-<script th:inline="javascript">
-/*<![CDATA[*/
-
-    var resources = /*[[${resources}]]*/ 'resources';
-    
-
-/*]]>*/
-$('#txtSearchResources').on('keyup', function(){
-	var value =$(this).val();
-	var data = FilterFunctionR(value, resources);
-	
-	rebuildTableR(data);
-	
-	
-})
-function FilterFunctionR(value, data){
-	var filteredData = [];
-	console.log(data.length);
-	for (var i = 0; i < data.length; i++){
-		console.log(i);
-		value = value.toLowerCase();
-		var rname = data[i].resource_name.toLowerCase();
-		
-		if(rname.includes(value)){
-			filteredData.push(data[i])
+		function rebuildTable(data){
+			var table = document.getElementById('teacher_info')
+			table.innerHTML = ''
+			for(var i= 0; i < data.length; i++){
+				var row = `<tr>
+				<td> ${data[i].id_teacher}</td>
+				<td> ${data[i].last_name}</td>
+				<td> ${data[i].first_name}</td>
+				<td> ${data[i].email}</td>
+				<td> ${data[i].school_name}</td>
+			</tr>`
+			table.innerHTML += row
+			} 
 		}
-	}
-	return filteredData;
-}
 
-function rebuildTableR(data){
-	var table = document.getElementById('resource_info')
-	table.innerHTML = ''
-	for(var i= 0; i < data.length; i++){
-		var row = `<tr>
-		<td> ${data[i].resource_name}</td>
-		<td><a href = ${data[i].resource_URL} target ="_blank">${data[i].resource_URL}</a></td>
-		<td><img src=${data[i].resource_image_URL} style="width:200px;height:200px;"></td>
-	</tr>`
-	table.innerHTML += row
-	} 
-}
 
-</script>
-<script th:inline="javascript">
-/*<![CDATA[*/
-
-    var schools = /*[[${schools}]]*/ 'schools';
-    
-
-/*]]>*/
-$('#txtSearchSchools').on('keyup', function(){
-	var value =$(this).val();
-	var data = FilterFunctionS(value, schools);
-	
-	rebuildTableS(data);
-	
-	
-})
-function FilterFunctionS(value, data){
-	var filteredData = [];
-	console.log(data.length);
-	for (var i = 0; i < data.length; i++){
-		console.log(i);
-		value = value.toLowerCase();
-		var rname = data[i].school_name.toLowerCase();
-		
-		if(rname.includes(value)){
-			filteredData.push(data[i])
+		$('#txtSearchResources').on('keyup', function(){
+			var value =$(this).val();
+			var data = FilterFunctionR(value, resources);
+			
+			rebuildTableR(data);
+			
+			
+		})
+		function FilterFunctionR(value, data){
+			var filteredData = [];
+			console.log(data.length);
+			for (var i = 0; i < data.length; i++){
+				console.log(i);
+				value = value.toLowerCase();
+				var rname = data[i].resource_name.toLowerCase();
+				
+				if(rname.includes(value)){
+					filteredData.push(data[i])
+				}
+			}
+			return filteredData;
 		}
-	}
-	return filteredData;
-}
 
-function rebuildTableS(data){
-	var table = document.getElementById('schools_info')
-	table.innerHTML = ''
-	for(var i= 0; i < data.length; i++){
-		var row = `<tr>
-		<td> ${data[i].school_name}</td>
-	</tr>`
-	table.innerHTML += row
-	} 
-}
-
-</script>
-<script th:inline="javascript">
-/*<![CDATA[*/
-
-    var classes = /*[[${classes}]]*/ 'classes';
-    var schools = /*[[${schools}]]*/ 'schools';
-    
-
-/*]]>*/
-$('#txtSearchClasses').on('keyup', function(){
-	var value =$(this).val();
-	var data = FilterFunctionC(value, classes, schools);
-	
-	rebuildTableC(data);
-	
-	
-})
-function FilterFunctionC(value, data, otherData){
-	var filteredData = [];
- 	for (var i = 0; i < data.length; i++){
-		value = value.toLowerCase();
-		var cname = data[i].class_name.toLowerCase();
-		
-		if(cname.includes(value)){
-			filteredData.push(data[i])
+		function rebuildTableR(data){
+			var table = document.getElementById('resource_info')
+			table.innerHTML = ''
+			for(var i= 0; i < data.length; i++){
+				var row = `<tr>
+				<td> ${data[i].resource_name}</td>
+				<td><a href = ${data[i].resource_URL} target ="_blank">${data[i].resource_URL}</a></td>
+				<td><img src=${data[i].resource_image_URL} style="width:200px;height:200px;"></td>
+			</tr>`
+			table.innerHTML += row
+			} 
 		}
-	} 
-/* 	for (var i = 0; i < otherData.length; i++){
-		value = value.toLowerCase();
-		var rname = otherData[i].school_name.toLowerCase();
-		
-		if(rname.includes(value)){
-			filteredData.push(data[i])
+
+		$('#txtSearchSchools').on('keyup', function(){
+			var value =$(this).val();
+			var data = FilterFunctionS(value, schools);
+			
+			rebuildTableS(data);
+			
+			
+		})
+		function FilterFunctionS(value, data){
+			var filteredData = [];
+			console.log(data.length);
+			for (var i = 0; i < data.length; i++){
+				console.log(i);
+				value = value.toLowerCase();
+				var rname = data[i].school_name.toLowerCase();
+				
+				if(rname.includes(value)){
+					filteredData.push(data[i])
+				}
+			}
+			return filteredData;
 		}
-	} */
-	return filteredData;
-}
 
-function rebuildTableC(data){
-	var table = document.getElementById('classes_info')
-	table.innerHTML = ''
-	for(var i= 0; i < data.length; i++){
-		var row = `<tr>
-		<td> ${data[i].class_name}</td>
-		<td> ${data[i].school}</td>
-	</tr>`
-	table.innerHTML += row
-	} 
-}
+		function rebuildTableS(data){
+			var table = document.getElementById('schools_info')
+			table.innerHTML = ''
+			for(var i= 0; i < data.length; i++){
+				var row = `<tr>
+				<td> ${data[i].school_name}</td>
+			</tr>`
+			table.innerHTML += row
+			} 
+		}
 
-</script>	
+
+		$('#txtSearchClasses').on('keyup', function(){
+			var value =$(this).val();
+			var data = FilterFunctionC(value, classes);
+			
+			rebuildTableC(data);
+			
+			
+		})
+		function FilterFunctionC(value, data){
+			var filteredData = [];
+		 	for (var i = 0; i < data.length; i++){
+				value = value.toLowerCase();
+				var cname = data[i].class_name.toLowerCase();
+				
+				if(cname.includes(value)){
+					filteredData.push(data[i])
+				}
+			} 
+		/* 	for (var i = 0; i < otherData.length; i++){
+				value = value.toLowerCase();
+				var rname = otherData[i].school_name.toLowerCase();
+				
+				if(rname.includes(value)){
+					filteredData.push(data[i])
+				}
+			} */
+			return filteredData;
+		}
+
+		function rebuildTableC(data){
+			var table = document.getElementById('classes_info')
+			table.innerHTML = ''
+			for(var i= 0; i < data.length; i++){
+				var row = `<tr>
+				<td> ${data[i].class_name}</td>
+				<td> ${data[i].school}</td>
+			</tr>`
+			table.innerHTML += row
+			} 
+		}
+		
+
+		    $("#schools_slection").on('change', function () {
+		    	$("#classes_selection").children().remove().end();
+		    	$("#classes_selection").append('<option value ="">--</option>');
+		        var el = $(this);
+		        for(var i = 0; i < classes.length; i++){
+		        	if(el.val() == classes[i].school){
+		        		
+		        		var text = classes[i].class_name;
+		        		console.log(text);
+		        		$("#classes_selection").append('<option th:value = " ' + classes[i].class_name + ' "> ' + classes[i].class_name + '  </option>');
+		        		
+		        	}
+		        	
+		        }
+		        
+/* 		        if (el.val() === "ONLINE") {
+		            $("#status").append("<option>SHIPPED</option>");
+		        } else if (el.val() === "MANUAL") {
+		            $("#status option:last-child").remove();
+		        } */
+		    });
+
+
+		</script>	
 	</body>
 </html>
