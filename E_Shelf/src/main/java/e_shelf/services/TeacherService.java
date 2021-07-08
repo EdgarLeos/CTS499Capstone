@@ -1,8 +1,11 @@
 package e_shelf.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +15,8 @@ import e_shelf.domains.database.TeacherHasResource;
 import e_shelf.repositories.*;
 import e_shelf.domains.info.*;
 import e_shelf.domains.database.Class;
+import e_shelf.domains.database.Resources;
+import e_shelf.services.*;
 
 @Service
 public class TeacherService {
@@ -30,6 +35,52 @@ public class TeacherService {
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	SchoolService schoolService;
+	
+	public void addTacher(TeacherInfo teacherInfo) {
+		
+		Teacher teacher = new Teacher();
+		
+		teacher.setLast_name(teacherInfo.getLast_name());
+		teacher.setFirst_name(teacherInfo.getFirst_name());
+		teacher.setTitle(teacherInfo.getTittle());
+		teacher.setTeacher_name(teacherInfo.getLast_name() + ", " + teacherInfo.getFirst_name());
+		teacher.setEmail(teacherInfo.getFirst_name().substring(0,1).toLowerCase() + teacherInfo.getLast_name() + "@capstone.k12.ca.us");
+		teacher.setTitle(teacherInfo.getTittle());
+		teacher.setLow_grade(teacherInfo.getLow_grade());
+		teacher.setHigh_grade(teacherInfo.getHigh_grade());
+		teacher.setSchool(schoolService.getSchool(teacherInfo.getSchool_name()));
+		teacher.setId_teacher(1234);
+		Set<Class> teacher_classes = new HashSet<Class>();
+		List<Resources>resources = new ArrayList<Resources>();
+		
+		List<TeacherHasResource> teacher_resources = new ArrayList<TeacherHasResource>();
+		teacher.setTeacherHasResource(teacher_resources);
+		
+
+		teacher.setClass_has_teacher(teacher_classes);
+		
+		for(String teacherInfo_resurce: teacherInfo.getResources()) {
+			Resources resource = resourceRepository.findByResource_name(teacherInfo_resurce);
+			
+		}
+
+		
+		for(String teacherInfo_class: teacherInfo.getClasses()) {
+			teacher.getClass_has_teacher().add(classRepository.findByClass_name(teacherInfo_class));
+			}
+		
+		System.out.println(teacher.toString());
+		
+		teacherRepository.save(teacher);
+
+		
+		
+		
+	}
+	
 	
 	public TeacherInfo getTecherInfo(int id_teacher) {
 		List<Teacher> teachers = teacherRepository.findById(id_teacher);

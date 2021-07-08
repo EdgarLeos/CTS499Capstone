@@ -18,21 +18,25 @@ public class Resources {
 	private String resource_name;
 	private String resource_image_URL;
 	private String resource_URL;
+	private boolean domain;
+	private boolean SSO;
 	
-	@OneToMany(mappedBy = "resources")
-	private List<TeacherHasResource> resource;
-	
-	public Resources() {}
-
 	public Resources(int id_resources, String resource_name, String resource_image_URL, String resource_URL,
-			List<TeacherHasResource> resource) {
+			boolean domain, boolean sSO, List<TeacherHasResource> resource) {
 		super();
 		this.id_resources = id_resources;
 		this.resource_name = resource_name;
 		this.resource_image_URL = resource_image_URL;
 		this.resource_URL = resource_URL;
+		this.domain = domain;
+		SSO = sSO;
 		this.resource = resource;
 	}
+
+	@OneToMany(mappedBy = "resources")
+	private List<TeacherHasResource> resource;
+	
+	public Resources() {}
 
 	public int getId_resources() {
 		return id_resources;
@@ -66,13 +70,30 @@ public class Resources {
 		this.resource_URL = resource_URL;
 	}
 
+	public boolean isDomain() {
+		return domain;
+	}
+
+	public void setDomain(boolean domain) {
+		this.domain = domain;
+	}
+
+	public boolean isSSO() {
+		return SSO;
+	}
+
+	public void setSSO(boolean sSO) {
+		SSO = sSO;
+	}
+
 	public List<TeacherHasResource> getResource() {
 		return resource;
 	}
 
 	public void setResource(List<TeacherHasResource> resource) {
 		this.resource = resource;
-	};
+	}
+
 	
 	
 	

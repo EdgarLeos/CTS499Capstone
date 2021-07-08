@@ -3,7 +3,7 @@
 	xmlns:sec = "https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 	<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
-
+		<script  type="text/javascript"  th:src="@{/js/custom.js}"></script>
 	<meta charset="UTF-8">
 	<title>E-Shelf Admin</title>
 </head>
@@ -136,7 +136,7 @@
 		          <div class="form-group">
 		            <label for="recipient-name" class="col-form-label">Teacher ID:</label>
 		            <input type="number" min="1" max="9999" class="form-control" id="recipient-name" name = "id_teacher" maxlength= "4">
-		          </div>
+		          </div> 
 		          <div class="form-group">
 		            <label for="recipient-name" class="col-form-label">Last Name:</label>
 		            <input type="text" class="form-control" id="recipient-name" name = "last_name">
@@ -149,24 +149,24 @@
 		            <label for="recipient-name" class="col-form-label">Title:</label>
 		            <input type="text" class="form-control" id="recipient-name" name = "tittle">
 		          </div>
-		          <div class="form-group">
+<!-- 		          <div class="form-group">
 		            <label for="recipient-name" class="col-form-label">Teacher Name:</label>
 		            <input type="text" class="form-control" id="recipient-name" name = "teacher_name">
-		          </div>
-		          <div class="form-group">
+		          </div> -->
+<!-- 		          <div class="form-group">
 		            <label for="recipient-name" class="col-form-label">Email:</label>
 		            <input type="text" class="form-control" id="recipient-name" name = "email">
-		          </div>
+		          </div> -->
 		          <div class = "form-grup">
 		          	<label for="recipient-name" class="col-form-label">School:</label>
-		          	<select th:field = "*{schools}" id ="schools_slection">
+		          	<select  id ="schools_slection" name = "school_name">
 		          		<option value ="">--</option>
-		          		<option th:each="schools :${schools}" th:value = "${schools.school_name}"  th:utext = "${schools.school_name}"/>
+		          		<option th:each="schools :${schools}" th:value = "${schools.school_name}"  th:utext = "${schools.school_name}" />
 		          	</select>
 		          </div>
 		          <div class = "form-grup">
 		          	<label for="recipient-name" class="col-form-label">Class:</label>
-		          	<select th:field = "*{classes}" id ="classes_selection">
+		          	<select id ="classes_selection" name = "classes">
 		          		<option value ="">--</option>
 		          		<option th:each="classes: ${classes}" th:value = "${classes.class_name}"  th:utext = "${classes.class_name}"/>
 		          	</select>
@@ -184,7 +184,7 @@
 		          <div class="form-group">
 		            <label for="recipient-name" class="col-form-label">Resources:</label>
 			         <div th:each="resources :${resources}">
-			         <input type = "checkbox" th:value= "${resources.resource_name}" >
+			         <input type = "checkbox" th:value= "${resources.resource_name}" name = "resources" >
 			         <label th:text ="${resources.resource_name}"></label>
 					</div>
 		          </div>
@@ -200,7 +200,7 @@
 		    </div>
 		  </div>
 		</div>
-		<script  type="text/javascript"  th:src="@{/js/custom.js}"></script>
+
 		<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
 		<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
 		<script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>

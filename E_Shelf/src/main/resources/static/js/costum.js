@@ -1,5 +1,3 @@
-		
-		
 function showDiv(div_name, button_to_hide, button_to_show){
 	document.getElementById(div_name).style.display = "block";
 	document.getElementById(div_name).style.visibility = "visible";
@@ -172,6 +170,3 @@ function rebuildTableC(data){
 	table.innerHTML += row
 	} 
 }
-		/**
- * 
- */

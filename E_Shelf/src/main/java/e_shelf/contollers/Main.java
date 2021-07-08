@@ -169,6 +169,9 @@ public class Main {
 
     @PostMapping("/E-Shelf/main/addTeacher")
     public String addNewTeacher(TeacherInfo teacher, Model model) {
+    	
+    	teacherService.addTacher(teacher);
+    	System.out.println(teacher.toString());
 		List<Teacher> teachers = teacherRepository.findAll();
 		List<TeacherInfo> teacherInfos = new ArrayList<TeacherInfo>();
 		for(Teacher teacher1: teachers) {
@@ -241,7 +244,8 @@ public class Main {
 
 				List<Teacher>teachers = teacherRepository.findByEmail(email);
 				Teacher teacher = teachers.get(0);
-				System.out.println(teacher.getTeacher_name());
+				TeacherInfo teacherInfo = teacherService.getTecherInfo(teacher.getId_teacher());
+				System.out.println(teacherInfo.toString());
 				model.addAttribute("teacher", teacher);
 				model.addAttribute("resources",teacher.getTeacherHasResource());
 				

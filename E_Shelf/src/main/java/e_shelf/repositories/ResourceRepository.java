@@ -4,13 +4,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import e_shelf.domains.database.Class;
 import e_shelf.domains.database.Resources;
 import e_shelf.domains.database.Teacher;
 
 public interface ResourceRepository extends JpaRepository <Resources, Integer>{
 
 	@Query("SELECT r FROM Resources r ORDER BY resource_name")
-	List<Resources> findByResourceName();
+	List<Resources> findAllByResourceName();
+	
+	@Query("SELECT r FROM Resources r WHERE r.resource_name = :resource_name")
+	Resources findByResource_name(String resource_name);
 	
 	List<Resources> findById(int id_resources);
 	

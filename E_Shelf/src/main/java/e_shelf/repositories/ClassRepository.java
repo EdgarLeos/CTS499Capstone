@@ -10,7 +10,10 @@ import e_shelf.domains.database.Resources;
 public interface ClassRepository extends JpaRepository <Class, Integer>{
 
 	@Query("SELECT c FROM Class c ORDER BY class_name")
-	List<Class> findByClassName();
+	List<Class> findAllByClassName();
+	
+	@Query("SELECT c FROM Class c WHERE c.class_name = :class_name")
+	Class findByClass_name(String class_name);
 	
 	List<Class> findById(int id_class);
 	
