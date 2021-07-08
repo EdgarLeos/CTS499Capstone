@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html  xmlns:th = "wwww.thymeleaf.org">
+<html  xmlns:th = "wwww.thymeleaf.org"
+	xmlns:sec = "https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 	<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
 
@@ -9,6 +10,7 @@
 	<body>
 		<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
 		  <a class="navbar-brand" href="#">E-Shelf Admin</a>
+		  <a sec:authentication = "name"></a>
 		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 		    <span class="navbar-toggler-icon"></span>
 		  </button>
@@ -41,6 +43,7 @@
 		<div id="all_teachers"  style="visibility: hidden; display: none;">
 		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTeacherModal" data-whatever="@mdo">New Teacher</button>
 			<input id="txtSearch" type ="text" name = "keyword">
+			<div id="message"></div>
 			<table id = "teacher_headings">
 					<tr>
 						<th> Teacher ID</th>
@@ -129,7 +132,7 @@
 		        </button>
 		      </div>
 		      <div class="modal-body">
-		        <form>
+		        <form id = "teacherForm" th:action  ="@{/E-Shelf/main/addTeacher}" method = "post">
 		          <div class="form-group">
 		            <label for="recipient-name" class="col-form-label">Teacher ID:</label>
 		            <input type="number" min="1" max="9999" class="form-control" id="recipient-name" name = "id_teacher" maxlength= "4">
@@ -148,7 +151,7 @@
 		          </div>
 		          <div class="form-group">
 		            <label for="recipient-name" class="col-form-label">Teacher Name:</label>
-		            <input type="text" class="form-control" id="recipient-name" name = "name">
+		            <input type="text" class="form-control" id="recipient-name" name = "teacher_name">
 		          </div>
 		          <div class="form-group">
 		            <label for="recipient-name" class="col-form-label">Email:</label>
@@ -400,7 +403,24 @@
 		            $("#status option:last-child").remove();
 		        } */
 		    });
-
+/*             $(function() {
+                $("#teacherForm").on("submit", function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: $(this).attr("action"),
+                        type: 'POST',
+                        data: $(this).serialize(),
+                        beforeSend: function() {
+                            $("#message").html("sending...");
+                        },
+                        success: function(data) {
+                            $("#message").hide();
+                            $("#response").html(data);
+                        }
+                    });
+                });
+            }); */
+    
 
 		</script>	
 	</body>

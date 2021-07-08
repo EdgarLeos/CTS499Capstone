@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import e_shelf.domains.database.Users;
+import e_shelf.domains.database.User;
 
-public interface UserRepository extends CrudRepository<Users, Integer> {
+public interface UserRepository extends CrudRepository<User, Integer> {
 
-    @Query("SELECT u FROM Users u WHERE u.username = :username")
-    public Users getUserByUsername(@Param("username") String username);
+    @Query("SELECT u FROM User u WHERE u.username = :username")
+    public User getUserByUsername(@Param("username") String username);
 }

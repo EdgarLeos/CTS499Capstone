@@ -18,7 +18,9 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
-	
+    @Autowired 
+    private LoginSuccessHandler successHandler;
+    
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder()
 	{
@@ -46,22 +48,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .loginPage("/login")
             .permitAll()
             .usernameParameter("email")
+            .successHandler(successHandler)
             .and()
-            .logout().logoutUrl("/logout").logoutSuccessUrl("/login").permitAll();
+            .logout().logoutUrl("/logout").logoutSuccessUrl("/login").permitAll()
+
+        .and()
+        .rememberMe().key("uniqueAndSecret")
+        ;
 
     }
     
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(
-                "/webjars/**",
-                "/img/**",
-                "/css/**",
-                "/js/**")
-                .addResourceLocations(
-                        "classpath:/META-INF/resources/webjars/",
-                        "classpath:/static/img/",
-                        "classpath:/static/css/",
-                        "classpath:/static/js/");
-    }
+
+
 
 }

@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-public class Users {
+public class User {
 	
 	@Id
 	private int id_users;
@@ -13,9 +13,9 @@ public class Users {
 	private String role;
 	private String enabled;
 	
-	public Users() {}
+	public User() {}
 
-	public Users(int id_users, String username, String password, String role, String enabled) {
+	public User(int id_users, String username, String password, String role, String enabled) {
 		super();
 		this.id_users = id_users;
 		this.username = username;
@@ -64,7 +64,12 @@ public class Users {
 		this.enabled = enabled;
 	}
 
-	
+	 public boolean hasRole(String roleName) {
+	            if (this.role.equals(roleName)) {
+	                return true;
+	            }
+	            return false;
+	        }
 	
 
 }

@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -68,7 +71,7 @@ public class Main {
 		List<Class> classes = classRepository.findAll();
 		List<School> schools = schoolRepository.findAll();
 		List<Resources> resources = resourceRepository.findAll();
-		Iterable<Users> users = userRepository.findAll();
+		Iterable<User> users = userRepository.findAll();
 		
 		for(Class teacherClass : teachers.get(0).getClass_has_teacher()) {
 			System.out.println(teacherClass.getClass_name());
@@ -150,29 +153,55 @@ public class Main {
     @GetMapping("/login")
     public String viewLoginPage() {
         // custom logic before showing login page...
-         
-        return "login";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        if(authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+        	return "login";
+        	
+        }
+        return "redirect:/";
     }
     
+    @GetMapping("")
+    public String index() {
+    	return "login";
+    }
 
-	
-    @RequestMapping(value = "/E-Shelf/main/user", method = RequestMethod.POST)
-	public String teacherInfo(@RequestParam("email") String email, String password, Model model) {
-		Users user = userRepository.getUserByUsername(email);
-
-		if(BCrypt.checkpw(password, user.getPassword())){
-			System.out.println("password match");
-			if(user.getRole().equals("Teacher")) {
-				List<Teacher>teachers = teacherRepository.findByEmail(email);
-				Teacher teacher = teachers.get(0);
-				System.out.println(teacher.getTeacher_name());
-				model.addAttribute("teacher", teacher);
-				model.addAttribute("resources",teacher.getTeacherHasResource());
-				
-				return "teacher_page";
-			}
-			if(user.getRole().equals("Admin")){
-				
+    @PostMapping("/E-Shelf/main/addTeacher")
+    public String addNewTeacher(TeacherInfo teacher, Model model) {
+		List<Teacher> teachers = teacherRepository.findAll();
+		List<TeacherInfo> teacherInfos = new ArrayList<TeacherInfo>();
+		for(Teacher teacher1: teachers) {
+			teacherInfos.add(teacherService.getTecherInfo(teacher1.getId_teacher()));
+		}
+		
+		List<Class> classes = classRepository.findAll();
+		List<ClassesInfo> classInfo = new ArrayList<ClassesInfo>();
+		for( Class schoolClass: classes) {
+			classInfo.add(classService.getClassesInfo(schoolClass.getId_class()));
+		}
+		
+		List<School> schools = schoolRepository.findAll();
+		
+		List<Resources> resources = resourceRepository.findAll();
+		List<ResourcesInfo> resourceInfo = new ArrayList<ResourcesInfo>();
+		for(Resources resource:resources) {
+			resourceInfo.add(resourceService.getResourcsInfo(resource.getId_resources()));
+		}
+		
+		Iterable<User> users = userRepository.findAll();
+		model.addAttribute("teachers", teacherInfos);
+		model.addAttribute("users", users);
+		model.addAttribute("schools", schools);
+		model.addAttribute("classes", classInfo);
+		model.addAttribute("resources", resourceInfo);
+    	System.out.println(teacher.getFirst_name());
+    	return "admin_page";
+    }
+    
+    
+    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+	public String laodAdminPage(Model model) {			
 				List<Teacher> teachers = teacherRepository.findAll();
 				List<TeacherInfo> teacherInfos = new ArrayList<TeacherInfo>();
 				for(Teacher teacher: teachers) {
@@ -193,19 +222,33 @@ public class Main {
 					resourceInfo.add(resourceService.getResourcsInfo(resource.getId_resources()));
 				}
 				
-				Iterable<Users> users = userRepository.findAll();
+				Iterable<User> users = userRepository.findAll();
 				model.addAttribute("teachers", teacherInfos);
 				model.addAttribute("users", users);
 				model.addAttribute("schools", schools);
 				model.addAttribute("classes", classInfo);
 				model.addAttribute("resources", resourceInfo);
-				model.addAttribute("current_user", user);
 				
 				return "admin_page";
-			}
-		}
-		return "loginerror";
+			
+		
 	}
+    
+    @RequestMapping(value = "/teacher", method = RequestMethod.GET)
+	public String loadTeacherPage(Model model, Authentication authResult) {
+
+    			String email = authResult.getName().toString();
+
+				List<Teacher>teachers = teacherRepository.findByEmail(email);
+				Teacher teacher = teachers.get(0);
+				System.out.println(teacher.getTeacher_name());
+				model.addAttribute("teacher", teacher);
+				model.addAttribute("resources",teacher.getTeacherHasResource());
+				
+				return "teacher_page";
+			}
+
+    
     
 //    @GetMapping("/E-Shelf/main/user")
 //    public String getTeachers(Model model, String keyword) {
