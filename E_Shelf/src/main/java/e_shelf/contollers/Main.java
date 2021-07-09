@@ -12,6 +12,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,8 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -167,39 +167,78 @@ public class Main {
     	return "login";
     }
 
+    
+    @PostMapping("/E-Shelf/main/addResource")
+    public String addNewResource(ResourceUploadInfo resource,  @RequestParam("image") MultipartFile multipartFile) throws IOException {
+    	
+    	System.out.println(resource.toString());
+    	String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+    	
+    	resourceService.addResource(resource, fileName);
+    	
+//    	System.out.println(teacher.toString());
+//		List<Teacher> teachers = teacherRepository.findAll();
+//		List<TeacherInfo> teacherInfos = new ArrayList<TeacherInfo>();
+//		for(Teacher teacher1: teachers) {
+//			teacherInfos.add(teacherService.getTecherInfo(teacher1.getId_teacher()));
+//		}
+//		
+//		List<Class> classes = classRepository.findAll();
+//		List<ClassesInfo> classInfo = new ArrayList<ClassesInfo>();
+//		for( Class schoolClass: classes) {
+//			classInfo.add(classService.getClassesInfo(schoolClass.getId_class()));
+//		}
+//		
+//		List<School> schools = schoolRepository.findAll();
+//		
+//		List<Resources> resources = resourceRepository.findAll();
+//		List<ResourcesInfo> resourceInfo = new ArrayList<ResourcesInfo>();
+//		for(Resources resource:resources) {
+//			resourceInfo.add(resourceService.getResourcsInfo(resource.getId_resources()));
+//		}
+//		
+//		Iterable<User> users = userRepository.findAll();
+//		model.addAttribute("teachers", teacherInfos);
+//		model.addAttribute("users", users);
+//		model.addAttribute("schools", schools);
+//		model.addAttribute("classes", classInfo);
+//		model.addAttribute("resources", resourceInfo);
+//    	System.out.println(teacher.getFirst_name());
+    	return "redirect:/admin";
+    }
     @PostMapping("/E-Shelf/main/addTeacher")
     public String addNewTeacher(TeacherInfo teacher, Model model) {
     	
     	teacherService.addTacher(teacher);
-    	System.out.println(teacher.toString());
-		List<Teacher> teachers = teacherRepository.findAll();
-		List<TeacherInfo> teacherInfos = new ArrayList<TeacherInfo>();
-		for(Teacher teacher1: teachers) {
-			teacherInfos.add(teacherService.getTecherInfo(teacher1.getId_teacher()));
-		}
-		
-		List<Class> classes = classRepository.findAll();
-		List<ClassesInfo> classInfo = new ArrayList<ClassesInfo>();
-		for( Class schoolClass: classes) {
-			classInfo.add(classService.getClassesInfo(schoolClass.getId_class()));
-		}
-		
-		List<School> schools = schoolRepository.findAll();
-		
-		List<Resources> resources = resourceRepository.findAll();
-		List<ResourcesInfo> resourceInfo = new ArrayList<ResourcesInfo>();
-		for(Resources resource:resources) {
-			resourceInfo.add(resourceService.getResourcsInfo(resource.getId_resources()));
-		}
-		
-		Iterable<User> users = userRepository.findAll();
-		model.addAttribute("teachers", teacherInfos);
-		model.addAttribute("users", users);
-		model.addAttribute("schools", schools);
-		model.addAttribute("classes", classInfo);
-		model.addAttribute("resources", resourceInfo);
-    	System.out.println(teacher.getFirst_name());
-    	return "admin_page";
+//    	System.out.println(teacher.toString());
+//		List<Teacher> teachers = teacherRepository.findAll();
+//		List<TeacherInfo> teacherInfos = new ArrayList<TeacherInfo>();
+//		for(Teacher teacher1: teachers) {
+//			teacherInfos.add(teacherService.getTecherInfo(teacher1.getId_teacher()));
+//		}
+//		
+//		List<Class> classes = classRepository.findAll();
+//		List<ClassesInfo> classInfo = new ArrayList<ClassesInfo>();
+//		for( Class schoolClass: classes) {
+//			classInfo.add(classService.getClassesInfo(schoolClass.getId_class()));
+//		}
+//		
+//		List<School> schools = schoolRepository.findAll();
+//		
+//		List<Resources> resources = resourceRepository.findAll();
+//		List<ResourcesInfo> resourceInfo = new ArrayList<ResourcesInfo>();
+//		for(Resources resource:resources) {
+//			resourceInfo.add(resourceService.getResourcsInfo(resource.getId_resources()));
+//		}
+//		
+//		Iterable<User> users = userRepository.findAll();
+//		model.addAttribute("teachers", teacherInfos);
+//		model.addAttribute("users", users);
+//		model.addAttribute("schools", schools);
+//		model.addAttribute("classes", classInfo);
+//		model.addAttribute("resources", resourceInfo);
+//    	System.out.println(teacher.getFirst_name());
+    	return "redirect:/admin";
     }
     
     

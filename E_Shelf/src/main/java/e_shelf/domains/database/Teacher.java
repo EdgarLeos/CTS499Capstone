@@ -10,6 +10,7 @@ import javax.persistence.*;
 public class Teacher {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id_teacher;
 	private String last_name;
 	private String first_name;

@@ -25,13 +25,13 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 		
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = loggedInUser.getName();
-		System.out.println("Username" + username);
+		//System.out.println("Username" + username);
 		
 		Collection<? extends GrantedAuthority> authorities = loggedInUser.getAuthorities();
 		authorities.forEach(auth -> System.out.println(auth.getAuthority()));
 		
 		String redirectURL = request.getContextPath();
-		System.out.println(redirectURL);
+		//System.out.println(redirectURL);
 		
 		if(authorities.toString().equals("[Admin]")) {;
 			redirectURL += "/admin";

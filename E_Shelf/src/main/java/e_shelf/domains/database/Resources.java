@@ -3,6 +3,8 @@ package e_shelf.domains.database;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -14,6 +16,7 @@ import javax.persistence.OneToMany;
 public class Resources {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id_resources;
 	private String resource_name;
 	private String resource_image_URL;

@@ -69,6 +69,7 @@
 		<button id="hide_all_resources" th:onclick ="hideDiv('all_resources', 'show_all_resources', 'hide_all_resources')" style = "display:none">Hide All Resources In the System</button>
 		<br>
 		<div id="all_resources" style="visibility: hidden; display: none">
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addResourceModal" data-whatever="@mdo">New Resource</button>
 			<input id="txtSearchResources" type ="text" name = "keyword">
 			<table id="resource_headings">
 				<tr>
@@ -133,21 +134,22 @@
 		      </div>
 		      <div class="modal-body">
 		        <form id = "teacherForm" th:action  ="@{/E-Shelf/main/addTeacher}" method = "post">
-		          <div class="form-group">
+<!-- 		          <div class="form-group">
 		            <label for="recipient-name" class="col-form-label">Teacher ID:</label>
 		            <input type="number" min="1" max="9999" class="form-control" id="recipient-name" name = "id_teacher" maxlength= "4">
-		          </div> 
+		          </div> --> 
 		          <div class="form-group">
+		          <div id="name_check"></div>
 		            <label for="recipient-name" class="col-form-label">Last Name:</label>
-		            <input type="text" class="form-control" id="recipient-name" name = "last_name">
+		            <input type="text" class="form-control" id="last-name" name = "last_name" required>
 		          </div>
 		          <div class="form-group">
 		            <label for="recipient-name" class="col-form-label">First Name:</label>
-		            <input type="text" class="form-control" id="recipient-name" name = "first_name">
+		            <input type="text" class="form-control" id="first-name" name = "first_name"required>
 		          </div>
 		          <div class="form-group">
 		            <label for="recipient-name" class="col-form-label">Title:</label>
-		            <input type="text" class="form-control" id="recipient-name" name = "tittle">
+		            <input type="text" class="form-control" id="title" name = "tittle">
 		          </div>
 <!-- 		          <div class="form-group">
 		            <label for="recipient-name" class="col-form-label">Teacher Name:</label>
@@ -159,27 +161,26 @@
 		          </div> -->
 		          <div class = "form-grup">
 		          	<label for="recipient-name" class="col-form-label">School:</label>
-		          	<select  id ="schools_slection" name = "school_name">
+		          	<select  id ="schools_slection" name = "school_name" required>
 		          		<option value ="">--</option>
 		          		<option th:each="schools :${schools}" th:value = "${schools.school_name}"  th:utext = "${schools.school_name}" />
 		          	</select>
 		          </div>
 		          <div class = "form-grup">
 		          	<label for="recipient-name" class="col-form-label">Class:</label>
-		          	<select id ="classes_selection" name = "classes">
+		          	<select id ="classes_selection" name = "classes"required>
 		          		<option value ="">--</option>
-		          		<option th:each="classes: ${classes}" th:value = "${classes.class_name}"  th:utext = "${classes.class_name}"/>
 		          	</select>
 		          
 		          </div>
 		          
 		          <div class="form-group">
 		            <label for="recipient-name" class="col-form-label">Low Grade:</label>
-		            <input type="text" class="form-control" id="recipient-name" name = "low_grade">
+		            <input type="text" class="form-control" id="recipient-name" name = "low_grade" required>
 		          </div>
 		          <div class="form-group">
 		            <label for="recipient-name" class="col-form-label">High Grade:</label>
-		            <input type="text" class="form-control" id="recipient-name" name = "high_grade">
+		            <input type="text" class="form-control" id="recipient-name" name = "high_grade" required>
 		          </div>
 		          <div class="form-group">
 		            <label for="recipient-name" class="col-form-label">Resources:</label>
@@ -187,6 +188,64 @@
 			         <input type = "checkbox" th:value= "${resources.resource_name}" name = "resources" >
 			         <label th:text ="${resources.resource_name}"></label>
 					</div>
+		          </div>
+		          <div class ="form-group">
+		          	<button type="submit" class="btn btn-primary">Submit</button>
+		          </div>
+		        </form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+		      </div>
+		    </div>
+		  </div>
+		</div>
+				<div class="modal fade" id="addResourceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <form id = "teacherForm" th:action  ="@{/E-Shelf/main/addResource}"  enctype="multipart/form-data" method = "post">
+<!-- 		          <div class="form-group">
+		            <label for="recipient-name" class="col-form-label">Teacher ID:</label>
+		            <input type="number" min="1" max="9999" class="form-control" id="recipient-name" name = "id_teacher" maxlength= "4">
+		          </div> --> 
+		          <div class="form-group">
+		            <label for="recipient-name" class="col-form-label">Resource Name:</label>
+		            <input type="text" class="form-control" id="recipient-name" name = "resource_name" required>
+		          </div>
+		          <div class="form-group">
+		            <label for="recipient-name" class="col-form-label">Upload Image:</label>
+		            <input type="file" name="image" accept="image/png, image/jpeg" />
+		          </div>
+		          <div class="form-group">
+		            <label for="recipient-name" class="col-form-label">Web Site:</label>
+		            <input type="text" class="form-control" id="recipient-name" name = "resource_URL">
+		          </div>
+		          <div class = "form-grup">
+					<label class="screen-reader-only" for="domain">Does the Resource require the teacher's domain in the username?</label>
+					  <select name = "domain">
+						    <option value="">---</option>
+						    <option value="Yes">Yes</option>
+						    <option value="No">No</option>
+						  </select>
+		          </div>
+		          <div class = "form-grup">
+					<label class="screen-reader-only" for="sso">Does this resource use Single-Sign-On (SSO) for access?</label>
+	
+						<label>
+							  <select name = "sso">
+							    <option value="">---</option>
+							    <option value="Yes">Yes</option>
+							    <option value="No">No</option>
+							  </select>
+						</label>
 		          </div>
 		          <div class ="form-group">
 		          	<button type="submit" class="btn btn-primary">Submit</button>
@@ -230,6 +289,32 @@
 		    
 
 		/*]]>*/
+		
+		$('#first-name').on('change',function(){
+			var first = $(this).val();
+			var last = document.getElementById('last-name').value;
+			
+			var email = first.charAt(0).toLowerCase() + last.toLowerCase() + "@capstone.k12.ca.us";
+			
+			for(var i = 0; i < teacher.length; i++){
+
+				if(teacher[i].email == email){
+
+					console.log('match found with teacher ' + teacher[i].id_teacher);
+					$("#name_check").append('<div id = "dupTeach" class="alert alert-danger">Duplicate Teacher</div>');
+				}
+				if(teacher[i].email != email){
+					$("#dupTech")='';
+				}
+			}
+			for(var i = 0; i < teacher.length; i++){
+
+				if(teacher[i].email != email){
+					$("#dupTech").remove();
+				}
+			}
+			
+		})
 		$('#txtSearch').on('keyup', function(){
 			var value =$(this).val();
 			var data = FilterFunction(value, teacher);
@@ -397,30 +482,9 @@
 		        	
 		        }
 		        
-/* 		        if (el.val() === "ONLINE") {
-		            $("#status").append("<option>SHIPPED</option>");
-		        } else if (el.val() === "MANUAL") {
-		            $("#status option:last-child").remove();
-		        } */
 		    });
-/*             $(function() {
-                $("#teacherForm").on("submit", function(e) {
-                    e.preventDefault();
-                    $.ajax({
-                        url: $(this).attr("action"),
-                        type: 'POST',
-                        data: $(this).serialize(),
-                        beforeSend: function() {
-                            $("#message").html("sending...");
-                        },
-                        success: function(data) {
-                            $("#message").hide();
-                            $("#response").html(data);
-                        }
-                    });
-                });
-            }); */
-    
+
+    		
 
 		</script>	
 	</body>

@@ -50,12 +50,12 @@ public class TeacherService {
 		teacher.setFirst_name(teacherInfo.getFirst_name());
 		teacher.setTitle(teacherInfo.getTittle());
 		teacher.setTeacher_name(teacherInfo.getLast_name() + ", " + teacherInfo.getFirst_name());
-		teacher.setEmail(teacherInfo.getFirst_name().substring(0,1).toLowerCase() + teacherInfo.getLast_name() + "@capstone.k12.ca.us");
+		teacher.setEmail(teacherInfo.getFirst_name().substring(0,1).toLowerCase() + teacherInfo.getLast_name().toLowerCase() + "@capstone.k12.ca.us");
 		teacher.setTitle(teacherInfo.getTittle());
 		teacher.setLow_grade(teacherInfo.getLow_grade());
 		teacher.setHigh_grade(teacherInfo.getHigh_grade());
 		teacher.setSchool(schoolService.getSchool(teacherInfo.getSchool_name()));
-		teacher.setId_teacher(teacherInfo.getId_teacher());
+		//teacher.setId_teacher(teacherInfo.getId_teacher());
 		Set<Class> teacher_classes = new HashSet<Class>();
 		List<Resources>resources = new ArrayList<Resources>();
 		
@@ -64,21 +64,21 @@ public class TeacherService {
 		
 
 		teacher.setClass_has_teacher(teacher_classes);
-		
-		for(String teacherInfo_resurce: teacherInfo.getResources()) {
-			
-			Resources resource = resourceRepository.findByResource_name(teacherInfo_resurce);
-			
-			teacher.getTeacherHasResource().add(resourceService.getTeacherHasResource(resource, teacher));
-			
-		}
+		if(!(teacherInfo.getResources()==null)) {
+			for(String teacherInfo_resurce: teacherInfo.getResources()) {
+				
+				Resources resource = resourceRepository.findByResource_name(teacherInfo_resurce);
+				
+				teacher.getTeacherHasResource().add(resourceService.getTeacherHasResource(resource, teacher));
+				
+			}
 
-		
+		}
 		for(String teacherInfo_class: teacherInfo.getClasses()) {
 			teacher.getClass_has_teacher().add(classRepository.findByClass_name(teacherInfo_class));
 			}
 		
-		System.out.println(teacher.toString());
+		//System.out.println(teacher.toString());
 		
 		teacherRepository.save(teacher);
 
@@ -93,7 +93,7 @@ public class TeacherService {
 		if(teachers!=null && !teachers.isEmpty()) {
 			
 			Teacher teacher = teacherRepository.findById(id_teacher).get(0);
-			System.out.println(teacher.getSchool().getSchool_name());
+			//System.out.println(teacher.getSchool().getSchool_name());
 			TeacherInfo teacherInfo = new TeacherInfo();
 			teacherInfo.setId_teacher(teacher.getId_teacher());
 			teacherInfo.setLast_name(teacher.getLast_name());;
@@ -106,7 +106,7 @@ public class TeacherService {
 			List<String>teacher_classes = new ArrayList<String>();
 			List<String>teacher_resources = new ArrayList<String>();
 			for(Class teacher_class:teacher.getClass_has_teacher()) {
-				System.out.println(teacher_class.getClass_name());
+				//System.out.println(teacher_class.getClass_name());
 				teacher_classes.add(teacher_class.getClass_name());	
 			}
 			for(TeacherHasResource teacherHasResource: teacher.getTeacherHasResource()) {

@@ -30,6 +30,34 @@ public class ResourceService {
 	@Autowired
 	UserRepository userRepository;
 	
+	public void addResource(ResourceUploadInfo resourceUploadInfo, String fileName) {
+		
+		Resources resource = new Resources();
+		resource.setResource_name(resourceUploadInfo.getResource_name());
+		resource.setResource_image_URL("/img/" + fileName);
+		resource.setResource_URL(resourceUploadInfo.getResouce_URL());
+		if(resourceUploadInfo.getDomain().equals("Yes")) {
+			resource.setDomain(true);
+		}else {
+			resource.setDomain(false);
+		}
+		if(resourceUploadInfo.getSso().equals("Yes")) {
+			resource.setSSO(true);
+		}else {
+			resource.setSSO(false);
+		}
+		List<TeacherHasResource> teacher_resources = new ArrayList<TeacherHasResource>();
+		resource.setResource(teacher_resources);
+		
+		resourceRepository.save(resource);
+		
+		System.out.println(resource.getResource_name());
+		System.out.println(resource.getResource_image_URL());
+		System.out.println(resource.getResource_URL());
+		
+		
+	}
+	
 	public TeacherHasResource getTeacherHasResource(Resources resource, Teacher teacher) {
 		TeacherHasResource teacherResource = new TeacherHasResource();
 		 if(resource.isDomain())
