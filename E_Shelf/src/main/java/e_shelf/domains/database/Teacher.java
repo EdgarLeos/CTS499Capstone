@@ -27,7 +27,7 @@ public class Teacher {
 	@JoinTable( name = "class_has_teacher", joinColumns = @JoinColumn(name = "teacher_id_teacher"), inverseJoinColumns = @JoinColumn(name = "class_id_class"))
 	Set<Class>class_has_teacher;
 	
-	@OneToMany(mappedBy = "teacher")
+	@OneToMany(mappedBy = "teacher",cascade = CascadeType.ALL)
 	private List<TeacherHasResource> teacherHasResource;
 	
 	public Teacher() {}

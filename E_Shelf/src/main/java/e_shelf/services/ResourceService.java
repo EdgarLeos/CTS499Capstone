@@ -10,6 +10,7 @@ import e_shelf.domains.database.TeacherHasResource;
 import e_shelf.repositories.*;
 import e_shelf.domains.info.*;
 import e_shelf.domains.database.Resources;
+import e_shelf.domains.database.Teacher;
 
 @Service
 public class ResourceService {
@@ -28,6 +29,28 @@ public class ResourceService {
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	public TeacherHasResource getTeacherHasResource(Resources resource, Teacher teacher) {
+		TeacherHasResource teacherResource = new TeacherHasResource();
+		 if(resource.isDomain())
+		 {
+			 teacherResource.setTeacher_username(teacher.getEmail());
+		 }
+		 else {
+			 String[] parts = teacher.getEmail().split("@");
+			 teacherResource.setTeacher_username(parts[0]);
+		 }
+		 if(resource.isSSO()) {
+			 teacherResource.setTeacher_password("SSO Same As Gmail");
+		 }
+		 else {
+			 teacherResource.setTeacher_password("CapStone2021!");
+		 }
+		 teacherResource.setResources(resource);
+		 teacherResource.setTeacher(teacher);
+		 
+		 return teacherResource;
+	}
 	
 	public ResourcesInfo getResourcsInfo(int id_resource) {
 		

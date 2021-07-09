@@ -8,11 +8,13 @@ import javax.persistence.*;
 public class TeacherHasResource implements Serializable{
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id_teacher_has_resources;
+	
 	@ManyToOne
 	@JoinColumn(name = "teacher_id_teacher", referencedColumnName = "id_teacher")
 	private Teacher teacher;
 	
-	@Id
 	@ManyToOne
 	@JoinColumn(name = "resources_id_resources", referencedColumnName = "id_resources")
 	private Resources resources;

@@ -39,6 +39,9 @@ public class TeacherService {
 	@Autowired
 	SchoolService schoolService;
 	
+	@Autowired
+	ResourceService resourceService;
+	
 	public void addTacher(TeacherInfo teacherInfo) {
 		
 		Teacher teacher = new Teacher();
@@ -52,7 +55,7 @@ public class TeacherService {
 		teacher.setLow_grade(teacherInfo.getLow_grade());
 		teacher.setHigh_grade(teacherInfo.getHigh_grade());
 		teacher.setSchool(schoolService.getSchool(teacherInfo.getSchool_name()));
-		teacher.setId_teacher(1234);
+		teacher.setId_teacher(teacherInfo.getId_teacher());
 		Set<Class> teacher_classes = new HashSet<Class>();
 		List<Resources>resources = new ArrayList<Resources>();
 		
@@ -63,7 +66,10 @@ public class TeacherService {
 		teacher.setClass_has_teacher(teacher_classes);
 		
 		for(String teacherInfo_resurce: teacherInfo.getResources()) {
+			
 			Resources resource = resourceRepository.findByResource_name(teacherInfo_resurce);
+			
+			teacher.getTeacherHasResource().add(resourceService.getTeacherHasResource(resource, teacher));
 			
 		}
 
