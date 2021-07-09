@@ -190,7 +190,7 @@
 					</div>
 		          </div>
 		          <div class ="form-group">
-		          	<button type="submit" class="btn btn-primary">Submit</button>
+		          	  <button type="button" id="ignore" name="action" onclick="myValidationFunction()" value="ignoreOrder" class="btn btn-primary btn-sm">Submit</button>
 		          </div>
 		        </form>
 		      </div>
@@ -290,7 +290,31 @@
 
 		/*]]>*/
 		
-		$('#first-name').on('change',function(){
+		
+  function myValidationFunction(){
+		var first = document.getElementById('first-name').value;
+		var last = document.getElementById('last-name').value;
+		var email = first.charAt(0).toLowerCase() + last.toLowerCase() + "@capstone.k12.ca.us";
+		var full_name = last +", "+first;
+		
+		for(var i = 0; i < teacher.length; i++){
+		      if( teacher[i].email == email && teacher[i].teacher_name == full_name ){
+		    	  alert("Validation failed");
+		        return; 
+		      }
+		}
+
+     //validation success , when above mentioned if condition is false.
+     $("#teacherForm").submit(); // Submit the form
+    
+    
+    }
+		
+		
+		
+		
+		
+/* 		$('#first-name').on('keyup',function(){
 			var first = $(this).val();
 			var last = document.getElementById('last-name').value;
 			
@@ -303,9 +327,6 @@
 					console.log('match found with teacher ' + teacher[i].id_teacher);
 					$("#name_check").append('<div id = "dupTeach" class="alert alert-danger">Duplicate Teacher</div>');
 				}
-				if(teacher[i].email != email){
-					$("#dupTech")='';
-				}
 			}
 			for(var i = 0; i < teacher.length; i++){
 
@@ -314,7 +335,7 @@
 				}
 			}
 			
-		})
+		}) */
 		$('#txtSearch').on('keyup', function(){
 			var value =$(this).val();
 			var data = FilterFunction(value, teacher);
