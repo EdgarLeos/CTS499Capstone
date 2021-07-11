@@ -3,7 +3,10 @@
 	xmlns:sec = "https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 	<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
-		<script  type="text/javascript"  th:src="@{/js/custom.js}"></script>
+			<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+		<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+		
 	<meta charset="UTF-8">
 	<title>E-Shelf Admin</title>
 </head>
@@ -215,22 +218,22 @@
 		        </button>
 		      </div>
 		      <div class="modal-body">
-		        <form id = "teacherForm" th:action  ="@{/E-Shelf/main/addResource}"  enctype="multipart/form-data" method = "post">
+		        <form id = "resourceForm" th:action  ="@{/E-Shelf/main/addResource}"  enctype="multipart/form-data" method = "post">
 <!-- 		          <div class="form-group">
 		            <label for="recipient-name" class="col-form-label">Teacher ID:</label>
 		            <input type="number" min="1" max="9999" class="form-control" id="recipient-name" name = "id_teacher" maxlength= "4">
 		          </div> --> 
 		          <div class="form-group">
 		            <label for="recipient-name" class="col-form-label">Resource Name:</label>
-		            <input type="text" class="form-control" id="recipient-name" name = "resource_name" required>
+		            <input type="text" class="form-control" id="resource_name" name = "resource_name" required>
 		          </div>
 		          <div class="form-group">
 		            <label for="recipient-name" class="col-form-label">Upload Image:</label>
-		            <input type="file" name="image" accept="image/png, image/jpeg" />
+		            <input type="file" name="image" id = "image" accept="image/png, image/jpeg" />
 		          </div>
 		          <div class="form-group">
 		            <label for="recipient-name" class="col-form-label">Web Site:</label>
-		            <input type="text" class="form-control" id="recipient-name" name = "resource_URL">
+		            <input type="text" class="form-control" id="resource_URL" name = "resource_URL">
 		          </div>
 		          <div class = "form-grup">
 					<label class="screen-reader-only" for="domain">Does the Resource require the teacher's domain in the username?</label>
@@ -251,8 +254,8 @@
 							  </select>
 						</label>
 		          </div>
-		          <div class ="form-group">
-		          	<button type="submit" class="btn btn-primary">Submit</button>
+					<div class ="form-group">
+		          	  <button type="button" id="ignore" name="action" onclick="myValidationFunctionR()" value="ignoreOrder" class="btn btn-primary btn-sm">Submit</button>
 		          </div>
 		        </form>
 		      </div>
@@ -264,13 +267,9 @@
 		  </div>
 		</div>
 
-		<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
-		<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
-		<script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
-			
+
+			<script  type="text/javascript"  th:src="@{/js/costum.js}"></script>
 		<script th:inline="javascript">
-		
-		
 		function showDiv(div_name, button_to_hide, button_to_show){
 			document.getElementById(div_name).style.display = "block";
 			document.getElementById(div_name).style.visibility = "visible";
@@ -319,7 +318,26 @@
     
     
     }
+  function myValidationFunctionR(){
+	  var name = document.getElementById('resource_name').value;
+		var site = document.getElementById('resource_URL').value;
+		var fake_path=document.getElementById('image').value;
+		var filename = "/img/" + fake_path.split("\\").pop();
 		
+		console.log(filename);
+		
+		for(var i = 0; i < resources.length; i++){
+		      if( resources[i].resource_URL == site || filename == resources[i].resource_image_URL || name == resources[i].resource_name){
+		    	  alert("Validation failed");
+		        return; 
+		      }
+		}
+
+   //validation success , when above mentioned if condition is false.
+   $("#resourceForm").submit(); // Submit the form
+  
+  
+  }
 		
 		
 		
@@ -540,8 +558,8 @@
 		        }
 		        
 		    });
-
-    		
+		
+		
 
 		</script>	
 	</body>
