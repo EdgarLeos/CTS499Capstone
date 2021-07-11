@@ -65,6 +65,9 @@ public class Main {
 	@Autowired
 	ClassesService classService;
 	
+	@Autowired
+	SchoolService schoolService;
+	
 	@GetMapping("/E-Shelf/allInfo")
 	public String getAllInfo(Model model) {
 		List<Teacher> teachers = teacherRepository.findAll();
@@ -170,77 +173,31 @@ public class Main {
     
     @PostMapping("/E-Shelf/main/addResource")
     public String addNewResource(ResourceUploadInfo resource,  @RequestParam("image") MultipartFile multipartFile) throws IOException {
-    	
-    	System.out.println(resource.toString());
+
     	String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
     	
     	resourceService.addResource(resource, fileName);
     	
-//    	System.out.println(teacher.toString());
-//		List<Teacher> teachers = teacherRepository.findAll();
-//		List<TeacherInfo> teacherInfos = new ArrayList<TeacherInfo>();
-//		for(Teacher teacher1: teachers) {
-//			teacherInfos.add(teacherService.getTecherInfo(teacher1.getId_teacher()));
-//		}
-//		
-//		List<Class> classes = classRepository.findAll();
-//		List<ClassesInfo> classInfo = new ArrayList<ClassesInfo>();
-//		for( Class schoolClass: classes) {
-//			classInfo.add(classService.getClassesInfo(schoolClass.getId_class()));
-//		}
-//		
-//		List<School> schools = schoolRepository.findAll();
-//		
-//		List<Resources> resources = resourceRepository.findAll();
-//		List<ResourcesInfo> resourceInfo = new ArrayList<ResourcesInfo>();
-//		for(Resources resource:resources) {
-//			resourceInfo.add(resourceService.getResourcsInfo(resource.getId_resources()));
-//		}
-//		
-//		Iterable<User> users = userRepository.findAll();
-//		model.addAttribute("teachers", teacherInfos);
-//		model.addAttribute("users", users);
-//		model.addAttribute("schools", schools);
-//		model.addAttribute("classes", classInfo);
-//		model.addAttribute("resources", resourceInfo);
-//    	System.out.println(teacher.getFirst_name());
     	return "redirect:/admin";
     }
+    
+    
     @PostMapping("/E-Shelf/main/addTeacher")
     public String addNewTeacher(TeacherInfo teacher, Model model) {
     	
     	teacherService.addTacher(teacher);
-//    	System.out.println(teacher.toString());
-//		List<Teacher> teachers = teacherRepository.findAll();
-//		List<TeacherInfo> teacherInfos = new ArrayList<TeacherInfo>();
-//		for(Teacher teacher1: teachers) {
-//			teacherInfos.add(teacherService.getTecherInfo(teacher1.getId_teacher()));
-//		}
-//		
-//		List<Class> classes = classRepository.findAll();
-//		List<ClassesInfo> classInfo = new ArrayList<ClassesInfo>();
-//		for( Class schoolClass: classes) {
-//			classInfo.add(classService.getClassesInfo(schoolClass.getId_class()));
-//		}
-//		
-//		List<School> schools = schoolRepository.findAll();
-//		
-//		List<Resources> resources = resourceRepository.findAll();
-//		List<ResourcesInfo> resourceInfo = new ArrayList<ResourcesInfo>();
-//		for(Resources resource:resources) {
-//			resourceInfo.add(resourceService.getResourcsInfo(resource.getId_resources()));
-//		}
-//		
-//		Iterable<User> users = userRepository.findAll();
-//		model.addAttribute("teachers", teacherInfos);
-//		model.addAttribute("users", users);
-//		model.addAttribute("schools", schools);
-//		model.addAttribute("classes", classInfo);
-//		model.addAttribute("resources", resourceInfo);
-//    	System.out.println(teacher.getFirst_name());
+
     	return "redirect:/admin";
     }
     
+    
+    @PostMapping("/E-Shelf/main/addSchool")
+    public String addNewSchool(School school, Model model) {
+    	
+    	schoolService.addSchool(school);
+
+    	return "redirect:/admin";
+    }
     
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String laodAdminPage(Model model) {			

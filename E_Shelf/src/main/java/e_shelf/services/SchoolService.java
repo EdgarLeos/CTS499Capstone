@@ -31,6 +31,10 @@ public class SchoolService {
 	@Autowired
 	UserRepository userRepository;
 	
+	public void addSchool(School school) {
+		schoolRepository.save(school);
+	}
+	
 	public School getSchool(String schoolname)
 	{
 		List <School> schools = schoolRepository.findByKeyword(schoolname);

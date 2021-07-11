@@ -10,266 +10,271 @@
 	<meta charset="UTF-8">
 	<title>E-Shelf Admin</title>
 </head>
-	<body>
-		<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
-		  <a class="navbar-brand" href="#">E-Shelf Admin</a>
-		  <a sec:authentication = "name"></a>
-		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-		    <span class="navbar-toggler-icon"></span>
-		  </button>
-		  <div class="collapse navbar-collapse" id="navbarNav">
-		    <ul class="navbar-nav mr-auto">
-		      <li class="nav-item active">
-		        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-		      </li>
-		      <li class="nav-item">
-		        <a class="nav-link" href="">Find</a>
-		      </li>
-		      <li class="nav-item">
-		        <a class="nav-link" href="#">Add/Remove</a>
-		      </li>
-		    </ul>
-		    <ul class="navbar-nav ml-auto">
-		          <li>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+	  <a class="navbar-brand" href="#">E-Shelf Admin</a>
+	  <a sec:authentication = "name"></a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+	    <span class="navbar-toggler-icon"></span>
+	  </button>
+	  <div class="collapse navbar-collapse" id="navbarNav">
+	    <ul class="navbar-nav mr-auto">
+	      <li class="nav-item active">
+	        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="">Find</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="#">Add/Remove</a>
+	      </li>
+	    </ul>
+	    <ul class="navbar-nav ml-auto">
+	    	<li>
 		        <form class="form-inline" th:action="@{/logout}" method="post"> 
 		                <input type="submit" value="Logout"/> 
 		         </form>
-		      </li>
-		    </ul>
-		  </div>
-		</nav>
-		<br>
-		<button id="show_all_teachers" th:onclick ="showDiv('all_teachers', 'show_all_teachers', 'hide_all_teachers')">Display All Teachers In the System</button>
-		<button id="hide_all_teachers" th:onclick ="hideDiv('all_teachers', 'show_all_teachers', 'hide_all_teachers')" style = "display:none">Hide All Teachers In the System</button>
-		<br>
+	      	</li>
+	    </ul>
+	  </div>
+	</nav>
+	<br>
+	<button id="show_all_teachers" th:onclick ="showDiv('all_teachers', 'show_all_teachers', 'hide_all_teachers')">Display All Teachers In the System</button>
+	<button id="hide_all_teachers" th:onclick ="hideDiv('all_teachers', 'show_all_teachers', 'hide_all_teachers')" style = "display:none">Hide All Teachers In the System</button>
+	<br>
 
-		<div id="all_teachers"  style="visibility: hidden; display: none;">
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTeacherModal" data-whatever="@mdo">New Teacher</button>
-			<input id="txtSearch" type ="text" name = "keyword">
-			<div id="message"></div>
-			<table id = "teacher_headings">
-					<tr>
-						<th> Teacher ID</th>
-						<th> Teacher Last Name</th>
-						<th> Teacher First Name</th>
-						<th> Teacher Email</th>
-						<th> Teacher School</th>
-					</tr>
-			</table>
-			<table id = "teacher_info">
-					<tr  th:each="teachers :${teachers}">
-						<td th:text = "${teachers.id_teacher}"></td>
-						<td th:text = "${teachers.last_name}"></td>
-						<td th:text = "${teachers.first_name}"></td>
-						<td th:text = "${teachers.email}"></td>
-					    <td th:text = "${teachers.school_name}"></td>
-					</tr>
-				
-			</table>
-		</div>
-		<br>
-		<button id="show_all_resources" th:onclick ="showDiv('all_resources', 'show_all_resources', 'hide_all_resources')">Display All Resources In the System</button>
-		<button id="hide_all_resources" th:onclick ="hideDiv('all_resources', 'show_all_resources', 'hide_all_resources')" style = "display:none">Hide All Resources In the System</button>
-		<br>
-		<div id="all_resources" style="visibility: hidden; display: none">
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addResourceModal" data-whatever="@mdo">New Resource</button>
-			<input id="txtSearchResources" type ="text" name = "keyword">
-			<table id="resource_headings">
+	<div id="all_teachers"  style="visibility: hidden; display: none;">
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTeacherModal" data-whatever="@mdo">New Teacher</button>
+		<input id="txtSearch" type ="text" name = "keyword">
+		<div id="message"></div>
+		<table id = "teacher_headings">
 				<tr>
-					<th>Resource Name</th>
-					<th>Resource URL</th>
-					<th>Resource Image</th>
+					<th> Teacher ID</th>
+					<th> Teacher Last Name</th>
+					<th> Teacher First Name</th>
+					<th> Teacher Email</th>
+					<th> Teacher School</th>
 				</tr>
-			</table>
-			<table id="resource_info">
-				<tr th:each="resources :${resources}">
-					<td th:text = "${resources.resource_name}"></td>
-					<td><a th:href = "${resources.resource_URL}"  target ="_blank" th:text = "${resources.resource_URL}" ></a></td>
-					<td> <img th:src="${resources.resource_image_URL}" style="width:200px;height:200px;"></td>
+		</table>
+		<table id = "teacher_info">
+				<tr  th:each="teachers :${teachers}">
+					<td th:text = "${teachers.id_teacher}"></td>
+					<td th:text = "${teachers.last_name}"></td>
+					<td th:text = "${teachers.first_name}"></td>
+					<td th:text = "${teachers.email}"></td>
+				    <td th:text = "${teachers.school_name}"></td>
 				</tr>
+			
+		</table>
+	</div>
+	<br>
+	<button id="show_all_resources" th:onclick ="showDiv('all_resources', 'show_all_resources', 'hide_all_resources')">Display All Resources In the System</button>
+	<button id="hide_all_resources" th:onclick ="hideDiv('all_resources', 'show_all_resources', 'hide_all_resources')" style = "display:none">Hide All Resources In the System</button>
+	<br>
+	<div id="all_resources" style="visibility: hidden; display: none">
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addResourceModal" data-whatever="@mdo">New Resource</button>
+		<input id="txtSearchResources" type ="text" name = "keyword">
+		<table id="resource_headings">
+			<tr>
+				<th>Resource Name</th>
+				<th>Resource URL</th>
+				<th>Resource Image</th>
+			</tr>
+		</table>
+		<table id="resource_info">
+			<tr th:each="resources :${resources}">
+				<td th:text = "${resources.resource_name}"></td>
+				<td><a th:href = "${resources.resource_URL}"  target ="_blank" th:text = "${resources.resource_URL}" ></a></td>
+				<td> <img th:src="${resources.resource_image_URL}" style="width:200px;height:200px;"></td>
+			</tr>
+		</table>
+	</div>
+	<br>
+	<button id="show_all_schools" th:onclick ="showDiv('all_schools', 'show_all_schools', 'hide_all_schools')">Display All Schools In the System</button>
+	<button id="hide_all_schools" th:onclick ="hideDiv('all_schools', 'show_all_schools', 'hide_all_schools')" style = "display:none">Hide All Schools In the System</button>
+	<br>
+	<div id="all_schools" style="visibility: hidden; display: none">
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSchoolModal" data-whatever="@mdo">New School</button>
+	<input id="txtSearchSchools" type ="text" name = "keyword">
+		<table id="schools_headings">
+			<tr>
+				<th>School Name</th>
+			</tr>
+		</table>
+		<table id="schools_info">
+			<tr th:each="schools :${schools}">
+				<td th:text = "${schools.school_name}"></td>
+			</tr>	
+		</table>
+	</div>
+	<br>
+	<button id="show_all_classes" th:onclick ="showDiv('all_classes', 'show_all_classes', 'hide_all_classes')">Display All Classes In the System</button>
+	<button id="hide_all_classes" th:onclick ="hideDiv('all_classes', 'show_all_classes', 'hide_all_classes')" style = "display:none">Hide All Classes In the System</button>
+	<br>
+	<div id="all_classes" style="visibility: hidden; display: none">
+	<input id="txtSearchClasses" type ="text" name = "keyword">
+		<table id="classes_headings">
+			<tr>
+				<th>Class Name</th>
+				<th>School</th>
+			</tr>
 			</table>
-		</div>
-		<br>
-		<button id="show_all_schools" th:onclick ="showDiv('all_schools', 'show_all_schools', 'hide_all_schools')">Display All Schools In the System</button>
-		<button id="hide_all_schools" th:onclick ="hideDiv('all_schools', 'show_all_schools', 'hide_all_schools')" style = "display:none">Hide All Schools In the System</button>
-		<br>
-		<div id="all_schools" style="visibility: hidden; display: none">
-		<input id="txtSearchSchools" type ="text" name = "keyword">
-			<table id="schools_headings">
-				<tr>
-					<th>School Name</th>
-				</tr>
-			</table>
-			<table id="schools_info">
-				<tr th:each="schools :${schools}">
-					<td th:text = "${schools.school_name}"></td>
-				</tr>	
-			</table>
-		</div>
-		<br>
-		<button id="show_all_classes" th:onclick ="showDiv('all_classes', 'show_all_classes', 'hide_all_classes')">Display All Classes In the System</button>
-		<button id="hide_all_classes" th:onclick ="hideDiv('all_classes', 'show_all_classes', 'hide_all_classes')" style = "display:none">Hide All Classes In the System</button>
-		<br>
-		<div id="all_classes" style="visibility: hidden; display: none">
-		<input id="txtSearchClasses" type ="text" name = "keyword">
-			<table id="classes_headings">
-				<tr>
-					<th>Class Name</th>
-					<th>School</th>
-				</tr>
-				</table>
-				<table id = "classes_info">
-				<tr th:each="classes: ${classes}">
-					<td th:text = "${classes.class_name}"></td>
-					<td th:text = "${classes.school}"></td>
-				</tr>	
-			</table>
-		</div>
-		
-		<div class="modal fade" id="addTeacherModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-		      </div>
-		      <div class="modal-body">
-		        <form id = "teacherForm" th:action  ="@{/E-Shelf/main/addTeacher}" method = "post">
-<!-- 		          <div class="form-group">
-		            <label for="recipient-name" class="col-form-label">Teacher ID:</label>
-		            <input type="number" min="1" max="9999" class="form-control" id="recipient-name" name = "id_teacher" maxlength= "4">
-		          </div> --> 
-		          <div class="form-group">
-		          <div id="name_check"></div>
-		            <label for="recipient-name" class="col-form-label">Last Name:</label>
-		            <input type="text" class="form-control" id="last-name" name = "last_name" required>
-		          </div>
-		          <div class="form-group">
-		            <label for="recipient-name" class="col-form-label">First Name:</label>
-		            <input type="text" class="form-control" id="first-name" name = "first_name"required>
-		          </div>
-		          <div class="form-group">
-		            <label for="recipient-name" class="col-form-label">Title:</label>
-		            <input type="text" class="form-control" id="title" name = "tittle">
-		          </div>
-<!-- 		          <div class="form-group">
-		            <label for="recipient-name" class="col-form-label">Teacher Name:</label>
-		            <input type="text" class="form-control" id="recipient-name" name = "teacher_name">
-		          </div> -->
-<!-- 		          <div class="form-group">
-		            <label for="recipient-name" class="col-form-label">Email:</label>
-		            <input type="text" class="form-control" id="recipient-name" name = "email">
-		          </div> -->
-		          <div class = "form-grup">
-		          	<label for="recipient-name" class="col-form-label">School:</label>
-		          	<select  id ="schools_slection" name = "school_name" required>
-		          		<option value ="">--</option>
-		          		<option th:each="schools :${schools}" th:value = "${schools.school_name}"  th:utext = "${schools.school_name}" />
-		          	</select>
-		          </div>
-		          <div class = "form-grup">
-		          	<label for="recipient-name" class="col-form-label">Class:</label>
-		          	<select id ="classes_selection" name = "classes"required>
-		          		<option value ="">--</option>
-		          	</select>
-		          
-		          </div>
-		          
-		          <div class="form-group">
-		            <label for="recipient-name" class="col-form-label">Low Grade:</label>
-		            <select id ="low_grade" name = "low_grade"required>
-		          		<option value ="">--</option>
-		          	</select>
-		          </div>
-		          <div class="form-group">
-		            <label for="recipient-name" class="col-form-label">High Grade:</label>
-		           	<select id ="high_grade" name = "high_grade"required>
-		          		<option value ="">--</option>
-		          	</select>
-		          </div>
-		          <div class="form-group">
-		            <label for="recipient-name" class="col-form-label">Resources:</label>
-			         <div th:each="resources :${resources}">
-			         <input type = "checkbox" th:value= "${resources.resource_name}" name = "resources" >
-			         <label th:text ="${resources.resource_name}"></label>
-					</div>
-		          </div>
-		          <div class ="form-group">
-		          	  <button type="button" id="ignore" name="action" onclick="myValidationFunction()" value="ignoreOrder" class="btn btn-primary btn-sm">Submit</button>
-		          </div>
-		        </form>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
-		      </div>
-		    </div>
-		  </div>
-		</div>
-				<div class="modal fade" id="addResourceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-		      </div>
-		      <div class="modal-body">
-		        <form id = "resourceForm" th:action  ="@{/E-Shelf/main/addResource}"  enctype="multipart/form-data" method = "post">
-<!-- 		          <div class="form-group">
-		            <label for="recipient-name" class="col-form-label">Teacher ID:</label>
-		            <input type="number" min="1" max="9999" class="form-control" id="recipient-name" name = "id_teacher" maxlength= "4">
-		          </div> --> 
-		          <div class="form-group">
-		            <label for="recipient-name" class="col-form-label">Resource Name:</label>
-		            <input type="text" class="form-control" id="resource_name" name = "resource_name" required>
-		          </div>
-		          <div class="form-group">
-		            <label for="recipient-name" class="col-form-label">Upload Image:</label>
-		            <input type="file" name="image" id = "image" accept="image/png, image/jpeg" />
-		          </div>
-		          <div class="form-group">
-		            <label for="recipient-name" class="col-form-label">Web Site:</label>
-		            <input type="text" class="form-control" id="resource_URL" name = "resource_URL">
-		          </div>
-		          <div class = "form-grup">
-					<label class="screen-reader-only" for="domain">Does the Resource require the teacher's domain in the username?</label>
-					  <select name = "domain">
-						    <option value="">---</option>
-						    <option value="Yes">Yes</option>
-						    <option value="No">No</option>
-						  </select>
-		          </div>
-		          <div class = "form-grup">
-					<label class="screen-reader-only" for="sso">Does this resource use Single-Sign-On (SSO) for access?</label>
+			<table id = "classes_info">
+			<tr th:each="classes: ${classes}">
+				<td th:text = "${classes.class_name}"></td>
+				<td th:text = "${classes.school}"></td>
+			</tr>	
+		</table>
+	</div>
 	
-						<label>
-							  <select name = "sso">
-							    <option value="">---</option>
-							    <option value="Yes">Yes</option>
-							    <option value="No">No</option>
-							  </select>
-						</label>
-		          </div>
-					<div class ="form-group">
-		          	  <button type="button" id="ignore" name="action" onclick="myValidationFunctionR()" value="ignoreOrder" class="btn btn-primary btn-sm">Submit</button>
-		          </div>
-		        </form>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	<div class="modal fade" id="addTeacherModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="AddTeacherModal">Add Teacher</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <form id = "teacherForm" th:action  ="@{/E-Shelf/main/addTeacher}" method = "post">
+	          <div class="form-group">
+	          <div id="name_check"></div>
+	            <label for="last-name" class="col-form-label">Last Name:</label>
+	            <input type="text" class="form-control" id="last-name" name = "last_name" required>
+	          </div>
+	          <div class="form-group">
+	            <label for="first-name" class="col-form-label">First Name:</label>
+	            <input type="text" class="form-control" id="first-name" name = "first_name"required>
+	          </div>
+	          <div class="form-group">
+	            <label for="title" class="col-form-label">Title:</label>
+	            <input type="text" class="form-control" id="title" name = "tittle">
+	          </div>
+	          <div class = "form-grup">
+	          	<label for="school_name" class="col-form-label">School:</label>
+	          	<select  id ="schools_slection" name = "school_name" required>
+	          		<option value ="">--</option>
+	          		<option th:each="schools :${schools}" th:value = "${schools.school_name}"  th:utext = "${schools.school_name}" />
+	          	</select>
+	          </div>
+	          <div class = "form-grup">
+	          	<label for="classes" class="col-form-label">Class:</label>
+	          	<select id ="classes_selection" name = "classes"required>
+	          		<option value ="">--</option>
+	          	</select>          
+	          </div>
+	          <div class="form-group">
+	            <label for="low_grade" class="col-form-label">Low Grade:</label>
+	            <select id ="low_grade" name = "low_grade"required>
+	          		<option value ="">--</option>
+	          	</select>
+	          </div>
+	          <div class="form-group">
+	            <label for="high_grade" class="col-form-label">High Grade:</label>
+	           	<select id ="high_grade" name = "high_grade"required>
+	          		<option value ="">--</option>
+	          	</select>
+	          </div>
+	          <div class="form-group">
+	            <label for="recipient-name" class="col-form-label">Resources:</label>
+		         <div th:each="resources :${resources}">
+		         <input type = "checkbox" th:value= "${resources.resource_name}" name = "resources" >
+		         <label th:text ="${resources.resource_name}"></label>
+				</div>
+	          </div>
+	          <div class ="form-group">
+	          	  <button type="button" id="ignoreTeacherForm" name="action" onclick="myValidationFunction()" value="ignoreOrder" class="btn btn-primary btn-sm">Submit</button>
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<div class="modal fade" id="addResourceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="AddResourceModal">Add Resource</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <form id = "resourceForm" th:action  ="@{/E-Shelf/main/addResource}"  enctype="multipart/form-data" method = "post">
+	          <div class="form-group">
+	            <label for="resource_name" class="col-form-label">Resource Name:</label>
+	            <input type="text" class="form-control" id="resource_name" name = "resource_name" required>
+	          </div>
+	          <div class="form-group">
+	            <label for="image" class="col-form-label">Upload Image:</label>
+	            <input type="file" name="image" id = "image" accept="image/png, image/jpeg" />
+	          </div>
+	          <div class="form-group">
+	            <label for="resource_URL" class="col-form-label">Web Site:</label>
+	            <input type="text" class="form-control" id="resource_URL" name = "resource_URL">
+	          </div>
+	          <div class = "form-grup">
+				<label class="screen-reader-only" for="domain">Does the Resource require the teacher's domain in the username?</label>
+				 	<select name = "domain">
+					    <option value="">---</option>
+					    <option value="Yes">Yes</option>
+					    <option value="No">No</option>
+					</select>
+	          </div>
+	          <div class = "form-grup">
+				<label class="screen-reader-only" for="sso">Does this resource use Single-Sign-On (SSO) for access?</label>
+					  <select name = "sso">
+					    <option value="">---</option>
+					    <option value="Yes">Yes</option>
+					    <option value="No">No</option>
+					  </select>
+	          </div>
+				<div class ="form-group">
+	          	  <button type="button" id="ignoreResourceForm" name="action" onclick="myValidationFunctionR()" value="ignoreOrder" class="btn btn-primary btn-sm">Submit</button>
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
-		      </div>
-		    </div>
-		  </div>
-		</div>
-
-
-			<script  type="text/javascript"  th:src="@{/js/costum.js}"></script>
-		<script th:inline="javascript">
+	<div class="modal fade" id="addSchoolModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="AddSchoolModal">Add School</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <form id = "schoolForm" th:action  ="@{/E-Shelf/main/addSchool}" method = "post">
+	          <div class="form-group">
+	          <div id="name_check"></div>
+	            <label for="school_name" class="col-form-label">School Name:</label>
+	            <input type="text" class="form-control" id="school_name" name = "school_name" required>
+	          </div>
+	          <div class ="form-group">
+	          	  <button type="button" id="ignoreSchoolForm" name="action" onclick="myValidationFunctionS()" value="ignoreOrder" class="btn btn-primary btn-sm">Submit</button>
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<script th:inline="javascript">
+	
 		function showDiv(div_name, button_to_hide, button_to_show){
 			document.getElementById(div_name).style.display = "block";
 			document.getElementById(div_name).style.visibility = "visible";
@@ -296,74 +301,56 @@
 		var low_grades = ['Kinder', '1st Grade', '2nd Grade', '3rd Grade', '4th Grade', '5th Grade', '6th Grade'];
 		var middle_grades = ['7th Grade', '8th Grade'];
 		var high_grades=['9th Grade', '10th Grade', '11th Grade', '12th Grade'];
-		
-
-		
-		
-  function myValidationFunction(){
-		var first = document.getElementById('first-name').value;
-		var last = document.getElementById('last-name').value;
-		var email = first.charAt(0).toLowerCase() + last.toLowerCase() + "@capstone.k12.ca.us";
-		var full_name = last +", "+first;
-		
-		for(var i = 0; i < teacher.length; i++){
-		      if( teacher[i].email == email && teacher[i].teacher_name == full_name ){
-		    	  alert("Validation failed");
-		        return; 
-		      }
-		}
-
-     //validation success , when above mentioned if condition is false.
-     $("#teacherForm").submit(); // Submit the form
-    
-    
-    }
-  function myValidationFunctionR(){
-	  var name = document.getElementById('resource_name').value;
-		var site = document.getElementById('resource_URL').value;
-		var fake_path=document.getElementById('image').value;
-		var filename = "/img/" + fake_path.split("\\").pop();
-		
-		console.log(filename);
-		
-		for(var i = 0; i < resources.length; i++){
-		      if( resources[i].resource_URL == site || filename == resources[i].resource_image_URL || name == resources[i].resource_name){
-		    	  alert("Validation failed");
-		        return; 
-		      }
-		}
-
-   //validation success , when above mentioned if condition is false.
-   $("#resourceForm").submit(); // Submit the form
-  
-  
-  }
-		
-		
-		
-		
-/* 		$('#first-name').on('keyup',function(){
-			var first = $(this).val();
+	
+	  	function myValidationFunction(){
+			var first = document.getElementById('first-name').value;
 			var last = document.getElementById('last-name').value;
-			
 			var email = first.charAt(0).toLowerCase() + last.toLowerCase() + "@capstone.k12.ca.us";
+			var full_name = last +", "+first;
 			
 			for(var i = 0; i < teacher.length; i++){
-
-				if(teacher[i].email == email){
-
-					console.log('match found with teacher ' + teacher[i].id_teacher);
-					$("#name_check").append('<div id = "dupTeach" class="alert alert-danger">Duplicate Teacher</div>');
-				}
+			      if( teacher[i].email == email && teacher[i].teacher_name == full_name ){
+			    	  alert("Validation failed");
+			        return; 
+			      }
 			}
-			for(var i = 0; i < teacher.length; i++){
-
-				if(teacher[i].email != email){
-					$("#dupTech").remove();
-				}
-			}
+	
+	     //validation success , when above mentioned if condition is false.
+	     	$("#teacherForm").submit(); // Submit the form
+	    }
+	  
+	  	function myValidationFunctionR(){
+		  	var name = document.getElementById('resource_name').value;
+			var site = document.getElementById('resource_URL').value;
+			var fake_path=document.getElementById('image').value;
+			var filename = "/img/" + fake_path.split("\\").pop();
 			
-		}) */
+			console.log(filename);
+			
+			for(var i = 0; i < resources.length; i++){
+			      if( resources[i].resource_URL == site || filename == resources[i].resource_image_URL || name == resources[i].resource_name){
+			    	  alert("Validation failed");
+			        return; 
+			      }
+			}
+	
+	   //validation success , when above mentioned if condition is false.
+	   		$("#resourceForm").submit(); // Submit the form
+	  	}
+		
+	  	function myValidationFunctionS(){
+		  	var school_name = document.getElementById('school_name').value;
+			for(var i = 0; i < schools.length; i++){
+			      if( schools[i].school_name == school_name || ( (!school_name.includes('Elementary') ||(!school_name.includes('Middle') || (!school_name.includes('High')))))){
+			    	  alert("Validation failed");
+			        return; 
+			      }
+			}
+	
+	   //validation success , when above mentioned if condition is false.
+	   		$("#resourceForm").submit(); // Submit the form
+	  	}
+	  	
 		$('#txtSearch').on('keyup', function(){
 			var value =$(this).val();
 			var data = FilterFunction(value, teacher);
@@ -372,6 +359,7 @@
 			
 			
 		})
+		
 		function FilterFunction(value, data){
 			var filteredData = [];
 			console.log(data.length);
@@ -387,6 +375,7 @@
 			}
 			return filteredData;
 		}
+		
 		function rebuildTable(data){
 			var table = document.getElementById('teacher_info')
 			table.innerHTML = ''
@@ -402,7 +391,6 @@
 			} 
 		}
 
-
 		$('#txtSearchResources').on('keyup', function(){
 			var value =$(this).val();
 			var data = FilterFunctionR(value, resources);
@@ -411,6 +399,7 @@
 			
 			
 		})
+		
 		function FilterFunctionR(value, data){
 			var filteredData = [];
 			console.log(data.length);
@@ -444,9 +433,8 @@
 			var data = FilterFunctionS(value, schools);
 			
 			rebuildTableS(data);
-			
-			
 		})
+		
 		function FilterFunctionS(value, data){
 			var filteredData = [];
 			console.log(data.length);
@@ -482,6 +470,7 @@
 			
 			
 		})
+		
 		function FilterFunctionC(value, data){
 			var filteredData = [];
 		 	for (var i = 0; i < data.length; i++){
@@ -492,14 +481,6 @@
 					filteredData.push(data[i])
 				}
 			} 
-		/* 	for (var i = 0; i < otherData.length; i++){
-				value = value.toLowerCase();
-				var rname = otherData[i].school_name.toLowerCase();
-				
-				if(rname.includes(value)){
-					filteredData.push(data[i])
-				}
-			} */
 			return filteredData;
 		}
 
@@ -515,52 +496,48 @@
 			} 
 		}
 		
-
-		    $("#schools_slection").on('change', function () {
-		    	$("#classes_selection").children().remove().end();
-		    	$("#classes_selection").append('<option value ="">--</option>');
-		        var el = $(this);
-		        console.log(el.val());
-		        for(var i = 0; i < classes.length; i++){
-		        	if(el.val() == classes[i].school){
-		        		
-		        		var text = classes[i].class_name;
-		        		$("#classes_selection").append('<option th:value = " ' + classes[i].class_name + ' "> ' + classes[i].class_name + '  </option>');
-		        		
-		        	}	
-		        }
-		        if(el.val().includes("Elementary")){
-		        	$("#low_grade").children().remove().end();
-		        	$("#high_grade").children().remove().end();
-		        	console.log("inclludes Elem");
-		        	for(var i = 0; i < low_grades.length; i++){
-		        		console.log(low_grades[i])
-		        		$("#low_grade").append('<option th:value " ' + low_grades[i] + ' "> ' + low_grades[i] + '</option>');
-		        		$("#high_grade").append('<option th:value " ' + low_grades[i] + ' "> ' + low_grades[i] + '</option>');
-		        	}
-		        }else if(el.val().includes("Middle")){
-		        	$("#low_grade").children().remove().end();
-		        	$("#high_grade").children().remove().end();
-		        	for(var i = 0; i < middle_grades.length; i++){
-		        		console.log(middle_grades[i])
-		        		$("#low_grade").append('<option th:value " ' + middle_grades[i] + ' "> ' + middle_grades[i] + '</option>');
-		        		$("#high_grade").append('<option th:value " ' + middle_grades[i] + ' "> ' + middle_grades[i] + '</option>');
-		        	}
-		        }
-		        else{
-		        	$("#low_grade").children().remove().end();
-		        	$("#high_grade").children().remove().end();
-		        	for(var i = 0; i < high_grades.length; i++){
-		        		console.log(high_grades[i])
-		        		$("#low_grade").append('<option th:value " ' + high_grades[i] + ' "> ' + high_grades[i] + '</option>');
-		        		$("#high_grade").append('<option th:value " ' + high_grades[i] + ' "> ' + high_grades[i] + '</option>');
-		        }
-		        }
-		        
-		    });
-		
-		
-
+	    $("#schools_slection").on('change', function () {
+	    	$("#classes_selection").children().remove().end();
+	    	$("#classes_selection").append('<option value ="">--</option>');
+	        var el = $(this);
+	        console.log(el.val());
+	        for(var i = 0; i < classes.length; i++){
+	        	if(el.val() == classes[i].school){
+	        		
+	        		var text = classes[i].class_name;
+	        		$("#classes_selection").append('<option th:value = " ' + classes[i].class_name + ' "> ' + classes[i].class_name + '  </option>');
+	        		
+	        	}	
+	        }
+	        if(el.val().includes("Elementary")){
+	        	$("#low_grade").children().remove().end();
+	        	$("#high_grade").children().remove().end();
+	        	console.log("inclludes Elem");
+	        	for(var i = 0; i < low_grades.length; i++){
+	        		console.log(low_grades[i])
+	        		$("#low_grade").append('<option th:value " ' + low_grades[i] + ' "> ' + low_grades[i] + '</option>');
+	        		$("#high_grade").append('<option th:value " ' + low_grades[i] + ' "> ' + low_grades[i] + '</option>');
+	        	}
+	        }else if(el.val().includes("Middle")){
+	        	$("#low_grade").children().remove().end();
+	        	$("#high_grade").children().remove().end();
+	        	for(var i = 0; i < middle_grades.length; i++){
+	        		console.log(middle_grades[i])
+	        		$("#low_grade").append('<option th:value " ' + middle_grades[i] + ' "> ' + middle_grades[i] + '</option>');
+	        		$("#high_grade").append('<option th:value " ' + middle_grades[i] + ' "> ' + middle_grades[i] + '</option>');
+	        	}
+	        }
+	        else{
+	        	$("#low_grade").children().remove().end();
+	        	$("#high_grade").children().remove().end();
+	        	for(var i = 0; i < high_grades.length; i++){
+	        		console.log(high_grades[i])
+	        		$("#low_grade").append('<option th:value " ' + high_grades[i] + ' "> ' + high_grades[i] + '</option>');
+	        		$("#high_grade").append('<option th:value " ' + high_grades[i] + ' "> ' + high_grades[i] + '</option>');
+	        }
+	        }
+	        
+	    });
 		</script>	
 	</body>
 </html>

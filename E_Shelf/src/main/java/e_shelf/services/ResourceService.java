@@ -51,9 +51,7 @@ public class ResourceService {
 		
 		resourceRepository.save(resource);
 		
-		System.out.println(resource.getResource_name());
-		System.out.println(resource.getResource_image_URL());
-		System.out.println(resource.getResource_URL());
+
 		
 		
 	}
