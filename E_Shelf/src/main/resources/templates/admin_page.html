@@ -11,6 +11,7 @@
 	<title>E-Shelf Admin</title>
 </head>
 <body>
+
 	<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
 	  <a class="navbar-brand" href="#">E-Shelf Admin</a>
 	  <a sec:authentication = "name"></a>
@@ -38,9 +39,12 @@
 	    </ul>
 	  </div>
 	</nav>
+	
 	<br>
+	
 	<button id="show_all_teachers" th:onclick ="showDiv('all_teachers', 'show_all_teachers', 'hide_all_teachers')">Display All Teachers In the System</button>
 	<button id="hide_all_teachers" th:onclick ="hideDiv('all_teachers', 'show_all_teachers', 'hide_all_teachers')" style = "display:none">Hide All Teachers In the System</button>
+	
 	<br>
 
 	<div id="all_teachers"  style="visibility: hidden; display: none;">
@@ -67,10 +71,14 @@
 			
 		</table>
 	</div>
+	
 	<br>
+	
 	<button id="show_all_resources" th:onclick ="showDiv('all_resources', 'show_all_resources', 'hide_all_resources')">Display All Resources In the System</button>
 	<button id="hide_all_resources" th:onclick ="hideDiv('all_resources', 'show_all_resources', 'hide_all_resources')" style = "display:none">Hide All Resources In the System</button>
+	
 	<br>
+	
 	<div id="all_resources" style="visibility: hidden; display: none">
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addResourceModal" data-whatever="@mdo">New Resource</button>
 		<input id="txtSearchResources" type ="text" name = "keyword">
@@ -89,10 +97,14 @@
 			</tr>
 		</table>
 	</div>
+	
 	<br>
+	
 	<button id="show_all_schools" th:onclick ="showDiv('all_schools', 'show_all_schools', 'hide_all_schools')">Display All Schools In the System</button>
 	<button id="hide_all_schools" th:onclick ="hideDiv('all_schools', 'show_all_schools', 'hide_all_schools')" style = "display:none">Hide All Schools In the System</button>
+	
 	<br>
+	
 	<div id="all_schools" style="visibility: hidden; display: none">
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSchoolModal" data-whatever="@mdo">New School</button>
 	<input id="txtSearchSchools" type ="text" name = "keyword">
@@ -107,11 +119,16 @@
 			</tr>	
 		</table>
 	</div>
+	
 	<br>
+	
 	<button id="show_all_classes" th:onclick ="showDiv('all_classes', 'show_all_classes', 'hide_all_classes')">Display All Classes In the System</button>
 	<button id="hide_all_classes" th:onclick ="hideDiv('all_classes', 'show_all_classes', 'hide_all_classes')" style = "display:none">Hide All Classes In the System</button>
+	
 	<br>
+	
 	<div id="all_classes" style="visibility: hidden; display: none">
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addClassModal" data-whatever="@mdo">New Class</button>
 	<input id="txtSearchClasses" type ="text" name = "keyword">
 		<table id="classes_headings">
 			<tr>
@@ -273,6 +290,42 @@
 	    </div>
 	  </div>
 	</div>
+	
+	<div class="modal fade" id="addClassModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="AddClassModal">Add Class</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <form id = "classForm" th:action  ="@{/E-Shelf/main/addClass}" method = "post">
+	          <div class="form-group">
+	          <div id="name_check"></div>
+	            <label for="school_name" class="col-form-label">Class Name:</label>
+	            <input type="text" class="form-control" id="class_name" name = "class_name" required>
+	          </div>
+	     	  <div class = "form-grup">
+	          	<label for="school_name_for_class" class="col-form-label">School:</label>
+	          	<select  id ="school" name = "school" required>
+	          		<option value ="">--</option>
+	          		<option th:each="schools :${schools}" th:value = "${schools.school_name}"  th:utext = "${schools.school_name}" />
+	          	</select>
+	          </div>
+	          <div class ="form-group">
+	          	  <button type="button" id="ignoreClassForm" name="action" onclick="myValidationFunctionC()" value="ignoreOrder" class="btn btn-primary btn-sm">Submit</button>
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
 	<script th:inline="javascript">
 	
 		function showDiv(div_name, button_to_hide, button_to_show){
@@ -348,7 +401,21 @@
 			}
 	
 	   //validation success , when above mentioned if condition is false.
-	   		$("#resourceForm").submit(); // Submit the form
+	   		$("#schoolForm").submit(); // Submit the form
+	  	}
+	  	
+	  	function myValidationFunctionC(){
+		  	var class_name = document.getElementById('class_name').value;
+			
+			for(var i = 0; i < classes.length; i++){
+			      if( classes[i].class_name == class_name){
+			    	  alert("Validation failed");
+			        return; 
+			      }
+			}
+	
+	   //validation success , when above mentioned if condition is false.
+	   		$("#classForm").submit(); // Submit the form
 	  	}
 	  	
 		$('#txtSearch').on('keyup', function(){

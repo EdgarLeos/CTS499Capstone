@@ -1,7 +1,9 @@
 package e_shelf.services;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import e_shelf.repositories.SchoolRepository;
 import e_shelf.repositories.TeacherRepository;
 import e_shelf.repositories.UserRepository;
 import e_shelf.domains.database.Class;
+import e_shelf.domains.database.School;
 import e_shelf.domains.database.Teacher;
 
 @Service
@@ -32,6 +35,24 @@ public class ClassesService {
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	SchoolService schoolService;
+	
+	public void addClass(ClassesInfo classInfo) {
+		
+		Class newClass = new Class();
+		newClass.setClass_name(classInfo.getClass_name());
+		
+		School school = schoolService.getSchool(classInfo.getSchool());
+		newClass.setSchool(school);
+		
+		Set<Teacher> teachers = new HashSet<Teacher>();
+		newClass.setClass_has_teacher(teachers);
+		
+		classRepository.save(newClass);
+		
+	}
 	
 	public ClassesInfo getClassesInfo(int id_class) {
 		List<Class> classes = classRepository.findById(id_class);

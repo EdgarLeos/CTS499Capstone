@@ -34,6 +34,7 @@ import e_shelf.domains.info.*;
 import e_shelf.repositories.*;
 import e_shelf.services.*;
 import e_shelf.services.ResourceService;
+import e_shelf.utilities.FileUploadUtil;
 
 @Controller
 public class Main {
@@ -67,6 +68,7 @@ public class Main {
 	
 	@Autowired
 	SchoolService schoolService;
+	
 	
 	@GetMapping("/E-Shelf/allInfo")
 	public String getAllInfo(Model model) {
@@ -175,9 +177,9 @@ public class Main {
     public String addNewResource(ResourceUploadInfo resource,  @RequestParam("image") MultipartFile multipartFile) throws IOException {
 
     	String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-    	
+    	String uploadDir = "/Users/edgarleos/git/CapStone/E_Shelf/src/main/resources/static/img/";
     	resourceService.addResource(resource, fileName);
-    	
+    	FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
     	return "redirect:/admin";
     }
     
@@ -195,6 +197,14 @@ public class Main {
     public String addNewSchool(School school, Model model) {
     	
     	schoolService.addSchool(school);
+
+    	return "redirect:/admin";
+    }
+    
+    @PostMapping("/E-Shelf/main/addClass")
+    public String addNewSchool(ClassesInfo classInfo, Model model) {
+    	
+    	classService.addClass(classInfo);
 
     	return "redirect:/admin";
     }

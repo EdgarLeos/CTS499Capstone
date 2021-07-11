@@ -1,6 +1,7 @@
 package e_shelf.services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -9,6 +10,8 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+
 
 import e_shelf.domains.database.Teacher;
 import e_shelf.domains.database.TeacherHasResource;
@@ -46,14 +49,27 @@ public class TeacherService {
 		
 		Teacher teacher = new Teacher();
 		
+		String[] grades = {"Kinder", "1st Grade", "2nd Grade", "3rd Grade", "4th Grade", "5th Grade", "6th Grade", "7th Grade", "8th Grade", "9th Grade", "10th Grade", "11th Grade", "12th Grade"};
+		int low_grade = 0;
+		int high_grade = 0;
+		for(int i = 0; i < grades.length; i ++) {
+			if(grades[i] == teacherInfo.getLow_grade()) {
+				low_grade = i;
+			}
+			if(grades[i] == teacherInfo.getHigh_grade()) {
+				high_grade = i;
+			}
+		}
+		
+		
 		teacher.setLast_name(teacherInfo.getLast_name());
 		teacher.setFirst_name(teacherInfo.getFirst_name());
 		teacher.setTitle(teacherInfo.getTittle());
 		teacher.setTeacher_name(teacherInfo.getLast_name() + ", " + teacherInfo.getFirst_name());
 		teacher.setEmail(teacherInfo.getFirst_name().substring(0,1).toLowerCase() + teacherInfo.getLast_name().toLowerCase() + "@capstone.k12.ca.us");
 		teacher.setTitle(teacherInfo.getTittle());
-		teacher.setLow_grade(teacherInfo.getLow_grade());
-		teacher.setHigh_grade(teacherInfo.getHigh_grade());
+		teacher.setLow_grade(String.valueOf(low_grade));
+		teacher.setHigh_grade(String.valueOf(high_grade));
 		teacher.setSchool(schoolService.getSchool(teacherInfo.getSchool_name()));
 		//teacher.setId_teacher(teacherInfo.getId_teacher());
 		Set<Class> teacher_classes = new HashSet<Class>();
