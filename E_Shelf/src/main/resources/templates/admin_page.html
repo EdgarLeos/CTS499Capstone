@@ -661,13 +661,40 @@ function rebuildTableR(data){
 	var table = document.getElementById('resource_info')
 	table.innerHTML = ''
 	for(var i= 0; i < data.length; i++){
+		var idString = data[i].id_resources.toString();
+		var ref  = 'E-Shelf/main/findResourcerById/?id=' + idString;
 		var row = `<tr>
 		<td> ${data[i].resource_name}</td>
 		<td><a href = ${data[i].resource_URL} target ="_blank">${data[i].resource_URL}</a></td>
 		<td><img src=${data[i].resource_image_URL} style="width:200px;height:200px;"></td>
+	    <td>
+    	<div class = "btn-group">
+    	<a href = ${ref} class = "btn btn-primary" id = "teacherEditButtonFilter">Edit</a></div>
+    	</td>
 	</tr>`
 	table.innerHTML += row
 	} 
+	
+	$('table #teacherEditButtonFilter').on('click', function(event){
+		event.preventDefault();
+		
+		var href = $(this).attr('href');
+		
+		$.get(href, function(resourcesInfo, status){
+			var imgURL = "<img src=" + resourcesInfo.resource_image_URL + "\ width=\"150px\" height=\"150px\">"; 
+			console.log(imgURL)
+			$('#id-edit-resource').val(resourcesInfo.id_resources)
+			$('#resource_name-edit').val(resourcesInfo.resource_name)
+			document.getElementById("current_image_resource").innerHTML =  "Current Image: " +  imgURL;
+			$('#resource_URL-edit').val(resourcesInfo.resource_URL)
+			
+		});
+		
+		
+		$('#editResourceModal').modal();
+		
+		
+	});
 }
 
 $('#txtSearchSchools').on('keyup', function(){
