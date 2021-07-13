@@ -185,6 +185,25 @@ public class Main {
     	return "redirect:/admin";
     }
     
+    @RequestMapping("E-Shelf/main/findResourcerById")
+    @ResponseBody
+    public ResourcesInfo findResourceById(int id){
+    	return resourceService.getResourcsInfo(id);
+    }
+    
+    @RequestMapping(value = "/E-Shelf/main/editResource",headers=("content-type=multipart/form-data"), method = {RequestMethod.PUT, RequestMethod.GET, RequestMethod.POST})
+    public String updateResource(ResourceUploadInfo resource,  @RequestParam("image-edit") MultipartFile multipartFile) throws IOException{
+    	System.out.println(resource.getId_resource());
+    	String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+    	String uploadDir = "/Users/edgarleos/git/CapStone/E_Shelf/src/main/resources/static/img/";
+    	resourceService.updateResource(resource, fileName);
+    	if(!fileName.isEmpty())
+    		FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+
+    	return "redirect:/admin";
+    }
+    
+    
     
     @PostMapping("/E-Shelf/main/addTeacher")
     public String addNewTeacher(TeacherInfo teacher, Model model) {
@@ -201,8 +220,10 @@ public class Main {
     	return teacherService.getTecherInfo(id);
     }
     
+
+    
     @RequestMapping(value = "/E-Shelf/main/EditTeacher", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String updateNewTeacher(TeacherInfo teacher, Model model) {
+    public String updateTeacher(TeacherInfo teacher, Model model) {
     	
     	teacherService.addTacher(teacher);
 

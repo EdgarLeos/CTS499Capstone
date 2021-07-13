@@ -51,7 +51,7 @@
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTeacherModal" data-whatever="@mdo">New Teacher</button>
 		<input id="txtSearch" type ="text" name = "keyword">
 		<div id="message"></div>
-		<table id = "teacher_headings">
+		<table id = "teacher_headings" style="width: 100%">
 				<tr>
 					<th> Teacher ID</th>
 					<th> Teacher Last Name</th>
@@ -61,7 +61,7 @@
 					<th> Actions </th>
 				</tr>
 		</table>
-		<table id = "teacher_info">
+		<table id = "teacher_info" style="width: 100%">
 				<tr  th:each="teachers :${teachers}">
 					<td th:text = "${teachers.id_teacher}"></td>
 					<td th:text = "${teachers.last_name}"></td>
@@ -71,6 +71,7 @@
 				    <td>
 				    	<div class = "btn-group">
 				    	<a th:href = "@{/E-Shelf/main/findTeacherById/(id = ${teachers.id_teacher})}" class = "btn btn-primary" id = "teacherEditButton">Edit</a></div>
+				    	</td>
 				</tr>
 			
 		</table>
@@ -86,18 +87,23 @@
 	<div id="all_resources" style="visibility: hidden; display: none">
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addResourceModal" data-whatever="@mdo">New Resource</button>
 		<input id="txtSearchResources" type ="text" name = "keyword">
-		<table id="resource_headings">
+		<table id="resource_headings" style="width: 100%">
 			<tr>
 				<th>Resource Name</th>
 				<th>Resource URL</th>
 				<th>Resource Image</th>
+				<th> Actions </th>
 			</tr>
 		</table>
-		<table id="resource_info">
+		<table id="resource_info" style="width: 100%">
 			<tr th:each="resources :${resources}">
 				<td th:text = "${resources.resource_name}"></td>
 				<td><a th:href = "${resources.resource_URL}"  target ="_blank" th:text = "${resources.resource_URL}" ></a></td>
 				<td> <img th:src="${resources.resource_image_URL}" style="width:200px;height:200px;"></td>
+				<td>
+			    	<div class = "btn-group">
+			    	<a th:href = "@{/E-Shelf/main/findResourcerById/(id = ${resources.id_resources})}" class = "btn btn-primary" id = "resourceEditButton">Edit</a></div>
+			    </td>
 			</tr>
 		</table>
 	</div>
@@ -334,7 +340,7 @@
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="EditTeacherModal">Update Teacher</h5>
+	        <h5 class="modal-title" id="editTeacherModal">Update Teacher</h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
@@ -412,6 +418,66 @@
 	    </div>
 	  </div>
 	</div>
+		
+	<div class="modal fade" id="editResourceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="editResourceModal">Update Resource</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <form id = "resourceFormEdit" th:action  ="@{/E-Shelf/main/editResource}"  enctype="multipart/form-data" method = "post">
+	          <div class="form-group">
+	          <div id="name_check"></div>
+	            <label for="id" class="col-form-label">Resource ID:</label>
+	            <input type="text" class="form-control" id="id-edit-resource" name = "id_resource" required readonly>
+	          </div>
+	          <div class="form-group">
+	            <label for="resource_name" class="col-form-label">Resource Name:</label>
+	            <input type="text" class="form-control" id="resource_name-edit" name = "resource_name" required>
+	          </div>
+	          <div id = "current_image_resource"></div>
+	          <div class="form-group">
+	            <label for="image" class="col-form-label">Upload Image:</label>
+	            <input type="file" name="image-edit" id = "image-edit" accept="image/png, image/jpeg" />
+	          </div>
+	          <div class="form-group">
+	            <label for="resource_URL" class="col-form-label">Web Site:</label>
+	            <input type="text" class="form-control" id="resource_URL-edit" name = "resource_URL">
+	          </div>
+	          <div class = "form-grup">
+				<label class="screen-reader-only" for="domain">Does the Resource require the teacher's domain in the username?</label>
+				 	<select name = "domain" required>
+					    <option value="">---</option>
+					    <option value="Yes">Yes</option>
+					    <option value="No">No</option>
+					</select>
+	          </div>
+	          <div class = "form-grup">
+				<label class="screen-reader-only" for="sso">Does this resource use Single-Sign-On (SSO) for access?</label>
+					  <select name = "sso" required>
+					    <option value="">---</option>
+					    <option value="Yes">Yes</option>
+					    <option value="No">No</option>
+					  </select>
+	          </div>
+				<div class ="form-group">
+	          	  <button type="submit" id="ignoreResourceForm" class="btn btn-primary btn-sm">Submit</button>
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	
+	
 	<script src = "js/teacher.js"></script>
 	
 	<script th:inline="javascript">

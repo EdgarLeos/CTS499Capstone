@@ -35,7 +35,7 @@ public class ResourceService {
 		Resources resource = new Resources();
 		resource.setResource_name(resourceUploadInfo.getResource_name());
 		resource.setResource_image_URL("/img/" + fileName);
-		resource.setResource_URL(resourceUploadInfo.getResouce_URL());
+		resource.setResource_URL(resourceUploadInfo.getResource_URL());
 		if(resourceUploadInfo.getDomain().equals("Yes")) {
 			resource.setDomain(true);
 		}else {
@@ -49,6 +49,45 @@ public class ResourceService {
 		List<TeacherHasResources> teacher_resources = new ArrayList<TeacherHasResources>();
 		resource.setResource(teacher_resources);
 		
+		List<Resources> existing = resourceRepository.findById(resourceUploadInfo.getId_resource());
+		if(existing != null) {
+			resource.setId_resources(existing.get(0).getId_resources());
+			}
+		
+		resourceRepository.save(resource);
+		
+	}
+	
+	public void updateResource(ResourceUploadInfo resourceUploadInfo, String fileName) {
+		
+		Resources resource = new Resources();
+		resource.setResource_name(resourceUploadInfo.getResource_name());
+	
+		resource.setResource_URL(resourceUploadInfo.getResource_URL());
+		if(resourceUploadInfo.getDomain().equals("Yes")) {
+			resource.setDomain(true);
+		}else {
+			resource.setDomain(false);
+		}
+		if(resourceUploadInfo.getSso().equals("Yes")) {
+			resource.setSSO(true);
+		}else {
+			resource.setSSO(false);
+		}
+		List<TeacherHasResources> teacher_resources = new ArrayList<TeacherHasResources>();
+		resource.setResource(teacher_resources);
+		
+		List<Resources> existing = resourceRepository.findById(resourceUploadInfo.getId_resource());
+		
+		
+		if(fileName.isEmpty()) {
+			resource.setResource_image_URL(existing.get(0).getResource_image_URL());
+		}else {
+			resource.setResource_image_URL("/img/" + fileName);
+		}
+		resource.setId_resources(existing.get(0).getId_resources());
+
+		System.out.println(resource.getId_resources());
 		resourceRepository.save(resource);
 		
 

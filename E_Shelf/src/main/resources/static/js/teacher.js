@@ -39,6 +39,27 @@ $('document').ready(function(){
 		
 	});
 	
+	$('table #resourceEditButton').on('click', function(event){
+		event.preventDefault();
+		
+		var href = $(this).attr('href');
+		
+		$.get(href, function(resourcesInfo, status){
+			var imgURL = "<img src=" + resourcesInfo.resource_image_URL + "\ width=\"150px\" height=\"150px\">"; 
+			console.log(imgURL)
+			$('#id-edit-resource').val(resourcesInfo.id_resources)
+			$('#resource_name-edit').val(resourcesInfo.resource_name)
+			document.getElementById("current_image_resource").innerHTML =  "Current Image: " +  imgURL;
+			$('#resource_URL-edit').val(resourcesInfo.resource_URL)
+			
+		});
+		
+		
+		$('#editResourceModal').modal();
+		
+		
+	});
+	
 
 
 	
