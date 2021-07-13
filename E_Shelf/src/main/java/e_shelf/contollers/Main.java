@@ -239,6 +239,23 @@ public class Main {
     	return "redirect:/admin";
     }
     
+    
+    @RequestMapping("/E-Shelf/main/findSchoolById/")
+    @ResponseBody
+    public School findSchoolById(int id){
+    	return schoolService.getSchoolById(id);
+    }
+    
+    
+    @RequestMapping(value = "/E-Shelf/main/editSchool", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String updateSchool(School school, Model model) {
+    	
+    	schoolService.addSchool(school);
+
+    	return "redirect:/admin";
+    }
+    
+    
     @PostMapping("/E-Shelf/main/addClass")
     public String addNewClass(ClassesInfo classInfo, Model model) {
     	
@@ -246,6 +263,21 @@ public class Main {
 
     	return "redirect:/admin";
     }
+    
+    @RequestMapping("/E-Shelf/main/findClassById/")
+    @ResponseBody
+    public ClassesInfo findClassById(int id){
+    	return classService.getClassesInfo(id);
+    }
+    
+    @RequestMapping(value = "/E-Shelf/main/editClass", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String updateClass(ClassesInfo classes, Model model) {
+    	
+    	classService.addClass(classes);
+
+    	return "redirect:/admin";
+    }
+    
     
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String laodAdminPage(Model model) {			

@@ -118,14 +118,19 @@
 	<div id="all_schools" style="visibility: hidden; display: none">
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSchoolModal" data-whatever="@mdo">New School</button>
 	<input id="txtSearchSchools" type ="text" name = "keyword">
-		<table id="schools_headings">
+		<table id="schools_headings" style="width: 100%">
 			<tr>
 				<th>School Name</th>
+				<th> Actions </th>
 			</tr>
 		</table>
-		<table id="schools_info">
+		<table id="schools_info" style="width: 100%">
 			<tr th:each="schools :${schools}">
 				<td th:text = "${schools.school_name}"></td>
+				<td>
+			    	<div class = "btn-group">
+			    	<a th:href = "@{/E-Shelf/main/findSchoolById/(id = ${schools.id_school})}" class = "btn btn-primary" id = "schoolEditButton">Edit</a></div>
+			    </td>
 			</tr>	
 		</table>
 	</div>
@@ -140,16 +145,21 @@
 	<div id="all_classes" style="visibility: hidden; display: none">
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addClassModal" data-whatever="@mdo">New Class</button>
 	<input id="txtSearchClasses" type ="text" name = "keyword">
-		<table id="classes_headings">
+		<table id="classes_headings" style="width: 100%">
 			<tr>
 				<th>Class Name</th>
 				<th>School</th>
+				<th> Actions </th>
 			</tr>
 			</table>
-			<table id = "classes_info">
+			<table id = "classes_info" style="width: 100%">
 			<tr th:each="classes: ${classes}">
 				<td th:text = "${classes.class_name}"></td>
 				<td th:text = "${classes.school}"></td>
+				<td>
+			    	<div class = "btn-group">
+			    	<a th:href = "@{/E-Shelf/main/findClassById/(id = ${classes.id_class})}" class = "btn btn-primary" id = "classEditButton">Edit</a></div>
+			    </td>
 			</tr>	
 		</table>
 	</div>
@@ -476,6 +486,76 @@
 	  </div>
 	</div>
 	
+	<div class="modal fade" id="editSchoolModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="editSchoolModal">Update School</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <form id = "schoolFormEdit" th:action  ="@{/E-Shelf/main/editSchool}" method = "put">
+	          <div class="form-group">
+	          <div id="name_check"></div>
+	            <label for="id" class="col-form-label">School ID:</label>
+	            <input type="text" class="form-control" id="id_school_edit" name = "id_school" required readonly>
+	          </div>
+	          <div class="form-group">
+	          <div id="name_check"></div>
+	            <label for="school_name" class="col-form-label">School Name:</label>
+	            <input type="text" class="form-control" id="school_name_edit" name = "school_name" required>
+	          </div>
+	          <div class ="form-group">
+	          	  <button type="submit"  class="btn btn-primary btn-sm">Submit</button>
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<div class="modal fade" id="editClassModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="editClassModal">Update Class</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <form id = "classFormEdit" th:action  ="@{/E-Shelf/main/editClass}" method = "put">
+	        <div class="form-group">
+	          <div id="name_check"></div>
+	            <label for="id" class="col-form-label">Class ID:</label>
+	            <input type="text" class="form-control" id="id_class_edit" name = "id_class" required readonly>
+	          </div>
+	          <div class="form-group">
+	          <div id="name_check"></div>
+	            <label for="school_name" class="col-form-label">Class Name:</label>
+	            <input type="text" class="form-control" id="class_name_edit" name = "class_name" required>
+	          </div>
+			<div class="form-group">
+	          <div id="name_check"></div>
+	            <label for="id" class="col-form-label">School:</label>
+	            <input type="text" class="form-control" id="class_school_edit" name = "school" required readonly>
+	          </div>
+	          <div class ="form-group">
+	          	  <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 	
 	
 	<script src = "js/teacher.js"></script>
@@ -723,11 +803,33 @@ function rebuildTableS(data){
 	var table = document.getElementById('schools_info')
 	table.innerHTML = ''
 	for(var i= 0; i < data.length; i++){
+		var idString = data[i].id_school.toString();
+		var ref  = 'E-Shelf/main/findSchoolById/?id=' + idString;
 		var row = `<tr>
 		<td> ${data[i].school_name}</td>
+		<td>
+    	<div class = "btn-group">
+    	<a href = ${ref} class = "btn btn-primary" id = "schoolEditButtonFilter">Edit</a></div>
+    	</td>
 	</tr>`
 	table.innerHTML += row
 	} 
+	
+	$('table #schoolEditButtonFilter').on('click', function(event){
+		event.preventDefault();
+		
+		var href = $(this).attr('href');
+		
+		$.get(href, function(school, status){
+			$('#id_school_edit').val(school.id_school)
+			$('#school_name_edit').val(school.school_name)			
+		});
+		
+		
+		$('#editSchoolModal').modal();
+		
+		
+	});
 }
 
 
@@ -757,12 +859,35 @@ function rebuildTableC(data){
 	var table = document.getElementById('classes_info')
 	table.innerHTML = ''
 	for(var i= 0; i < data.length; i++){
+		var idString = data[i].id_class.toString();
+		var ref  = 'E-Shelf/main/findClassById/?id=' + idString;
 		var row = `<tr>
 		<td> ${data[i].class_name}</td>
 		<td> ${data[i].school}</td>
+		<td>
+    	<div class = "btn-group">
+    	<a href = ${ref} class = "btn btn-primary" id = "classEditButtonFilter">Edit</a></div>
+    	</td>
 	</tr>`
 	table.innerHTML += row
 	} 
+	
+	$('table #classEditButtonFilter').on('click', function(event){
+		event.preventDefault();
+		
+		var href = $(this).attr('href');
+		
+		$.get(href, function(classInfo, status){
+			$('#id_class_edit').val(classInfo.id_class)
+			$('#class_name_edit').val(classInfo.class_name)
+			$('#class_school_edit').val(classInfo.school)
+		});
+		
+		
+		$('#editClassModal').modal();
+		
+		
+	});
 }
 
 $("#schools_slection").on('change', function () {

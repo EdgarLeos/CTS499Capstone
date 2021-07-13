@@ -61,7 +61,38 @@ $('document').ready(function(){
 	});
 	
 
-
+	$('table #schoolEditButton').on('click', function(event){
+		event.preventDefault();
+		
+		var href = $(this).attr('href');
+		
+		$.get(href, function(school, status){
+			$('#id_school_edit').val(school.id_school)
+			$('#school_name_edit').val(school.school_name)			
+		});
+		
+		
+		$('#editSchoolModal').modal();
+		
+		
+	});
+	
+	$('table #classEditButton').on('click', function(event){
+		event.preventDefault();
+		
+		var href = $(this).attr('href');
+		
+		$.get(href, function(classInfo, status){
+			$('#id_class_edit').val(classInfo.id_class)
+			$('#class_name_edit').val(classInfo.class_name)
+			$('#class_school_edit').val(classInfo.school)
+		});
+		
+		
+		$('#editClassModal').modal();
+		
+		
+	});
 	
 	
 	

@@ -42,5 +42,11 @@ public class SchoolService {
 		
 		return school;
 	}
+	
+	public School getSchoolById(int id) {
+		List <School> schools = schoolRepository.findById(id);
+		School school = schools.get(0);
+		return school;
+	}
 
 }

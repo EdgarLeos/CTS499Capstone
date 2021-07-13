@@ -46,8 +46,14 @@ public class ClassesService {
 		
 		School school = schoolService.getSchool(classInfo.getSchool());
 		newClass.setSchool(school);
-		
 		Set<Teacher> teachers = new HashSet<Teacher>();
+		List<Class>existing = classRepository.findById(classInfo.getId_class());
+		if(existing != null) {
+			newClass.setId_class(existing.get(0).getId_class());
+			teachers = existing.get(0).getClass_has_teacher();
+			}
+		
+
 		newClass.setClass_has_teacher(teachers);
 		
 		classRepository.save(newClass);
