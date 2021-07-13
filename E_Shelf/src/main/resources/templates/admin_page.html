@@ -521,15 +521,50 @@ function rebuildTable(data){
 	var table = document.getElementById('teacher_info')
 	table.innerHTML = ''
 	for(var i= 0; i < data.length; i++){
+		var idString = data[i].id_teacher.toString();
+		var ref  = 'E-Shelf/main/findTeacherById/?id=' + idString;
+		console.log(ref)
 		var row = `<tr>
 		<td> ${data[i].id_teacher}</td>
 		<td> ${data[i].last_name}</td>
 		<td> ${data[i].first_name}</td>
 		<td> ${data[i].email}</td>
 		<td> ${data[i].school_name}</td>
+	    <td>
+    	<div class = "btn-group">
+    	<a href = ${ref} class = "btn btn-primary" id = "teacherEditButtonFilter">Edit</a></div>
+    	</td>
 	</tr>`
 	table.innerHTML += row
 	} 
+
+
+	
+	$('table #teacherEditButtonFilter').on('click', function(event){
+		event.preventDefault();
+		
+		var href = $(this).attr('href');
+		
+		$.get(href, function(teacherInfo, status){
+			$('#id-edit').val(teacherInfo.id_teacher)
+			$('#last-name-edit').val(teacherInfo.last_name)
+			$('#first-name-edit').val(teacherInfo.first_name)
+			$('#title-edit').val(teacherInfo.tittle)
+			$('#email-edit').val(teacherInfo.email)
+			document.getElementById("teacher_school").innerHTML = teacherInfo.school_name
+			document.getElementById("teacher_class").innerHTML = teacherInfo.classes
+			document.getElementById("teacher_low_grade").innerHTML = teacherInfo.low_grade
+			document.getElementById("teacher_high_grade").innerHTML = teacherInfo.high_grade
+			document.getElementById("teacher_resources").innerHTML = teacherInfo.resources
+			
+		});
+		
+		
+		$('#editTeacherModal').modal();
+		
+		
+	});
+	
 }
 
 $('#txtSearchResources').on('keyup', function(){
