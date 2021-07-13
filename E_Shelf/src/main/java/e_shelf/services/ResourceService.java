@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import e_shelf.domains.database.TeacherHasResource;
+import e_shelf.domains.database.TeacherHasResources;
 import e_shelf.repositories.*;
 import e_shelf.domains.info.*;
 import e_shelf.domains.database.Resources;
@@ -46,7 +46,7 @@ public class ResourceService {
 		}else {
 			resource.setSSO(false);
 		}
-		List<TeacherHasResource> teacher_resources = new ArrayList<TeacherHasResource>();
+		List<TeacherHasResources> teacher_resources = new ArrayList<TeacherHasResources>();
 		resource.setResource(teacher_resources);
 		
 		resourceRepository.save(resource);
@@ -56,8 +56,8 @@ public class ResourceService {
 		
 	}
 	
-	public TeacherHasResource getTeacherHasResource(Resources resource, Teacher teacher) {
-		TeacherHasResource teacherResource = new TeacherHasResource();
+	public TeacherHasResources getTeacherHasResource(Resources resource, Teacher teacher) {
+		TeacherHasResources teacherResource = new TeacherHasResources();
 		 if(resource.isDomain())
 		 {
 			 teacherResource.setTeacher_username(teacher.getEmail());
@@ -89,7 +89,7 @@ public class ResourceService {
 			resourcesInfo.setResource_URL(resource.getResource_URL());
 			resourcesInfo.setResource_image_URL(resource.getResource_image_URL());
 			List<String>resource_teachers = new ArrayList<String>();
-			for(TeacherHasResource teacherHasResource: resource.getResource()) {
+			for(TeacherHasResources teacherHasResource: resource.getResource()) {
 				resource_teachers.add(teacherHasResource.getTeacher().getTeacher_name());
 			}
 			resourcesInfo.setTeachers(resource_teachers);

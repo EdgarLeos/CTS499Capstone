@@ -1,21 +1,31 @@
 package e_shelf.domains.database;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.*;
+
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
 
 //Teacher object to link to dB with its proper constructors, getters and setters. 
 @Entity
 @Table(name = "teacher")
+
 public class Teacher {
 	
 	@Id
+	@Column(name = "id_teacher")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id_teacher;
+	
+	
 	private String last_name;
 	private String first_name;
 	private String title;
 	private String teacher_name;
+	
+	@NaturalId
 	private String email;
 	private String low_grade;
 	private String high_grade;
@@ -28,14 +38,18 @@ public class Teacher {
 	@JoinTable( name = "class_has_teacher", joinColumns = @JoinColumn(name = "teacher_id_teacher"), inverseJoinColumns = @JoinColumn(name = "class_id_class"))
 	Set<Class>class_has_teacher;
 	
-	@OneToMany(mappedBy = "teacher",cascade = CascadeType.ALL)
-	private List<TeacherHasResource> teacherHasResource;
+    @OneToMany(
+            mappedBy = "teacher",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+        )
+	private Set<TeacherHasResources> teacherHasResource;
 	
 	public Teacher() {}
 
 	public Teacher(int id_teacher, String last_name, String first_name, String title, String teacher_name, String email,
 			String low_grade, String high_grade, School school, Set<Class> class_has_teacher,
-			List<TeacherHasResource> teacherHasResource) {
+			Set<TeacherHasResources> teacherHasResource) {
 		super();
 		this.id_teacher = id_teacher;
 		this.last_name = last_name;
@@ -130,16 +144,13 @@ public class Teacher {
 		this.class_has_teacher = class_has_teacher;
 	}
 
-	public List<TeacherHasResource> getTeacherHasResource() {
+	public Set<TeacherHasResources> getTeacherHasResource() {
 		return teacherHasResource;
 	}
 
-	public void setTeacherHasResource(List<TeacherHasResource> teacherHasResource) {
+	public void setTeacherHasResource(Set<TeacherHasResources> teacherHasResource) {
 		this.teacherHasResource = teacherHasResource;
 	};
 	
-	
-
-
 	
 }

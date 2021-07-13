@@ -1,7 +1,10 @@
 package e_shelf.domains.database;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,7 +28,7 @@ public class Resources {
 	private boolean SSO;
 	
 	public Resources(int id_resources, String resource_name, String resource_image_URL, String resource_URL,
-			boolean domain, boolean sSO, List<TeacherHasResource> resource) {
+			boolean domain, boolean sSO, List<TeacherHasResources> resource) {
 		super();
 		this.id_resources = id_resources;
 		this.resource_name = resource_name;
@@ -36,8 +39,9 @@ public class Resources {
 		this.resource = resource;
 	}
 
-	@OneToMany(mappedBy = "resources")
-	private List<TeacherHasResource> resource;
+	@OneToMany(mappedBy = "resources", cascade = CascadeType.ALL,
+            orphanRemoval = true)
+	private List<TeacherHasResources> resource;
 	
 	public Resources() {}
 
@@ -89,17 +93,15 @@ public class Resources {
 		SSO = sSO;
 	}
 
-	public List<TeacherHasResource> getResource() {
+	public List<TeacherHasResources> getResource() {
 		return resource;
 	}
 
-	public void setResource(List<TeacherHasResource> resource) {
+	public void setResource(List<TeacherHasResources> resource) {
 		this.resource = resource;
 	}
 
 	
-	
-	
-	
+
 
 }

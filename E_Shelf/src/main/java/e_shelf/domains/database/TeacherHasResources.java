@@ -1,37 +1,42 @@
 package e_shelf.domains.database;
 
 import java.io.Serializable;
+import java.util.Objects;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "teacher_has_resources")
-public class TeacherHasResource implements Serializable{
+public class TeacherHasResources{
 	
 	@Id
+	@Column(name = "id_teacher_has_resources")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id_teacher_has_resources;
+	private int id_teacher_has_resource;
 	
 	@ManyToOne
-	@JoinColumn(name = "teacher_id_teacher", referencedColumnName = "id_teacher")
+	@JoinColumn(name = "teacher_id_teacher")
 	private Teacher teacher;
 	
 	@ManyToOne
-	@JoinColumn(name = "resources_id_resources", referencedColumnName = "id_resources")
+	@JoinColumn(name = "resources_id_resources")
 	private Resources resources;
 	
-	@JoinColumn(name = "teacher_username")
+	@Column(name = "teacher_username")
 	private String teacher_username;
 	
-	@JoinColumn(name = "teacher_passwored")
+	@Column(name = "teacher_password")
 	private String teacher_password;
 
-	public TeacherHasResource() {};
+	public TeacherHasResources() {}
 	
 	
 	
-	
-	public TeacherHasResource(Teacher teacher, Resources resources, String teacher_username, String teacher_password) {
+
+	public TeacherHasResources(int id_teacher_has_resource, Teacher teacher, Resources resources,
+			String teacher_username, String teacher_password) {
 		super();
+		this.id_teacher_has_resource = id_teacher_has_resource;
 		this.teacher = teacher;
 		this.resources = resources;
 		this.teacher_username = teacher_username;
@@ -40,6 +45,14 @@ public class TeacherHasResource implements Serializable{
 
 
 
+
+	public int getId_teacher_has_resource() {
+		return id_teacher_has_resource;
+	}
+
+	public void setId_teacher_has_resource(int id_teacher_has_resource) {
+		this.id_teacher_has_resource = id_teacher_has_resource;
+	}
 
 	public Teacher getTeacher() {
 		return teacher;
@@ -71,8 +84,10 @@ public class TeacherHasResource implements Serializable{
 
 	public void setTeacher_password(String teacher_password) {
 		this.teacher_password = teacher_password;
-	}
+	};
 	
+	
+
 	
 
 }

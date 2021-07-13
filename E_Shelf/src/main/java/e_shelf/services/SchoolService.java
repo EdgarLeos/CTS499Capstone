@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import e_shelf.domains.database.Teacher;
-import e_shelf.domains.database.TeacherHasResource;
+import e_shelf.domains.database.TeacherHasResources;
 import e_shelf.repositories.*;
 import e_shelf.domains.info.*;
 import e_shelf.domains.database.Class;

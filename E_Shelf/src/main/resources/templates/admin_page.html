@@ -58,6 +58,7 @@
 					<th> Teacher First Name</th>
 					<th> Teacher Email</th>
 					<th> Teacher School</th>
+					<th> Actions </th>
 				</tr>
 		</table>
 		<table id = "teacher_info">
@@ -67,6 +68,9 @@
 					<td th:text = "${teachers.first_name}"></td>
 					<td th:text = "${teachers.email}"></td>
 				    <td th:text = "${teachers.school_name}"></td>
+				    <td>
+				    	<div class = "btn-group">
+				    	<a th:href = "@{/E-Shelf/main/findTeacherById/(id = ${teachers.id_teacher})}" class = "btn btn-primary" id = "teacherEditButton">Edit</a></div>
 				</tr>
 			
 		</table>
@@ -326,285 +330,397 @@
 	  </div>
 	</div>
 	
+	<div class="modal fade" id="editTeacherModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="EditTeacherModal">Update Teacher</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <form id = "teacherUpdateForm" th:action  ="@{/E-Shelf/main/EditTeacher}" method = "put">
+	        <div class="form-group">
+	          <div id="name_check"></div>
+	            <label for="id" class="col-form-label">Teacher ID:</label>
+	            <input type="text" class="form-control" id="id-edit" name = "id_teacher" required readonly>
+	          </div>
+	          <div class="form-group">
+	          <div id="name_check"></div>
+	            <label for="last-name" class="col-form-label">Last Name:</label>
+	            <input type="text" class="form-control" id="last-name-edit" name = "last_name" required>
+	          </div>
+	          <div class="form-group">
+	            <label for="first-name" class="col-form-label">First Name:</label>
+	            <input type="text" class="form-control" id="first-name-edit" name = "first_name"required>
+	          </div>
+	          <div class="form-group">
+	            <label for="title" class="col-form-label">Title:</label>
+	            <input type="text" class="form-control" id="title-edit" name = "tittle">
+	          </div>
+	          <div class="form-group">
+	          <div id="name_check"></div>
+	            <label for="id" class="col-form-label">Teacher Email:</label>
+	            <input type="text" class="form-control" id="email-edit" name = "email" required readonly>
+	          </div>
+	          <div class = "form-grup">
+	          	<label for="school_name" class="col-form-label">School:</label>
+	          	<div id= "teacher_school"> </div>
+	          	<select  id ="schools_slection-edit" name = "school_name" required>
+	          		<option value ="">--</option>
+	          		<option th:each="schools :${schools}" th:value = "${schools.school_name}"  th:utext = "${schools.school_name}" />
+	          	</select>
+	          </div>
+	          <div class = "form-grup">
+	          	<label for="classes" class="col-form-label">Class:</label>
+	          	<div id= "teacher_class"> </div>
+	          	<select id ="classes_selection-edit" name = "classes"required>
+	          		<option value ="">--</option>
+	          	</select>          
+	          </div>
+	          <div class="form-group">
+	            <label for="low_grade" class="col-form-label">Low Grade:</label>
+	            <div id= "teacher_low_grade"> </div>
+	            <select id ="low_grade-edit" name = "low_grade"required>
+	          		<option value ="">--</option>
+	          	</select>
+	          </div>
+	          <div class="form-group">
+	            <label for="high_grade" class="col-form-label">High Grade:</label>
+	               <div id= "teacher_high_grade"> </div>
+	           	<select id ="high_grade-edit" name = "high_grade"required>
+	          		<option value ="">--</option>
+	          	</select>
+	          </div>
+	          <div class="form-group">
+	            <label for="recipient-name" class="col-form-label">Resources:</label>
+	            <div id= "teacher_resources"> </div>
+		         <div th:each="resources :${resources}">
+		         <input id = "resources-edit" type = "checkbox" th:value= "${resources.resource_name}" name = "resources" >
+		         <label th:text ="${resources.resource_name}"></label>
+				</div>
+	          </div>
+	          <div class ="form-group">
+	          	  <button type="submit" id="teacherEditForm"  class="btn btn-primary btn-sm">Submit</button>
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<script src = "js/teacher.js"></script>
+	
 	<script th:inline="javascript">
+	/*<![CDATA[*/
+
+    var teacher = /*[[${teachers}]]*/ 'teachers';
+    var resources = /*[[${resources}]]*/ 'resources';
+    var schools = /*[[${schools}]]*/ 'schools';
+    var classes = /*[[${classes}]]*/ 'classes';
+    
+
+/*]]>*/
+
+var low_grades = ['Kinder', '1st Grade', '2nd Grade', '3rd Grade', '4th Grade', '5th Grade', '6th Grade'];
+var middle_grades = ['7th Grade', '8th Grade'];
+var high_grades=['9th Grade', '10th Grade', '11th Grade', '12th Grade'];
+
+	function myValidationFunction(){
+	var first = document.getElementById('first-name').value;
+	var last = document.getElementById('last-name').value;
+	var email = first.charAt(0).toLowerCase() + last.toLowerCase() + "@capstone.k12.ca.us";
+	var full_name = last +", "+first;
 	
-		function showDiv(div_name, button_to_hide, button_to_show){
-			document.getElementById(div_name).style.display = "block";
-			document.getElementById(div_name).style.visibility = "visible";
-			document.getElementById(button_to_hide).style.display="none";
-			document.getElementById(button_to_show).style.display="block";
-		}
-		function hideDiv(div_name, button_to_show, button_to_hide){
-			document.getElementById(div_name).style.display = "none";
-			document.getElementById(div_name).style.visibility = "hidden";
-			document.getElementById(button_to_show).style.display="block";
-			document.getElementById( button_to_hide).style.display="none";
-		}
+	for(var i = 0; i < teacher.length; i++){
+	      if( teacher[i].email == email && teacher[i].teacher_name == full_name ){
+	    	  alert("Validation failed");
+	        return; 
+	      }
+	}
 
-		/*<![CDATA[*/
+ //validation success , when above mentioned if condition is false.
+ 	$("#teacherForm").submit(); // Submit the form
+}
 
-		    var teacher = /*[[${teachers}]]*/ 'teachers';
-		    var resources = /*[[${resources}]]*/ 'resources';
-		    var schools = /*[[${schools}]]*/ 'schools';
-		    var classes = /*[[${classes}]]*/ 'classes';
-		    
-
-		/*]]>*/
-		
-		var low_grades = ['Kinder', '1st Grade', '2nd Grade', '3rd Grade', '4th Grade', '5th Grade', '6th Grade'];
-		var middle_grades = ['7th Grade', '8th Grade'];
-		var high_grades=['9th Grade', '10th Grade', '11th Grade', '12th Grade'];
+	function myValidationFunctionR(){
+  	var name = document.getElementById('resource_name').value;
+	var site = document.getElementById('resource_URL').value;
+	var fake_path=document.getElementById('image').value;
+	var filename = "/img/" + fake_path.split("\\").pop();
 	
-	  	function myValidationFunction(){
-			var first = document.getElementById('first-name').value;
-			var last = document.getElementById('last-name').value;
-			var email = first.charAt(0).toLowerCase() + last.toLowerCase() + "@capstone.k12.ca.us";
-			var full_name = last +", "+first;
-			
-			for(var i = 0; i < teacher.length; i++){
-			      if( teacher[i].email == email && teacher[i].teacher_name == full_name ){
-			    	  alert("Validation failed");
-			        return; 
-			      }
-			}
+	console.log(filename);
 	
-	     //validation success , when above mentioned if condition is false.
-	     	$("#teacherForm").submit(); // Submit the form
-	    }
-	  
-	  	function myValidationFunctionR(){
-		  	var name = document.getElementById('resource_name').value;
-			var site = document.getElementById('resource_URL').value;
-			var fake_path=document.getElementById('image').value;
-			var filename = "/img/" + fake_path.split("\\").pop();
-			
-			console.log(filename);
-			
-			for(var i = 0; i < resources.length; i++){
-			      if( resources[i].resource_URL == site || filename == resources[i].resource_image_URL || name == resources[i].resource_name){
-			    	  alert("Validation failed");
-			        return; 
-			      }
-			}
+	for(var i = 0; i < resources.length; i++){
+	      if( resources[i].resource_URL == site || filename == resources[i].resource_image_URL || name == resources[i].resource_name){
+	    	  alert("Validation failed");
+	        return; 
+	      }
+	}
+
+//validation success , when above mentioned if condition is false.
+		$("#resourceForm").submit(); // Submit the form
+	}
+
+	function myValidationFunctionS(){
+  	var school_name = document.getElementById('school_name').value;
+	for(var i = 0; i < schools.length; i++){
+	      if( schools[i].school_name == school_name || ( (!school_name.includes('Elementary') ||(!school_name.includes('Middle') || (!school_name.includes('High')))))){
+	    	  alert("Validation failed");
+	        return; 
+	      }
+	}
+
+//validation success , when above mentioned if condition is false.
+		$("#schoolForm").submit(); // Submit the form
+	}
 	
-	   //validation success , when above mentioned if condition is false.
-	   		$("#resourceForm").submit(); // Submit the form
-	  	}
-		
-	  	function myValidationFunctionS(){
-		  	var school_name = document.getElementById('school_name').value;
-			for(var i = 0; i < schools.length; i++){
-			      if( schools[i].school_name == school_name || ( (!school_name.includes('Elementary') ||(!school_name.includes('Middle') || (!school_name.includes('High')))))){
-			    	  alert("Validation failed");
-			        return; 
-			      }
-			}
+	function myValidationFunctionC(){
+  	var class_name = document.getElementById('class_name').value;
 	
-	   //validation success , when above mentioned if condition is false.
-	   		$("#schoolForm").submit(); // Submit the form
-	  	}
-	  	
-	  	function myValidationFunctionC(){
-		  	var class_name = document.getElementById('class_name').value;
-			
-			for(var i = 0; i < classes.length; i++){
-			      if( classes[i].class_name == class_name){
-			    	  alert("Validation failed");
-			        return; 
-			      }
-			}
+	for(var i = 0; i < classes.length; i++){
+	      if( classes[i].class_name == class_name){
+	    	  alert("Validation failed");
+	        return; 
+	      }
+	}
+
+//validation success , when above mentioned if condition is false.
+		$("#classForm").submit(); // Submit the form
+	}
 	
-	   //validation success , when above mentioned if condition is false.
-	   		$("#classForm").submit(); // Submit the form
-	  	}
-	  	
-		$('#txtSearch').on('keyup', function(){
-			var value =$(this).val();
-			var data = FilterFunction(value, teacher);
-			
-			rebuildTable(data);
-			
-			
-		})
+$('#txtSearch').on('keyup', function(){
+	var value =$(this).val();
+	var data = FilterFunction(value, teacher);
+	
+	rebuildTable(data);
+	
+	
+})
+
+function FilterFunction(value, data){
+	var filteredData = [];
+	console.log(data.length);
+	for (var i = 0; i < data.length; i++){
+		console.log(i);
+		value = value.toLowerCase();
+		var fname = data[i].first_name.toLowerCase();
+		var lname = data[i].last_name.toLowerCase();
 		
-		function FilterFunction(value, data){
-			var filteredData = [];
-			console.log(data.length);
-			for (var i = 0; i < data.length; i++){
-				console.log(i);
-				value = value.toLowerCase();
-				var fname = data[i].first_name.toLowerCase();
-				var lname = data[i].last_name.toLowerCase();
-				
-				if(fname.includes(value)||lname.includes(value)){
-					filteredData.push(data[i])
-				}
-			}
-			return filteredData;
+		if(fname.includes(value)||lname.includes(value)){
+			filteredData.push(data[i])
 		}
+	}
+	return filteredData;
+}
+
+function rebuildTable(data){
+	var table = document.getElementById('teacher_info')
+	table.innerHTML = ''
+	for(var i= 0; i < data.length; i++){
+		var row = `<tr>
+		<td> ${data[i].id_teacher}</td>
+		<td> ${data[i].last_name}</td>
+		<td> ${data[i].first_name}</td>
+		<td> ${data[i].email}</td>
+		<td> ${data[i].school_name}</td>
+	</tr>`
+	table.innerHTML += row
+	} 
+}
+
+$('#txtSearchResources').on('keyup', function(){
+	var value =$(this).val();
+	var data = FilterFunctionR(value, resources);
+	
+	rebuildTableR(data);
+	
+	
+})
+
+function FilterFunctionR(value, data){
+	var filteredData = [];
+	console.log(data.length);
+	for (var i = 0; i < data.length; i++){
+		console.log(i);
+		value = value.toLowerCase();
+		var rname = data[i].resource_name.toLowerCase();
 		
-		function rebuildTable(data){
-			var table = document.getElementById('teacher_info')
-			table.innerHTML = ''
-			for(var i= 0; i < data.length; i++){
-				var row = `<tr>
-				<td> ${data[i].id_teacher}</td>
-				<td> ${data[i].last_name}</td>
-				<td> ${data[i].first_name}</td>
-				<td> ${data[i].email}</td>
-				<td> ${data[i].school_name}</td>
-			</tr>`
-			table.innerHTML += row
-			} 
+		if(rname.includes(value)){
+			filteredData.push(data[i])
 		}
+	}
+	return filteredData;
+}
 
-		$('#txtSearchResources').on('keyup', function(){
-			var value =$(this).val();
-			var data = FilterFunctionR(value, resources);
-			
-			rebuildTableR(data);
-			
-			
-		})
+function rebuildTableR(data){
+	var table = document.getElementById('resource_info')
+	table.innerHTML = ''
+	for(var i= 0; i < data.length; i++){
+		var row = `<tr>
+		<td> ${data[i].resource_name}</td>
+		<td><a href = ${data[i].resource_URL} target ="_blank">${data[i].resource_URL}</a></td>
+		<td><img src=${data[i].resource_image_URL} style="width:200px;height:200px;"></td>
+	</tr>`
+	table.innerHTML += row
+	} 
+}
+
+$('#txtSearchSchools').on('keyup', function(){
+	var value =$(this).val();
+	var data = FilterFunctionS(value, schools);
+	
+	rebuildTableS(data);
+})
+
+function FilterFunctionS(value, data){
+	var filteredData = [];
+	console.log(data.length);
+	for (var i = 0; i < data.length; i++){
+		console.log(i);
+		value = value.toLowerCase();
+		var rname = data[i].school_name.toLowerCase();
 		
-		function FilterFunctionR(value, data){
-			var filteredData = [];
-			console.log(data.length);
-			for (var i = 0; i < data.length; i++){
-				console.log(i);
-				value = value.toLowerCase();
-				var rname = data[i].resource_name.toLowerCase();
-				
-				if(rname.includes(value)){
-					filteredData.push(data[i])
-				}
-			}
-			return filteredData;
+		if(rname.includes(value)){
+			filteredData.push(data[i])
 		}
+	}
+	return filteredData;
+}
 
-		function rebuildTableR(data){
-			var table = document.getElementById('resource_info')
-			table.innerHTML = ''
-			for(var i= 0; i < data.length; i++){
-				var row = `<tr>
-				<td> ${data[i].resource_name}</td>
-				<td><a href = ${data[i].resource_URL} target ="_blank">${data[i].resource_URL}</a></td>
-				<td><img src=${data[i].resource_image_URL} style="width:200px;height:200px;"></td>
-			</tr>`
-			table.innerHTML += row
-			} 
-		}
+function rebuildTableS(data){
+	var table = document.getElementById('schools_info')
+	table.innerHTML = ''
+	for(var i= 0; i < data.length; i++){
+		var row = `<tr>
+		<td> ${data[i].school_name}</td>
+	</tr>`
+	table.innerHTML += row
+	} 
+}
 
-		$('#txtSearchSchools').on('keyup', function(){
-			var value =$(this).val();
-			var data = FilterFunctionS(value, schools);
-			
-			rebuildTableS(data);
-		})
+
+$('#txtSearchClasses').on('keyup', function(){
+	var value =$(this).val();
+	var data = FilterFunctionC(value, classes);
+	
+	rebuildTableC(data);
+	
+	
+})
+
+function FilterFunctionC(value, data){
+	var filteredData = [];
+ 	for (var i = 0; i < data.length; i++){
+		value = value.toLowerCase();
+		var cname = data[i].class_name.toLowerCase();
 		
-		function FilterFunctionS(value, data){
-			var filteredData = [];
-			console.log(data.length);
-			for (var i = 0; i < data.length; i++){
-				console.log(i);
-				value = value.toLowerCase();
-				var rname = data[i].school_name.toLowerCase();
-				
-				if(rname.includes(value)){
-					filteredData.push(data[i])
-				}
-			}
-			return filteredData;
+		if(cname.includes(value)){
+			filteredData.push(data[i])
 		}
+	} 
+	return filteredData;
+}
 
-		function rebuildTableS(data){
-			var table = document.getElementById('schools_info')
-			table.innerHTML = ''
-			for(var i= 0; i < data.length; i++){
-				var row = `<tr>
-				<td> ${data[i].school_name}</td>
-			</tr>`
-			table.innerHTML += row
-			} 
-		}
+function rebuildTableC(data){
+	var table = document.getElementById('classes_info')
+	table.innerHTML = ''
+	for(var i= 0; i < data.length; i++){
+		var row = `<tr>
+		<td> ${data[i].class_name}</td>
+		<td> ${data[i].school}</td>
+	</tr>`
+	table.innerHTML += row
+	} 
+}
 
-
-		$('#txtSearchClasses').on('keyup', function(){
-			var value =$(this).val();
-			var data = FilterFunctionC(value, classes);
-			
-			rebuildTableC(data);
-			
-			
-		})
-		
-		function FilterFunctionC(value, data){
-			var filteredData = [];
-		 	for (var i = 0; i < data.length; i++){
-				value = value.toLowerCase();
-				var cname = data[i].class_name.toLowerCase();
-				
-				if(cname.includes(value)){
-					filteredData.push(data[i])
-				}
-			} 
-			return filteredData;
-		}
-
-		function rebuildTableC(data){
-			var table = document.getElementById('classes_info')
-			table.innerHTML = ''
-			for(var i= 0; i < data.length; i++){
-				var row = `<tr>
-				<td> ${data[i].class_name}</td>
-				<td> ${data[i].school}</td>
-			</tr>`
-			table.innerHTML += row
-			} 
-		}
-		
-	    $("#schools_slection").on('change', function () {
-	    	$("#classes_selection").children().remove().end();
-	    	$("#classes_selection").append('<option value ="">--</option>');
-	        var el = $(this);
-	        console.log(el.val());
-	        for(var i = 0; i < classes.length; i++){
-	        	if(el.val() == classes[i].school){
-	        		
-	        		var text = classes[i].class_name;
-	        		$("#classes_selection").append('<option th:value = " ' + classes[i].class_name + ' "> ' + classes[i].class_name + '  </option>');
-	        		
-	        	}	
-	        }
-	        if(el.val().includes("Elementary")){
-	        	$("#low_grade").children().remove().end();
-	        	$("#high_grade").children().remove().end();
-	        	console.log("inclludes Elem");
-	        	for(var i = 0; i < low_grades.length; i++){
-	        		console.log(low_grades[i])
-	        		$("#low_grade").append('<option th:value " ' + low_grades[i] + ' "> ' + low_grades[i] + '</option>');
-	        		$("#high_grade").append('<option th:value " ' + low_grades[i] + ' "> ' + low_grades[i] + '</option>');
-	        	}
-	        }else if(el.val().includes("Middle")){
-	        	$("#low_grade").children().remove().end();
-	        	$("#high_grade").children().remove().end();
-	        	for(var i = 0; i < middle_grades.length; i++){
-	        		console.log(middle_grades[i])
-	        		$("#low_grade").append('<option th:value " ' + middle_grades[i] + ' "> ' + middle_grades[i] + '</option>');
-	        		$("#high_grade").append('<option th:value " ' + middle_grades[i] + ' "> ' + middle_grades[i] + '</option>');
-	        	}
-	        }
-	        else{
-	        	$("#low_grade").children().remove().end();
-	        	$("#high_grade").children().remove().end();
-	        	for(var i = 0; i < high_grades.length; i++){
-	        		console.log(high_grades[i])
-	        		$("#low_grade").append('<option th:value " ' + high_grades[i] + ' "> ' + high_grades[i] + '</option>');
-	        		$("#high_grade").append('<option th:value " ' + high_grades[i] + ' "> ' + high_grades[i] + '</option>');
-	        }
-	        }
-	        
-	    });
+$("#schools_slection").on('change', function () {
+	$("#classes_selection").children().remove().end();
+	$("#classes_selection").append('<option value ="">--</option>');
+    var el = $(this);
+    console.log(el.val());
+    for(var i = 0; i < classes.length; i++){
+    	if(el.val() == classes[i].school){
+    		
+    		var text = classes[i].class_name;
+    		$("#classes_selection").append('<option th:value = " ' + classes[i].class_name + ' "> ' + classes[i].class_name + '  </option>');
+    		
+    	}	
+    }
+    if(el.val().includes("Elementary")){
+    	$("#low_grade").children().remove().end();
+    	$("#high_grade").children().remove().end();
+    	console.log("inclludes Elem");
+    	for(var i = 0; i < low_grades.length; i++){
+    		console.log(low_grades[i])
+    		$("#low_grade").append('<option th:value " ' + low_grades[i] + ' "> ' + low_grades[i] + '</option>');
+    		$("#high_grade").append('<option th:value " ' + low_grades[i] + ' "> ' + low_grades[i] + '</option>');
+    	}
+    }else if(el.val().includes("Middle")){
+    	$("#low_grade").children().remove().end();
+    	$("#high_grade").children().remove().end();
+    	for(var i = 0; i < middle_grades.length; i++){
+    		console.log(middle_grades[i])
+    		$("#low_grade").append('<option th:value " ' + middle_grades[i] + ' "> ' + middle_grades[i] + '</option>');
+    		$("#high_grade").append('<option th:value " ' + middle_grades[i] + ' "> ' + middle_grades[i] + '</option>');
+    	}
+    }
+    else{
+    	$("#low_grade").children().remove().end();
+    	$("#high_grade").children().remove().end();
+    	for(var i = 0; i < high_grades.length; i++){
+    		console.log(high_grades[i])
+    		$("#low_grade").append('<option th:value " ' + high_grades[i] + ' "> ' + high_grades[i] + '</option>');
+    		$("#high_grade").append('<option th:value " ' + high_grades[i] + ' "> ' + high_grades[i] + '</option>');
+    }
+    }
+    
+});
+$("#schools_slection-edit").on('change', function () {
+	$("#classes_selection-edit").children().remove().end();
+	$("#classes_selection-edit").append('<option value ="">--</option>');
+    var el = $(this);
+    console.log(el.val());
+    for(var i = 0; i < classes.length; i++){
+    	if(el.val() == classes[i].school){
+    		
+    		var text = classes[i].class_name;
+    		$("#classes_selection-edit").append('<option th:value = " ' + classes[i].class_name + ' "> ' + classes[i].class_name + '  </option>');
+    		
+    	}	
+    }
+    if(el.val().includes("Elementary")){
+    	$("#low_grade-edit").children().remove().end();
+    	$("#high_grade-edit").children().remove().end();
+    	console.log("inclludes Elem");
+    	for(var i = 0; i < low_grades.length; i++){
+    		console.log(low_grades[i])
+    		$("#low_grade-edit").append('<option th:value " ' + low_grades[i] + ' "> ' + low_grades[i] + '</option>');
+    		$("#high_grade-edit").append('<option th:value " ' + low_grades[i] + ' "> ' + low_grades[i] + '</option>');
+    	}
+    }else if(el.val().includes("Middle")){
+    	$("#low_grade-edit").children().remove().end();
+    	$("#high_grade").children().remove().end();
+    	for(var i = 0; i < middle_grades.length; i++){
+    		console.log(middle_grades[i])
+    		$("#low_grade-edit").append('<option th:value " ' + middle_grades[i] + ' "> ' + middle_grades[i] + '</option>');
+    		$("#high_grade-edit").append('<option th:value " ' + middle_grades[i] + ' "> ' + middle_grades[i] + '</option>');
+    	}
+    }
+    else{
+    	$("#low_grade-edit").children().remove().end();
+    	$("#high_grade-edit").children().remove().end();
+    	for(var i = 0; i < high_grades.length; i++){
+    		console.log(high_grades[i])
+    		$("#low_grade-edit").append('<option th:value " ' + high_grades[i] + ' "> ' + high_grades[i] + '</option>');
+    		$("#high_grade-edit").append('<option th:value " ' + high_grades[i] + ' "> ' + high_grades[i] + '</option>');
+    }
+    }
+    
+});
 		</script>	
 	</body>
 </html>

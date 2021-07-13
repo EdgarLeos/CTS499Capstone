@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 
 import e_shelf.domains.database.Teacher;
-import e_shelf.domains.database.TeacherHasResource;
+import e_shelf.domains.database.TeacherHasResources;
 import e_shelf.repositories.*;
 import e_shelf.domains.info.*;
 import e_shelf.domains.database.Class;
@@ -45,22 +45,30 @@ public class TeacherService {
 	@Autowired
 	ResourceService resourceService;
 	
+	
+	
+	
 	public void addTacher(TeacherInfo teacherInfo) {
 		
 		Teacher teacher = new Teacher();
-		
+		System.out.println(teacherInfo.getLow_grade());
+		System.out.println(teacherInfo.getHigh_grade());
 		String[] grades = {"Kinder", "1st Grade", "2nd Grade", "3rd Grade", "4th Grade", "5th Grade", "6th Grade", "7th Grade", "8th Grade", "9th Grade", "10th Grade", "11th Grade", "12th Grade"};
 		int low_grade = 0;
 		int high_grade = 0;
 		for(int i = 0; i < grades.length; i ++) {
-			if(grades[i] == teacherInfo.getLow_grade()) {
+			if(grades[i].equals(teacherInfo.getLow_grade())) {
+				
 				low_grade = i;
 			}
-			if(grades[i] == teacherInfo.getHigh_grade()) {
+			if(grades[i].equals(teacherInfo.getHigh_grade())) {
 				high_grade = i;
 			}
 		}
-		
+		List<Teacher>existing = teacherRepository.findById(teacherInfo.getId_teacher());
+		if(existing != null) {
+			teacher.setId_teacher(existing.get(0).getId_teacher());
+			}
 		
 		teacher.setLast_name(teacherInfo.getLast_name());
 		teacher.setFirst_name(teacherInfo.getFirst_name());
@@ -73,11 +81,10 @@ public class TeacherService {
 		teacher.setSchool(schoolService.getSchool(teacherInfo.getSchool_name()));
 		//teacher.setId_teacher(teacherInfo.getId_teacher());
 		Set<Class> teacher_classes = new HashSet<Class>();
-		List<Resources>resources = new ArrayList<Resources>();
 		
-		List<TeacherHasResource> teacher_resources = new ArrayList<TeacherHasResource>();
+		Set<TeacherHasResources> teacher_resources = new HashSet<TeacherHasResources>();
+		
 		teacher.setTeacherHasResource(teacher_resources);
-		
 
 		teacher.setClass_has_teacher(teacher_classes);
 		if(!(teacherInfo.getResources()==null)) {
@@ -95,7 +102,9 @@ public class TeacherService {
 			}
 		
 		//System.out.println(teacher.toString());
-		
+
+
+
 		teacherRepository.save(teacher);
 
 		
@@ -109,15 +118,29 @@ public class TeacherService {
 		if(teachers!=null && !teachers.isEmpty()) {
 			
 			Teacher teacher = teacherRepository.findById(id_teacher).get(0);
+			
+
 			//System.out.println(teacher.getSchool().getSchool_name());
 			TeacherInfo teacherInfo = new TeacherInfo();
+			
+			String[] grades = {"Kinder", "1st Grade", "2nd Grade", "3rd Grade", "4th Grade", "5th Grade", "6th Grade", "7th Grade", "8th Grade", "9th Grade", "10th Grade", "11th Grade", "12th Grade"};
+			String low_grade ="";
+			String high_grade="";
+			for(int i = 0; i < grades.length; i ++) {
+				if(String.valueOf(i).equals(teacher.getLow_grade())) {
+					low_grade = grades[i];
+				}
+				if(String.valueOf(i).equals(teacher.getHigh_grade())) {
+					high_grade = grades[i];
+				}
+			}
 			teacherInfo.setId_teacher(teacher.getId_teacher());
 			teacherInfo.setLast_name(teacher.getLast_name());;
 			teacherInfo.setFirst_name(teacher.getFirst_name());
 			teacherInfo.setTeacher_name(teacher.getTeacher_name());
 			teacherInfo.setEmail(teacher.getEmail());
-			teacherInfo.setLow_grade(teacher.getLow_grade());
-			teacherInfo.setHigh_grade(teacher.getHigh_grade());
+			teacherInfo.setLow_grade(low_grade);
+			teacherInfo.setHigh_grade(high_grade);
 			teacherInfo.setSchool_name(teacher.getSchool().getSchool_name());
 			List<String>teacher_classes = new ArrayList<String>();
 			List<String>teacher_resources = new ArrayList<String>();
@@ -125,7 +148,7 @@ public class TeacherService {
 				//System.out.println(teacher_class.getClass_name());
 				teacher_classes.add(teacher_class.getClass_name());	
 			}
-			for(TeacherHasResource teacherHasResource: teacher.getTeacherHasResource()) {
+			for(TeacherHasResources teacherHasResource: teacher.getTeacherHasResource()) {
 				teacher_resources.add(teacherHasResource.getResources().getResource_name());
 			}
 			teacherInfo.setClasses(teacher_classes);

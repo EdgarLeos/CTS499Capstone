@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -84,7 +86,7 @@ public class Main {
 		
 	
 		
-		for(TeacherHasResource teacherResource : teachers.get(0).getTeacherHasResource()) {
+		for(TeacherHasResources teacherResource : teachers.get(0).getTeacherHasResource()) {
 			System.out.println(teacherResource.getResources().getResource_name());
 			System.out.println(teacherResource.getTeacher_username());
 			System.out.println(teacherResource.getTeacher_password());
@@ -193,6 +195,21 @@ public class Main {
     }
     
     
+    @RequestMapping("/E-Shelf/main/findTeacherById")
+    @ResponseBody
+    public TeacherInfo findTeacherById(int id){
+    	return teacherService.getTecherInfo(id);
+    }
+    
+    @RequestMapping(value = "/E-Shelf/main/EditTeacher", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String updateNewTeacher(TeacherInfo teacher, Model model) {
+    	
+    	teacherService.addTacher(teacher);
+
+    	return "redirect:/admin";
+    }
+    
+    
     @PostMapping("/E-Shelf/main/addSchool")
     public String addNewSchool(School school, Model model) {
     	
@@ -202,7 +219,7 @@ public class Main {
     }
     
     @PostMapping("/E-Shelf/main/addClass")
-    public String addNewSchool(ClassesInfo classInfo, Model model) {
+    public String addNewClass(ClassesInfo classInfo, Model model) {
     	
     	classService.addClass(classInfo);
 
