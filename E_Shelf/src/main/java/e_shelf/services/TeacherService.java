@@ -160,6 +160,12 @@ public class TeacherService {
 			}
 
 	}
+
+
+	public void delete(int id_teacher) {
+		teacherRepository.deleteById(id_teacher);
+		
+	}
 	
 
 }

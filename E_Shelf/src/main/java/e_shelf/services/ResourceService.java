@@ -139,4 +139,11 @@ public class ResourceService {
 		}
 		
 	}
+
+
+
+	public void delete(int id_resources) {
+		resourceRepository.deleteById(id_resources);
+		
+	}
 }

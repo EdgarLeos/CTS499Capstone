@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
@@ -25,7 +26,8 @@ public class Class {
 	@JoinColumn(name = "school_id_school", referencedColumnName = "id_school")
 	private School school;
 	
-	@ManyToMany(mappedBy = "class_has_teacher")
+	@ManyToMany
+	@JoinTable(name = "class_has_teacher", joinColumns = @JoinColumn(name = "class_id_class"), inverseJoinColumns = @JoinColumn(name = "teacher_id_teacher"))
 	Set<Teacher>class_has_teacher;
 	
 	public Class() {}

@@ -80,6 +80,11 @@ public class ClassesService {
 			return null;
 		}
 	}
+
+	public void delete(int id_class) {
+		classRepository.deleteById(id_class);
+		
+	}
 	
 
 }

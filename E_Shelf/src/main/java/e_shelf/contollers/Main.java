@@ -203,7 +203,13 @@ public class Main {
     	return "redirect:/admin";
     }
     
-    
+    @RequestMapping(value = "/E-Shelf/main/deleteResource/", method = {RequestMethod.DELETE, RequestMethod.GET})
+    public String deleteResource(String id_resources) {
+    	System.out.println(id_resources);
+    	resourceService.delete(Integer.parseInt(id_resources));
+
+    	return "redirect:/admin";
+    }
     
     @PostMapping("/E-Shelf/main/addTeacher")
     public String addNewTeacher(TeacherInfo teacher, Model model) {
@@ -226,6 +232,14 @@ public class Main {
     public String updateTeacher(TeacherInfo teacher, Model model) {
     	
     	teacherService.addTacher(teacher);
+
+    	return "redirect:/admin";
+    }
+    
+    @RequestMapping(value = "/E-Shelf/main/deleteTeacher", method = {RequestMethod.DELETE, RequestMethod.GET})
+    public String deleteTeacher(String teacher_id) {
+    	System.out.println(teacher_id);
+    	teacherService.delete(Integer.parseInt(teacher_id));
 
     	return "redirect:/admin";
     }
@@ -278,6 +292,13 @@ public class Main {
     	return "redirect:/admin";
     }
     
+    @RequestMapping(value = "/E-Shelf/main/deleteClass/", method = {RequestMethod.DELETE, RequestMethod.GET})
+    public String deleteClass(String id_class) {
+    	System.out.println(id_class);
+    	classService.delete(Integer.parseInt(id_class));
+
+    	return "redirect:/admin";
+    }
     
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String laodAdminPage(Model model) {			

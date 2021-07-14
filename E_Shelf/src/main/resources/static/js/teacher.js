@@ -39,6 +39,19 @@ $('document').ready(function(){
 		
 	});
 	
+	$('table #teacherDeleteButton').on('click', function(event){
+		event.preventDefault();
+		
+		var href = $(this).attr('href');
+		
+		$('#confirmTeacherDeleteButoon').attr('href', href);
+		
+		$('#teacherDeleteModal').modal();
+		
+	});
+	
+
+	
 	$('table #resourceEditButton').on('click', function(event){
 		event.preventDefault();
 		
@@ -60,6 +73,16 @@ $('document').ready(function(){
 		
 	});
 	
+	$('table #resourceDeleteButton').on('click', function(event){
+		event.preventDefault();
+		
+		var href = $(this).attr('href');
+		
+		$('#confirmResourceDeleteButoon').attr('href', href);
+		
+		$('#resourceDeleteModal').modal();
+		
+	});
 
 	$('table #schoolEditButton').on('click', function(event){
 		event.preventDefault();
@@ -94,6 +117,16 @@ $('document').ready(function(){
 		
 	});
 	
+	$('table #classDeleteButton').on('click', function(event){
+		event.preventDefault();
+		
+		var href = $(this).attr('href');
+		
+		$('#confirmClassDeleteButoon').attr('href', href);
+		
+		$('#classDeleteModal').modal();
+		
+	});
 	
 	
 });
