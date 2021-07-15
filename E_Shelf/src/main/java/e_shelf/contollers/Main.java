@@ -256,7 +256,7 @@ public class Main {
     
     @RequestMapping("/E-Shelf/main/findSchoolById/")
     @ResponseBody
-    public School findSchoolById(int id){
+    public SchoolInfo findSchoolById(int id){
     	return schoolService.getSchoolById(id);
     }
     
@@ -308,7 +308,14 @@ public class Main {
     }
     
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
-	public String laodAdminPage(Model model) {			
+	public String laodAdminPage(Model model) {		
+Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        if(authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+        	return "login";
+        	
+        }
+
 				List<Teacher> teachers = teacherRepository.findAll();
 				List<TeacherInfo> teacherInfos = new ArrayList<TeacherInfo>();
 				for(Teacher teacher: teachers) {
@@ -322,6 +329,10 @@ public class Main {
 				}
 				
 				List<School> schools = schoolRepository.findAll();
+				List<SchoolInfo> schoolsInfo = new ArrayList<SchoolInfo>();
+				for(School school: schools) {
+					schoolsInfo.add(schoolService.schoolInfo(school.getId_school()));
+				}
 				
 				List<Resources> resources = resourceRepository.findAll();
 				List<ResourcesInfo> resourceInfo = new ArrayList<ResourcesInfo>();
@@ -332,7 +343,7 @@ public class Main {
 				Iterable<User> users = userRepository.findAll();
 				model.addAttribute("teachers", teacherInfos);
 				model.addAttribute("users", users);
-				model.addAttribute("schools", schools);
+				model.addAttribute("schools", schoolsInfo);
 				model.addAttribute("classes", classInfo);
 				model.addAttribute("resources", resourceInfo);
 				

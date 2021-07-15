@@ -45,9 +45,6 @@ public class TeacherService {
 	@Autowired
 	ResourceService resourceService;
 	
-	
-	
-	
 	public void addTacher(TeacherInfo teacherInfo) {
 		
 		Teacher teacher = new Teacher();
@@ -101,15 +98,7 @@ public class TeacherService {
 			teacher.getClass_has_teacher().add(classRepository.findByClass_name(teacherInfo_class));
 			}
 		
-		//System.out.println(teacher.toString());
-
-
-
-		teacherRepository.save(teacher);
-
-		
-		
-		
+		teacherRepository.save(teacher);	
 	}
 	
 	
@@ -142,7 +131,7 @@ public class TeacherService {
 			teacherInfo.setLow_grade(low_grade);
 			teacherInfo.setHigh_grade(high_grade);
 			if(teacher.getSchool() == null) {
-				teacherInfo.setSchool_name("No School Set");
+				teacherInfo.setSchool_name("Unassigned");
 			}
 			else{
 				teacherInfo.setSchool_name(teacher.getSchool().getSchool_name());

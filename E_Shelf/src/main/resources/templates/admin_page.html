@@ -53,28 +53,23 @@
 			<div id="message"></div>
 			<table id = "teacher_headings" style="width: 100%">
 					<tr>
-						<th> Teacher ID</th>
 						<th> Teacher Last Name</th>
 						<th> Teacher First Name</th>
-						<th> Teacher Email</th>
-						<th> Teacher School</th>
 						<th> Actions </th>
 					</tr>
 			</table>
 			<table id = "teacher_info" style="width: 100%">
 					<tr  th:each="teachers :${teachers}">
-						<td th:text = "${teachers.id_teacher}"></td>
 						<td th:text = "${teachers.last_name}"></td>
 						<td th:text = "${teachers.first_name}"></td>
-						<td th:text = "${teachers.email}"></td>
-					    <td th:text = "${teachers.school_name}"></td>
 					    <td>
 					    	<div class = "btn-group">
 					    	<a th:href = "@{/E-Shelf/main/findTeacherById/(id = ${teachers.id_teacher})}" class = "btn btn-primary" id = "teacherEditButton">Edit</a>
-					    	<a th:href = "@{/E-Shelf/main/deleteTeacher/(teacher_id = ${teachers.id_teacher})}" class = "btn btn-danger" id = "teacherDeleteButton">Delete</a></div>
-					    	</td>
+					    	<a th:href = "@{/E-Shelf/main/findTeacherById/(id = ${teachers.id_teacher})}" class = "btn btn-success" id = "teacherDetailsButton">Details</a>
+					    	<a th:href = "@{/E-Shelf/main/deleteTeacher/(teacher_id = ${teachers.id_teacher})}" class = "btn btn-danger" id = "teacherDeleteButton">Delete</a>
+					    	</div>
+					    </td>
 					</tr>
-				
 			</table>
 		</div>
 		
@@ -104,6 +99,7 @@
 					<td>
 				    	<div class = "btn-group">
 				    	<a th:href = "@{/E-Shelf/main/findResourcerById/(id = ${resources.id_resources})}" class = "btn btn-primary" id = "resourceEditButton">Edit</a>
+				    	<a th:href = "@{/E-Shelf/main/findResourcerById/(id = ${resources.id_resources})}" class = "btn btn-success" id = "resourceDetailsButton">Details</a>
 				    	<a th:href = "@{/E-Shelf/main/deleteResource/(id_resources = ${resources.id_resources})}" class = "btn btn-danger" id = "resourceDeleteButton">Delete</a></div>
 				    </td>
 				</tr>
@@ -132,6 +128,7 @@
 					<td>
 				    	<div class = "btn-group">
 				    	<a th:href = "@{/E-Shelf/main/findSchoolById/(id = ${schools.id_school})}" class = "btn btn-primary" id = "schoolEditButton">Edit</a>
+				    	<a th:href = "@{/E-Shelf/main/findSchoolById/(id = ${schools.id_school})}" class = "btn btn-success" id = "schoolDetailsButton">Details</a>
 				    	<a th:href = "@{/E-Shelf/main/deleteSchool/(id_school = ${schools.id_school})}" class = "btn btn-danger" id = "schoolDeleteButton">Delete</a></div>
 				    </td>
 				</tr>	
@@ -162,6 +159,7 @@
 					<td>
 				    	<div class = "btn-group">
 				    	<a th:href = "@{/E-Shelf/main/findClassById/(id = ${classes.id_class})}" class = "btn btn-primary" id = "classEditButton">Edit</a>
+				    	<a th:href = "@{/E-Shelf/main/findClassById/(id = ${classes.id_class})}" class = "btn btn-success" id = "classDetailsButton">Details</a>
 				    	<a th:href = "@{/E-Shelf/main/deleteClass/(id_class = ${classes.id_class})}" class = "btn btn-danger" id = "classDeleteButton">Delete</a></div>
 				    </td>
 				</tr>	
@@ -641,6 +639,191 @@
 		  </div>
 		</div>
 		
+		<div class="modal fade" id="detailsTeacherModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="detailsTeacherModal">Details Teacher</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <form id = "teacherDetailsForm" th:action  ="@{/E-Shelf/main/EditTeacher}" method = "put">
+		        <div class="form-group">
+		          <div id="name_check"></div>
+		            <label for="id" class="col-form-label">Teacher ID:</label>
+		            <input type="text" class="form-control" id="id_detials" name = "id_teacher" required readonly>
+		          </div>
+		          <div class="form-group">
+		          <div id="name_check"></div>
+		            <label for="last-name" class="col-form-label">Last Name:</label>
+		            <input type="text" class="form-control" id="last_name_details" name = "last_name" required readonly>
+		          </div>
+		          <div class="form-group">
+		            <label for="first-name" class="col-form-label">First Name:</label>
+		            <input type="text" class="form-control" id="first_name_detailst" name = "first_name"required readonly>
+		          </div>
+		          <div class="form-group">
+		            <label for="title" class="col-form-label">Title:</label>
+		            <input type="text" class="form-control" id="title_details" name = "tittle" readonly>
+		          </div>
+		          <div class="form-group">
+		          <div id="name_check"></div>
+		            <label for="id" class="col-form-label">Teacher Email:</label>
+		            <input type="text" class="form-control" id="email_details" name = "email" required readonly>
+		          </div>
+		          <div class = "form-grup">
+		          	<label for="school_name" class="col-form-label">School:</label>
+					<input type="text" class="form-control" id="school_deails" name = "teacher_school" required readonly>	
+		          </div>
+		          <div class = "form-grup">
+		          	<label for="classes" class="col-form-label">Class:</label>
+		          	<div id= "teacher_class_details"> </div>         
+		          </div>
+		          <div class="form-group">
+		            <label for="low_grade" class="col-form-label">Low Grade:</label>
+		            <div id= "teacher_low_grade_details"> </div>
+		          </div>
+		          <div class="form-group">
+		            <label for="high_grade" class="col-form-label">High Grade:</label>
+		               <div id= "teacher_high_grade_details"> </div>
+		          </div>
+		          <div class="form-group">
+		            <label for="recipient-name" class="col-form-label">Resources:</label>
+		            <div id= "teacher_resources_details"> </div>
+		          </div>
+		        </form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		<div class="modal fade" id="detailsResourceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="detailsResourceModal">Details Resource</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <form id = "resourceFormDetails" th:action  ="@{/E-Shelf/main/editResource}"  enctype="multipart/form-data" method = "post">
+		          <div class="form-group">
+		          <div id="name_check"></div>
+		            <label for="id" class="col-form-label">Resource ID:</label>
+		            <input type="text" class="form-control" id="id_resource_details" name = "id_resource" required readonly>
+		          </div>
+		          <div class="form-group">
+		            <label for="resource_name" class="col-form-label">Resource Name:</label>
+		            <input type="text" class="form-control" id="resource_name_details" name = "resource_name" required readonly>
+		          </div>
+		          <div id = "current_image_resource_details"></div>
+		          <div class="form-group">
+		            <label for="resource_URL" class="col-form-label">Web Site:</label>
+		            <input type="text" class="form-control" id="resource_URL_details" name = "resource_URL" readonly>
+		          </div>
+		          <div class = "form-grup">
+					<label class="screen-reader-only" for="domain">Does the Resource require the teacher's domain in the username?</label>
+		          	<div id = "domain_details"></div>
+		          </div>
+		          <div class = "form-grup">
+					<label class="screen-reader-only" for="sso">Does this resource use Single-Sign-On (SSO) for access?</label>	
+					<div id = "sso_details"></div>
+		          </div>
+		        </form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		<div class="modal fade" id="detailsSchoolModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="detailsSchoolModal">Details School</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <form id = "schoolFormEdit" th:action  ="@{/E-Shelf/main/editSchool}" method = "put">
+		          <div class="form-group">
+		          <div id="name_check"></div>
+		            <label for="id" class="col-form-label">School ID:</label>
+		            <input type="text" class="form-control" id="id_school_details" name = "id_school" required readonly>
+		          </div>
+		          <div class="form-group">
+		          <div id="name_check"></div>
+		            <label for="school_name" class="col-form-label">School Name:</label>
+		            <input type="text" class="form-control" id="school_name_details" name = "school_name" required readonly>
+		          </div>
+		          <div class="form-group">
+		          <div id="name_check"></div>
+		            <label for="school_name" class="col-form-label">Classes:</label>
+		               <div id="school_classes_details"></div>
+		            </div>
+		          <div class="form-group">
+		          <div id="name_check"></div>
+		            <label for="school_name" class="col-form-label">Teachers:</label>
+		               <div id="school_teachers_details"></div>
+		            </div>
+		        </form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		<div class="modal fade" id="detailsClassModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="detailsClassModal">Details Class</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <form id = "classFormDetails" th:action  ="@{/E-Shelf/main/editClass}" method = "put">
+		        <div class="form-group">
+		          <div id="name_check"></div>
+		            <label for="id" class="col-form-label">Class ID:</label>
+		            <input type="text" class="form-control" id="id_class_details" name = "id_class" required readonly>
+		          </div>
+		          <div class="form-group">
+		          <div id="name_check"></div>
+		            <label for="school_name" class="col-form-label">Class Name:</label>
+		            <input type="text" class="form-control" id="class_name_details" name = "class_name" required readonly>
+		          </div>
+				<div class="form-group">
+		          <div id="name_check"></div>
+		            <label for="id" class="col-form-label">School:</label>
+		            <input type="text" class="form-control" id="class_school_details" name = "school" required readonly>
+		          </div>
+		        <div class="form-group">
+		          <div id="name_check"></div>
+		            <label for="id" class="col-form-label">Teachers Assinged to this Class:</label>
+		            <div id="class_teachers_details"></div>
+		         </div>
+		        </form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
 		<script src = "js/teacher.js"></script>
 	
 		<script th:inline="javascript">
@@ -698,14 +881,19 @@
 			  	var school_name = document.getElementById('school_name').value;
 				for(var i = 0; i < schools.length; i++){
 					console.log(schools[i].school_name)
-				      if( schools[i].school_name == school_name || ( (!school_name.includes('Elementary') ||(!school_name.includes('Middle') || (!school_name.includes('High')))))){
+				      if( schools[i].school_name == school_name ){
 				    	  alert("Validation failed");
 				        return; 
-				      }
+				      }if(school_name.includes('Elementary') || school_name.includes('Middle') || school_name.includes('High') ){
+				    	  $("#schoolForm").submit(); 
+					}else{
+						alert("Validation failed No grade");
+						  return;
+					}
 				}
-		
-				$("#schoolForm").submit(); 
+				
 			}
+			
 			
 			function myValidationFunctionC(){
 			  	var class_name = document.getElementById('class_name').value;

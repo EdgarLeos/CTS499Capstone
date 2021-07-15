@@ -39,6 +39,10 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 		else if(authorities.toString().equals("[Teacher]")) {;
 		redirectURL += "/teacher";
 	}
+		else {
+			redirectURL = "/";
+		}
+			
 		
 		   response.sendRedirect(redirectURL);
 	}

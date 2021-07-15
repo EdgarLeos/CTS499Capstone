@@ -17,6 +17,7 @@ import e_shelf.domains.database.School;
 @Service
 public class SchoolService {
 	
+	@Autowired
 	TeacherRepository teacherRepository;
 	
 	@Autowired
@@ -43,10 +44,68 @@ public class SchoolService {
 		return school;
 	}
 	
-	public School getSchoolById(int id) {
+	public SchoolInfo schoolInfo(int id_school) {
+		List <School> schools = schoolRepository.findById(id_school);
+		if(schools!=null && !schools.isEmpty()) {
+			
+			School school  = schools.get(0);
+			
+			SchoolInfo schoolInfo = new SchoolInfo();
+			
+			schoolInfo.setId_school(school.getId_school());
+			
+			schoolInfo.setSchool_name(school.getSchool_name());
+			
+			List<Teacher> teachers = teacherRepository.findAll();
+			List<Class> classes = classRepository.findAll();
+			
+			for(Teacher teacher: teachers) {
+				if(teacher.getSchool() != null) {
+					if(teacher.getSchool().getId_school() == schoolInfo.getId_school()) {
+						schoolInfo.getTeachers().add(teacher.getTeacher_name());
+					}
+				}
+			}
+			for(Class school_class : classes) {
+				if(school_class.getSchool().getId_school() == schoolInfo.getId_school()) {
+					schoolInfo.getClasses().add(school_class.getClass_name());
+				}
+			}
+			
+			return schoolInfo;
+			
+			
+		}else {
+			return null;
+		}
+	}
+	
+	public SchoolInfo getSchoolById(int id) {
 		List <School> schools = schoolRepository.findById(id);
 		School school = schools.get(0);
-		return school;
+		SchoolInfo schoolInfo = new SchoolInfo();
+		
+		schoolInfo.setId_school(school.getId_school());
+		
+		schoolInfo.setSchool_name(school.getSchool_name());
+		
+		List<Teacher> teachers = teacherRepository.findAll();
+		List<Class> classes = classRepository.findAll();
+		
+		for(Teacher teacher: teachers) {
+			if(teacher.getSchool() != null) {
+				if(teacher.getSchool().getId_school() == schoolInfo.getId_school()) {
+					schoolInfo.getTeachers().add(teacher.getTeacher_name());
+				}
+			}
+		}
+		for(Class school_class : classes) {
+			if(school_class.getSchool().getId_school() == schoolInfo.getId_school()) {
+				schoolInfo.getClasses().add(school_class.getClass_name());
+			}
+		}
+		
+		return schoolInfo;
 	}
 
 	public void delete(int id_school) {

@@ -28,7 +28,9 @@ public class School {
 	        cascade = CascadeType.ALL,
 	        orphanRemoval = true
 	)
-	private Set<Class> addresses = new HashSet<>();
+	private Set<Class> classes = new HashSet<>();
+	
+	
 	
 	public School() {}
 

@@ -131,6 +131,17 @@ public class ResourceService {
 			for(TeacherHasResources teacherHasResource: resource.getResource()) {
 				resource_teachers.add(teacherHasResource.getTeacher().getTeacher_name());
 			}
+			
+			if(resource.isDomain()) {
+				resourcesInfo.setDomain("Yes");
+			}else {
+				resourcesInfo.setDomain("No");
+			}
+			if(resource.isSSO()) {
+				resourcesInfo.setSso("Yes");
+			}else {
+				resourcesInfo.setSso("No");
+			}
 			resourcesInfo.setTeachers(resource_teachers);
 			
 			return resourcesInfo;
