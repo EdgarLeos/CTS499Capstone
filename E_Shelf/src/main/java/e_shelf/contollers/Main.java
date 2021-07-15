@@ -269,6 +269,13 @@ public class Main {
     	return "redirect:/admin";
     }
     
+    @RequestMapping(value = "/E-Shelf/main/deleteSchool/", method = {RequestMethod.DELETE, RequestMethod.GET})
+    public String deleteSchool(String id_school) {
+    	System.out.println(id_school);
+    	schoolService.delete(Integer.parseInt(id_school));
+
+    	return "redirect:/admin";
+    }
     
     @PostMapping("/E-Shelf/main/addClass")
     public String addNewClass(ClassesInfo classInfo, Model model) {

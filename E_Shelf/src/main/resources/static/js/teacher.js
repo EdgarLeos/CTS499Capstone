@@ -97,6 +97,17 @@ $('document').ready(function(){
 		
 		$('#editSchoolModal').modal();
 		
+	});
+	
+
+	$('table #schoolDeleteButton').on('click', function(event){
+		event.preventDefault();
+		
+		var href = $(this).attr('href');
+		
+		$('#confirmSchoolDeleteButoon').attr('href', href);
+		
+		$('#schoolDeleteModal').modal();
 		
 	});
 	

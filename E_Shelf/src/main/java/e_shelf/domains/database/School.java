@@ -1,10 +1,16 @@
 package e_shelf.domains.database;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 //Teacher object to link to dB with its proper constructors, getters and setters. 
 @Entity
@@ -15,6 +21,14 @@ public class School {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id_school;
 	private String school_name;
+	
+	@OneToMany(
+	        mappedBy = "school",
+	        fetch = FetchType.LAZY,
+	        cascade = CascadeType.ALL,
+	        orphanRemoval = true
+	)
+	private Set<Class> addresses = new HashSet<>();
 	
 	public School() {}
 

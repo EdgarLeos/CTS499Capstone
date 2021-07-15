@@ -141,7 +141,12 @@ public class TeacherService {
 			teacherInfo.setEmail(teacher.getEmail());
 			teacherInfo.setLow_grade(low_grade);
 			teacherInfo.setHigh_grade(high_grade);
-			teacherInfo.setSchool_name(teacher.getSchool().getSchool_name());
+			if(teacher.getSchool() == null) {
+				teacherInfo.setSchool_name("No School Set");
+			}
+			else{
+				teacherInfo.setSchool_name(teacher.getSchool().getSchool_name());
+			}
 			List<String>teacher_classes = new ArrayList<String>();
 			List<String>teacher_resources = new ArrayList<String>();
 			for(Class teacher_class:teacher.getClass_has_teacher()) {

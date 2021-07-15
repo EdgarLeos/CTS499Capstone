@@ -49,4 +49,18 @@ public class SchoolService {
 		return school;
 	}
 
+	public void delete(int id_school) {
+		
+		List<Class> classes = classRepository.findAll();
+		for (Class school_class: classes) {
+			if(school_class.getSchool().getId_school() == id_school) {
+				classRepository.delete(school_class);
+			}
+		}
+		
+		
+		schoolRepository.deleteById(id_school);
+		
+	}
+
 }

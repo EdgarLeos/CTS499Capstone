@@ -5,6 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -24,6 +28,7 @@ public class Class {
 	
 	@ManyToOne
 	@JoinColumn(name = "school_id_school", referencedColumnName = "id_school")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private School school;
 	
 	@ManyToMany
