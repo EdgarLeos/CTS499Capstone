@@ -9,12 +9,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 
 import e_shelf.domains.database.Teacher;
 import e_shelf.domains.database.TeacherHasResources;
+import e_shelf.domains.database.User;
 import e_shelf.repositories.*;
 import e_shelf.domains.info.*;
 import e_shelf.domains.database.Class;
@@ -45,8 +47,13 @@ public class TeacherService {
 	@Autowired
 	ResourceService resourceService;
 	
+	@Autowired
+	BCryptPasswordEncoder bCryptPasswordEncoder;
+	
 	public void addTacher(TeacherInfo teacherInfo) {
 		
+		String password = "Capstone2021!";
+		User user = new User();
 		Teacher teacher = new Teacher();
 		System.out.println(teacherInfo.getLow_grade());
 		System.out.println(teacherInfo.getHigh_grade());
@@ -72,6 +79,7 @@ public class TeacherService {
 		teacher.setTitle(teacherInfo.getTittle());
 		teacher.setTeacher_name(teacherInfo.getLast_name() + ", " + teacherInfo.getFirst_name());
 		teacher.setEmail(teacherInfo.getFirst_name().substring(0,1).toLowerCase() + teacherInfo.getLast_name().toLowerCase() + "@capstone.k12.ca.us");
+
 		teacher.setTitle(teacherInfo.getTittle());
 		teacher.setLow_grade(String.valueOf(low_grade));
 		teacher.setHigh_grade(String.valueOf(high_grade));
@@ -98,7 +106,12 @@ public class TeacherService {
 			teacher.getClass_has_teacher().add(classRepository.findByClass_name(teacherInfo_class));
 			}
 		
-		teacherRepository.save(teacher);	
+		teacherRepository.save(teacher);
+		user.setUsername(teacher.getEmail());
+		user.setPassword(bCryptPasswordEncoder.encode(password));
+		user.setRole("Teacher");
+		user.setEnabled("1");
+		userRepository.save(user);
 	}
 	
 	
@@ -157,7 +170,9 @@ public class TeacherService {
 
 
 	public void delete(int id_teacher) {
+		int id_users = userRepository.getUserByUsername(teacherRepository.findById(id_teacher).get(0).getEmail()).getId_users();
 		teacherRepository.deleteById(id_teacher);
+		userRepository.deleteById(id_users);
 		
 	}
 	

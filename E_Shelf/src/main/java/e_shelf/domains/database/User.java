@@ -7,6 +7,7 @@ import javax.persistence.*;
 public class User {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id_users;
 	private String username;
 	private String password;

@@ -178,12 +178,28 @@ $('document').ready(function(){
 		event.preventDefault();
 		
 		var href = $(this).attr('href');
-		
+		var table = document.getElementById('school_classes_details')
+		var table_t = document.getElementById('school_teachers_details')
+		table.innerHTML = '';
+		table_t.innerHTML = '';
 		$.get(href, function(school, status){
 			$('#id_school_details').val(school.id_school)
 			$('#school_name_details').val(school.school_name)	
-			document.getElementById("school_classes_details").innerHTML = school.classes;
-			document.getElementById("school_teachers_details").innerHTML = school.teachers;
+			for(var i = 0; i < school.classes.length; i ++){
+				var row = `<tr>
+				<td>${school.classes[i]}</td>
+				</tr>`
+				table.innerHTML += row;
+			}
+			for(var i = 0; i < school.teachers.length; i ++){
+				var row = `<tr>
+				<td>${school.teachers[i]}</td>
+				</tr>`
+				table_t.innerHTML += row;
+			}
+			
+			//document.getElementById("school_classes_details").innerHTML = school.classes;
+			//document.getElementById("school_teachers_details").innerHTML = school.teachers;
 		});
 		
 		
@@ -214,11 +230,19 @@ $('document').ready(function(){
 		
 		var href = $(this).attr('href');
 		
+		var table = document.getElementById('class_teachers_details')
+		table.innerHTML = '';
 		$.get(href, function(classInfo, status){
 			$('#id_class_details').val(classInfo.id_class)
 			$('#class_name_details').val(classInfo.class_name)
 			$('#class_school_details').val(classInfo.school)
-			document.getElementById("class_teachers_details").innerHTML = classInfo.teachers;
+			for(var i = 0; i < classInfo.teachers.length; i ++){
+				var row = `<tr>
+				<td>${classInfo.teachers[i]}</td>
+				</tr>`
+				table.innerHTML += row;
+			}
+			//document.getElementById("class_teachers_details").innerHTML = classInfo.teachers;
 		});
 		
 		
