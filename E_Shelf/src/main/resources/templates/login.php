@@ -17,7 +17,7 @@
             <p class="text-warning">You have been logged out.</p>
         </div>
          <div th:if="${param.error}" class="alert alert-danger">    
-   			 Invalid username and password.
+   			 Invalid Username and password.
 		</div>
         <div class="border border-secondary p-3 rounded">
             <p>E-Shelf Control Panel</p>
